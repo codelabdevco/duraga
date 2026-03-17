@@ -192,52 +192,83 @@ export default function TarotFlow() {
           </motion.div>
         )}
 
-        {/* ===== STEP 6: FAN PICK (78 cards arc) ===== */}
+        {/* ===== STEP 6: PICK CARDS (mobile-friendly grid) ===== */}
         {phase === "fan" && selectedSpread && (
-          <motion.div key="fan" className="flex flex-col items-center min-h-full pt-2 pb-10"
+          <motion.div key="fan" className="flex flex-col items-center min-h-full pt-2 pb-10 px-3"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: EASE }}>
-            <motion.p className="text-gold font-semibold text-sm mb-1"
-              animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity }}>
-              เลือก {selectedSpread.cardCount - pickedCards.length} ใบ
-            </motion.p>
-            <p className="text-white/25 text-xs mb-4">แตะไพ่ที่คุณรู้สึกดึงดูด</p>
 
-            {/* Fan arc */}
-            <div className="relative w-full max-w-[400px] h-[420px] overflow-hidden">
-              <div className="absolute bottom-0 left-1/2" style={{ width: 0, height: 0 }}>
-                {shuffledDeck.map((card, i) => {
-                  const isPicked = pickedCards.some(p => p.id === card.id);
-                  const total = shuffledDeck.length;
-                  const angle = -80 + (160 / (total - 1)) * i; // -80° to +80°
-                  const radius = 320;
+            {/* Sticky header */}
+            <div className="sticky top-0 z-20 bg-[#08090e]/90 backdrop-blur-md w-full text-center py-3 -mx-3 px-3">
+              <motion.p className="text-gold font-semibold text-base mb-0.5"
+                key={pickedCards.length}
+                animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 0.3 }}>
+                {selectedSpread.cardCount - pickedCards.length > 0
+                  ? `เลือกอีก ${selectedSpread.cardCount - pickedCards.length} ใบ`
+                  : "เลือกครบแล้ว!"
+                }
+              </motion.p>
+              <p className="text-white/25 text-xs">แตะไพ่ที่คุณรู้สึกดึงดูด</p>
 
-                  return (
-                    <motion.div
-                      key={card.id}
-                      className="absolute cursor-pointer"
-                      style={{
-                        transformOrigin: "center bottom",
-                        left: -22,
-                        bottom: 0,
-                      }}
-                      initial={{ rotate: 0, opacity: 0 }}
-                      animate={{
-                        rotate: isPicked ? angle : angle,
-                        opacity: isPicked ? 0 : 1,
-                        y: isPicked ? -100 : 0,
-                        scale: isPicked ? 0.5 : 1,
-                      }}
-                      transition={{ delay: isPicked ? 0 : 0.01 + i * 0.005, duration: isPicked ? 0.4 : 0.6, ease: EASE }}
-                      whileHover={{ y: -20, scale: 1.08, zIndex: 100 }}
-                      onClick={() => { if (!isPicked) pickCard(i); }}
-                    >
-                      <div style={{ transform: `translateY(-${radius}px)` }}>
-                        <MiniCardBack width={44} height={70} />
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
+              {/* Selected cards preview */}
+              {pickedCards.length > 0 && (
+                <div className="flex justify-center gap-1 mt-2">
+                  {pickedCards.map((_, i) => (
+                    <motion.div key={i} className="w-2 h-2 rounded-full bg-gold"
+                      initial={{ scale: 0 }} animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 15 }} />
+                  ))}
+                  {Array.from({ length: selectedSpread.cardCount - pickedCards.length }, (_, i) => (
+                    <div key={`e-${i}`} className="w-2 h-2 rounded-full bg-white/10" />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Card grid — 5 columns, scrollable */}
+            <div className="grid grid-cols-5 gap-[6px] w-full max-w-[380px] mt-3">
+              {shuffledDeck.map((card, i) => {
+                const isPicked = pickedCards.some(p => p.id === card.id);
+                const isFull = pickedCards.length >= selectedSpread.cardCount;
+                const isDisabled = isFull && !isPicked;
+
+                return (
+                  <motion.div
+                    key={card.id}
+                    className={`relative rounded-lg cursor-pointer overflow-hidden
+                      ${isPicked ? "pointer-events-none" : ""}
+                      ${isDisabled ? "pointer-events-none" : ""}
+                    `}
+                    initial={{ opacity: 0, scale: 0.7 }}
+                    animate={{
+                      opacity: isPicked ? 0.15 : isDisabled ? 0.2 : 1,
+                      scale: isPicked ? 0.85 : 1,
+                      y: isPicked ? -8 : 0,
+                    }}
+                    transition={{
+                      delay: isPicked ? 0 : 0.02 + i * 0.006,
+                      duration: isPicked ? 0.3 : 0.4,
+                      ease: EASE,
+                    }}
+                    whileTap={{ scale: 0.88 }}
+                    onClick={() => { if (!isPicked && !isDisabled) pickCard(i); }}
+                  >
+                    <MiniCardBack width={72} height={115} />
+
+                    {/* Selected overlay */}
+                    {isPicked && (
+                      <motion.div
+                        className="absolute inset-0 flex items-center justify-center"
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <div className="w-5 h-5 rounded-full bg-gold/30 flex items-center justify-center">
+                          <span className="text-[0.5rem] text-gold font-bold">
+                            {pickedCards.findIndex(p => p.id === card.id) + 1}
+                          </span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}
@@ -356,11 +387,11 @@ export default function TarotFlow() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="text-sm text-gold-light font-semibold mb-0.5">
-                          {card.nameEn} {card.isReversed && <span className="text-red-400/60 text-xs">(R)</span>}
+                          {card.nameTh} {card.isReversed && <span className="text-red-400/60 text-xs">(กลับหัว)</span>}
                         </h3>
-                        <p className="text-xs text-gold/50 mb-1">{card.nameTh}</p>
-                        <p className="text-[0.65rem] text-white/25 mb-2">{pos?.nameTH}</p>
-                        <p className="text-xs text-white/50 leading-5">{card.meaningTh || card.meaning}</p>
+                        <p className="text-xs text-white/30 mb-1">{card.nameEn}</p>
+                        <p className="text-[0.65rem] text-gold/40 mb-2">{pos?.nameTH}</p>
+                        <p className="text-xs text-white/60 leading-6">{card.meaningTh || card.meaning}</p>
                       </div>
                     </div>
                     {(card.analysisTh || card.analysis) && (
