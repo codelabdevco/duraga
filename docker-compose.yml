@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  duraga:
+    build: .
+    container_name: duraga
+    restart: unless-stopped
+    ports:
+      - "3500:80"

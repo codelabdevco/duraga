@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mystic Tarot - ดูดวงไพ่ทาโร่</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Noto+Sans+Thai:wght@300;400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #d4af37;
+    --gold-light: #f0d68a;
+    --purple-deep: #1a0a2e;
+    --purple-mid: #2d1b69;
+    --purple-light: #7b2ff7;
+    --mystic-blue: #00d4ff;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--purple-deep);
+    font-family: 'Noto Sans Thai', sans-serif;
+    color: #e8dff5;
+    overflow-x: hidden;
+  }
+
+  /* Stars background */
+  .stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--duration) ease-in-out infinite;
+    opacity: 0;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: var(--max-opacity); transform: scale(1); }
+  }
+
+  /* Floating particles */
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: floatUp var(--duration) ease-in infinite;
+    opacity: 0;
+    filter: blur(1px);
+  }
+
+  @keyframes floatUp {
+    0% { opacity: 0; transform: translateY(100vh) scale(0); }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-10vh) scale(1.5); }
+  }
+
+  /* Main container */
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 20px;
+    animation: fadeInDown 1s ease-out;
+  }
+
+  .header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), #fff5cc, var(--gold));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    text-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+    letter-spacing: 3px;
+  }
+
+  .header .subtitle {
+    font-size: 1.1rem;
+    color: rgba(212, 175, 55, 0.7);
+    margin-top: 8px;
+    letter-spacing: 2px;
+  }
+
+  @keyframes shimmer {
+    to { background-position: 200% center; }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Moon decoration */
+  .moon {
+    position: fixed;
+    top: 40px;
+    right: 60px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff5cc, var(--gold), #b8860b);
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.4), 0 0 80px rgba(212, 175, 55, 0.2);
+    z-index: 1;
+    animation: moonGlow 4s ease-in-out infinite;
+  }
+
+  @keyframes moonGlow {
+    0%, 100% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.4), 0 0 80px rgba(212, 175, 55, 0.2); }
+    50% { box-shadow: 0 0 60px rgba(212, 175, 55, 0.6), 0 0 120px rgba(212, 175, 55, 0.3); }
+  }
+
+  /* Spread type selection */
+  .spread-select {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeIn 1s ease-out 0.3s both;
+  }
+
+  .spread-btn {
+    padding: 12px 28px;
+    border: 2px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
+  }
+
+  .spread-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .spread-btn:hover::before { left: 100%; }
+  .spread-btn:hover {
+    background: rgba(212, 175, 55, 0.15);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .spread-btn.active {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.1));
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+  }
+
+  /* Card area */
+  .card-area {
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 20px;
+    perspective: 1200px;
+  }
+
+  /* Deck (before dealing) */
+  .deck-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .deck {
+    position: relative;
+    width: 180px;
+    height: 280px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .deck:hover { transform: translateY(-8px); }
+
+  .deck-card {
+    position: absolute;
+    width: 180px;
+    height: 280px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--purple-mid), #1a0533);
+    border: 2px solid var(--gold);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: transform 0.2s;
+  }
+
+  .deck-card::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 8px;
+  }
+
+  .deck-card::after {
+    content: '✦';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  }
+
+  .deck-instruction {
+    font-size: 1.1rem;
+    color: rgba(212, 175, 55, 0.8);
+    text-align: center;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Tarot cards */
+  .tarot-slot {
+    position: relative;
+    width: 180px;
+    height: 280px;
+    perspective: 800px;
+  }
+
+  .tarot-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .tarot-card.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .tarot-card.dealing {
+    animation: dealCard 0.6s ease-out both;
+  }
+
+  @keyframes dealCard {
+    from {
+      opacity: 0;
+      transform: translateY(-200px) rotateZ(20deg) scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) rotateZ(0deg) scale(1);
+    }
+  }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* Card back */
+  .card-back {
+    background: linear-gradient(135deg, var(--purple-mid), #1a0533);
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  .card-back-design {
+    width: 85%;
+    height: 90%;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: repeating-conic-gradient(
+      rgba(212, 175, 55, 0.05) 0% 25%,
+      transparent 0% 50%
+    ) 50% / 20px 20px;
+  }
+
+  .card-back-design::before {
+    content: '☽';
+    font-size: 3.5rem;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+  }
+
+  .card-back-design::after {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 4px;
+  }
+
+  /* Card front */
+  .card-front {
+    transform: rotateY(180deg);
+    border: 2px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(123, 47, 247, 0.3);
+  }
+
+  .card-numeral {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .card-image {
+    font-size: 4.5rem;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+  }
+
+  .card-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    text-align: center;
+    margin: 6px 0;
+    letter-spacing: 1px;
+    line-height: 1.3;
+  }
+
+  .card-name-th {
+    font-size: 0.8rem;
+    color: rgba(212, 175, 55, 0.7);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .card-keyword {
+    font-size: 0.7rem;
+    color: rgba(200, 180, 230, 0.8);
+    text-align: center;
+    padding: 3px 10px;
+    border: 1px solid rgba(200, 180, 230, 0.2);
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Position label */
+  .position-label {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--mystic-blue);
+    font-weight: 600;
+    letter-spacing: 1px;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  /* Glow on hover */
+  .tarot-card:not(.flipped):hover {
+    filter: brightness(1.2);
+  }
+
+  .tarot-card:not(.flipped):hover .card-back {
+    box-shadow: 0 8px 40px rgba(212, 175, 55, 0.4), 0 0 30px rgba(123, 47, 247, 0.3);
+  }
+
+  /* Reading result */
+  .reading-section {
+    width: 100%;
+    max-width: 800px;
+    margin: 30px auto;
+    animation: slideUp 0.8s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reading-card-result {
+    background: linear-gradient(135deg, rgba(45, 27, 105, 0.6), rgba(26, 10, 46, 0.8));
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    animation: resultFadeIn 0.6s ease-out both;
+  }
+
+  @keyframes resultFadeIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .result-icon { font-size: 2rem; }
+
+  .result-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem;
+    color: var(--gold-light);
+  }
+
+  .result-position {
+    font-size: 0.85rem;
+    color: var(--mystic-blue);
+  }
+
+  .result-meaning {
+    line-height: 1.8;
+    font-size: 0.95rem;
+    color: rgba(232, 223, 245, 0.9);
+  }
+
+  .result-meaning .highlight {
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  /* Overall reading */
+  .overall-reading {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(123, 47, 247, 0.1));
+    border: 1px solid var(--gold);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .overall-reading h3 {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold-light);
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+
+  .overall-reading p {
+    line-height: 1.8;
+    font-size: 1rem;
+    color: rgba(232, 223, 245, 0.9);
+  }
+
+  /* Action buttons */
+  .action-area {
+    margin: 30px 0 50px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-mystic {
+    padding: 14px 36px;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Noto Sans Thai', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), #b8860b);
+    color: var(--purple-deep);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateY(-3px);
+  }
+
+  /* Card reveal sparkle */
+  .sparkle-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .sparkle {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: sparkleAnim 0.8s ease-out forwards;
+  }
+
+  @keyframes sparkleAnim {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0) translate(var(--tx), var(--ty)); }
+  }
+
+  /* Reversed card indicator */
+  .reversed-badge {
+    background: rgba(255, 100, 100, 0.2);
+    color: #ff9999;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    margin-top: 2px;
+  }
+
+  .card-front.reversed .card-image {
+    transform: rotate(180deg);
+  }
+
+  /* Loading/dealing state */
+  .dealing-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 10, 46, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+  }
+
+  .dealing-text {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .tarot-slot { width: 140px; height: 220px; }
+    .card-image { font-size: 3.5rem; height: 90px; }
+    .card-name { font-size: 0.75rem; }
+    .card-area { gap: 16px; }
+    .moon { width: 50px; height: 50px; top: 20px; right: 20px; }
+  }
+
+  /* Hidden utility */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="particles" id="particles"></div>
+<div class="moon"></div>
+
+<div class="container">
+  <header class="header">
+    <h1>Mystic Tarot</h1>
+    <p class="subtitle">เปิดไพ่ เปิดชะตา</p>
+  </header>
+
+  <div class="spread-select" id="spreadSelect">
+    <button class="spread-btn active" data-spread="1" onclick="selectSpread(1)">ไพ่ใบเดียว</button>
+    <button class="spread-btn" data-spread="3" onclick="selectSpread(3)">3 ใบ (อดีต-ปัจจุบัน-อนาคต)</button>
+    <button class="spread-btn" data-spread="5" onclick="selectSpread(5)">5 ใบ (กากบาท)</button>
+  </div>
+
+  <div id="deckArea" class="deck-container">
+    <div class="deck" onclick="dealCards()">
+      <div class="deck-card" style="transform: translate(4px, 4px) rotate(2deg);"></div>
+      <div class="deck-card" style="transform: translate(2px, 2px) rotate(1deg);"></div>
+      <div class="deck-card" style="transform: translate(0, 0);"></div>
+    </div>
+    <p class="deck-instruction">คลิกที่สำรับเพื่อสับไพ่และเปิดไพ่</p>
+  </div>
+
+  <div class="card-area hidden" id="cardArea"></div>
+
+  <div class="reading-section hidden" id="readingSection"></div>
+
+  <div class="action-area hidden" id="actionArea">
+    <button class="btn-mystic btn-primary" onclick="resetReading()">เปิดไพ่ใหม่</button>
+  </div>
+</div>
+
+<script>
+// ====== TAROT DATA ======
+const majorArcana = [
+  { id: 0, numeral: '0', name: 'The Fool', nameTh: 'คนโง่', icon: '🃏',
+    upright: 'การเริ่มต้นใหม่ การผจญภัย ความไร้เดียงสา ความเป็นอิสระ',
+    reversed: 'ความประมาท การตัดสินใจผิดพลาด ความไม่รอบคอบ',
+    uprightDetail: 'ไพ่ The Fool บอกว่า<span class="highlight">ถึงเวลาเริ่มต้นสิ่งใหม่</span>แล้ว จงก้าวออกจาก comfort zone ด้วยใจที่เปิดกว้าง อย่ากลัวที่จะลองสิ่งที่ไม่เคยทำ จักรวาลกำลังเปิดทางให้คุณ',
+    reversedDetail: 'ไพ่กลับหัวเตือนว่า<span class="highlight">อย่าประมาทกับการตัดสินใจ</span> ลองคิดให้รอบคอบก่อนกระโดดเข้าสู่สิ่งใหม่ อาจมีความเสี่ยงที่มองไม่เห็น',
+    element: 'ลม', color: 'linear-gradient(135deg, #87CEEB, #E0F7FF)' },
+  { id: 1, numeral: 'I', name: 'The Magician', nameTh: 'นักมายากล', icon: '🎩',
+    upright: 'พลัง ทักษะ ความสามารถ การสร้างสรรค์ ความมั่นใจ',
+    reversed: 'การหลอกลวง การใช้พลังผิดทาง ขาดสมาธิ',
+    uprightDetail: '<span class="highlight">คุณมีทุกสิ่งที่ต้องการอยู่ในมือแล้ว</span> จงใช้ทักษะและความสามารถที่มีอย่างเต็มที่ พลังของคุณกำลังอยู่ในจุดสูงสุด เป็นช่วงเวลาแห่งการสร้างสรรค์',
+    reversedDetail: 'ระวัง<span class="highlight">การใช้ความสามารถผิดทาง</span> หรืออาจมีคนที่พยายามหลอกลวงคุณ ตรวจสอบข้อมูลให้ดีก่อนตัดสินใจ',
+    element: 'ลม', color: 'linear-gradient(135deg, #FFD700, #FFF8DC)' },
+  { id: 2, numeral: 'II', name: 'The High Priestess', nameTh: 'นักบวชหญิง', icon: '🌙',
+    upright: 'สัญชาตญาณ ปัญญา ความลึกลับ ความสงบ',
+    reversed: 'ความลับที่ถูกเปิดเผย การไม่ฟังเสียงภายใน',
+    uprightDetail: '<span class="highlight">เชื่อสัญชาตญาณของคุณ</span> มีสิ่งที่ซ่อนอยู่ที่ต้องค้นพบ ใช้เวลาทบทวนและฟังเสียงภายในของตัวเอง คำตอบอยู่ในใจคุณแล้ว',
+    reversedDetail: '<span class="highlight">ความลับบางอย่างกำลังจะถูกเปิดเผย</span> อย่าเพิกเฉยต่อสัญญาณเตือนรอบตัว ถึงเวลาเผชิญความจริง',
+    element: 'น้ำ', color: 'linear-gradient(135deg, #191970, #4169E1)' },
+  { id: 3, numeral: 'III', name: 'The Empress', nameTh: 'จักรพรรดินี', icon: '👑',
+    upright: 'ความอุดมสมบูรณ์ ความรัก ธรรมชาติ ความงาม การเจริญเติบโต',
+    reversed: 'การพึ่งพาผู้อื่นมากเกินไป ความไม่มั่นคง',
+    uprightDetail: '<span class="highlight">ความอุดมสมบูรณ์กำลังมาถึง</span> ทั้งด้านความรักและการเงิน เป็นช่วงเวลาแห่งการเจริญเติบโตและการสร้างสรรค์ ดูแลตัวเองและคนรอบข้าง',
+    reversedDetail: 'คุณอาจ<span class="highlight">พึ่งพาผู้อื่นมากเกินไป</span> ถึงเวลาพัฒนาความเข้มแข็งภายใน อย่ามองหาความสุขจากภายนอกเพียงอย่างเดียว',
+    element: 'ดิน', color: 'linear-gradient(135deg, #228B22, #90EE90)' },
+  { id: 4, numeral: 'IV', name: 'The Emperor', nameTh: 'จักรพรรดิ', icon: '🦁',
+    upright: 'อำนาจ ความมั่นคง ระเบียบวินัย ความเป็นผู้นำ',
+    reversed: 'ความแข็งกร้าว การควบคุมมากเกินไป',
+    uprightDetail: '<span class="highlight">ถึงเวลาวางแผนอย่างเป็นระบบ</span> ใช้วินัยและความเป็นผู้นำในตัวคุณ สร้างโครงสร้างที่แข็งแกร่งให้กับชีวิต ความมั่นคงกำลังรออยู่',
+    reversedDetail: '<span class="highlight">อย่าเข้มงวดกับตัวเองและผู้อื่นมากเกินไป</span> ผ่อนคลายบ้าง ความยืดหยุ่นก็เป็นความแข็งแกร่งเช่นกัน',
+    element: 'ไฟ', color: 'linear-gradient(135deg, #8B0000, #FF6347)' },
+  { id: 5, numeral: 'V', name: 'The Hierophant', nameTh: 'นักบวช', icon: '📿',
+    upright: 'ประเพณี ความเชื่อ การศึกษา ครูบาอาจารย์',
+    reversed: 'การท้าทายขนบธรรมเนียม ความคิดอิสระ',
+    uprightDetail: '<span class="highlight">แสวงหาคำแนะนำจากผู้มีประสบการณ์</span> การเรียนรู้และการศึกษาจะนำพาคุณไปสู่ทางที่ถูกต้อง เชื่อในกระบวนการ',
+    reversedDetail: '<span class="highlight">ถึงเวลาตั้งคำถามกับสิ่งที่เคยเชื่อ</span> บางครั้งการเดินนอกเส้นทางเดิมก็เป็นสิ่งจำเป็น',
+    element: 'ดิน', color: 'linear-gradient(135deg, #4B0082, #9370DB)' },
+  { id: 6, numeral: 'VI', name: 'The Lovers', nameTh: 'คู่รัก', icon: '💕',
+    upright: 'ความรัก การเลือก ความสัมพันธ์ ความกลมกลืน',
+    reversed: 'ความขัดแย้ง การตัดสินใจที่ยากลำบาก',
+    uprightDetail: '<span class="highlight">ความรักและความสัมพันธ์กำลังเบ่งบาน</span> หากต้องเลือก จงฟังหัวใจ ความกลมกลืนระหว่างคุณกับคนรอบข้างจะนำพาไปสู่ความสุข',
+    reversedDetail: '<span class="highlight">อาจมีความขัดแย้งในความสัมพันธ์</span> หรือการตัดสินใจที่ยากลำบากกำลังรอคุณอยู่ สื่อสารอย่างเปิดเผยและจริงใจ',
+    element: 'ลม', color: 'linear-gradient(135deg, #FF69B4, #FFB6C1)' },
+  { id: 7, numeral: 'VII', name: 'The Chariot', nameTh: 'รถศึก', icon: '⚔️',
+    upright: 'ชัยชนะ ความมุ่งมั่น การเดินทาง ความก้าวหน้า',
+    reversed: 'ขาดทิศทาง การสูญเสียการควบคุม',
+    uprightDetail: '<span class="highlight">ชัยชนะอยู่แค่เอื้อม!</span> ความมุ่งมั่นของคุณจะนำพาไปสู่ความสำเร็จ เดินหน้าอย่างมั่นใจ ไม่มีอะไรหยุดคุณได้',
+    reversedDetail: '<span class="highlight">คุณอาจรู้สึกหลงทาง</span> หยุดสักครู่แล้วหาทิศทางที่ชัดเจน อย่าฝืนเดินหน้าถ้ายังไม่แน่ใจ',
+    element: 'น้ำ', color: 'linear-gradient(135deg, #C0C0C0, #F5F5F5)' },
+  { id: 8, numeral: 'VIII', name: 'Strength', nameTh: 'พลัง', icon: '🦋',
+    upright: 'ความอดทน ความกล้าหาญ ความเมตตา พลังภายใน',
+    reversed: 'ความสงสัยในตัวเอง ความอ่อนแอ',
+    uprightDetail: '<span class="highlight">พลังที่แท้จริงมาจากภายใน</span> ใช้ความเมตตาและความอดทนในการเผชิญปัญหา คุณแข็งแกร่งกว่าที่คิด',
+    reversedDetail: '<span class="highlight">อย่าปล่อยให้ความสงสัยในตัวเองทำลายคุณ</span> ทุกคนมีช่วงเวลาที่อ่อนแอ แต่จงเชื่อมั่นว่าคุณจะผ่านมันไปได้',
+    element: 'ไฟ', color: 'linear-gradient(135deg, #FF8C00, #FFDAB9)' },
+  { id: 9, numeral: 'IX', name: 'The Hermit', nameTh: 'ฤๅษี', icon: '🏔️',
+    upright: 'การค้นหาตัวเอง ความสันโดษ ปัญญา การพักผ่อน',
+    reversed: 'ความโดดเดี่ยว การปฏิเสธความช่วยเหลือ',
+    uprightDetail: '<span class="highlight">ถึงเวลาหันกลับมาดูตัวเอง</span> ใช้เวลาอยู่กับตัวเองเพื่อค้นหาคำตอบ ความสงบและการทบทวนจะนำพาไปสู่ปัญญา',
+    reversedDetail: '<span class="highlight">อย่าปิดกั้นตัวเองจากผู้อื่นมากเกินไป</span> บางครั้งเราต้องการความช่วยเหลือ การขอความช่วยเหลือไม่ใช่ความอ่อนแอ',
+    element: 'ดิน', color: 'linear-gradient(135deg, #2F4F4F, #708090)' },
+  { id: 10, numeral: 'X', name: 'Wheel of Fortune', nameTh: 'วงล้อแห่งโชคชะตา', icon: '🎡',
+    upright: 'โชค การเปลี่ยนแปลง วัฏจักร โอกาสใหม่',
+    reversed: 'โชคร้าย การเปลี่ยนแปลงที่ไม่พึงประสงค์',
+    uprightDetail: '<span class="highlight">วงล้อแห่งโชคชะตากำลังหมุนเข้าข้างคุณ!</span> การเปลี่ยนแปลงที่ดีกำลังจะมาถึง จงเปิดรับโอกาสใหม่ที่เข้ามา',
+    reversedDetail: '<span class="highlight">ช่วงเวลาที่ยากลำบากนี้เป็นเพียงชั่วคราว</span> วงล้อยังคงหมุน สิ่งดีๆ จะกลับมาอีกครั้ง จงอดทน',
+    element: 'ไฟ', color: 'linear-gradient(135deg, #4169E1, #87CEEB)' },
+  { id: 11, numeral: 'XI', name: 'Justice', nameTh: 'ความยุติธรรม', icon: '⚖️',
+    upright: 'ความยุติธรรม ความจริง กฎหมาย สมดุล',
+    reversed: 'ความอยุติธรรม การหลีกเลี่ยงความจริง',
+    uprightDetail: '<span class="highlight">ความจริงจะปรากฏ</span> และความยุติธรรมจะมาถึง สิ่งที่คุณทำจะได้รับผลตอบแทนอย่างเหมาะสม รักษาความซื่อสัตย์',
+    reversedDetail: '<span class="highlight">อาจมีความไม่ยุติธรรมเกิดขึ้น</span> แต่จงยืนหยัดในสิ่งที่ถูกต้อง อย่าเพิกเฉยต่อความจริง',
+    element: 'ลม', color: 'linear-gradient(135deg, #DAA520, #FFFACD)' },
+  { id: 12, numeral: 'XII', name: 'The Hanged Man', nameTh: 'คนแขวนคอ', icon: '🔮',
+    upright: 'การยอมจำนน การมองมุมใหม่ การเสียสละ การปล่อยวาง',
+    reversed: 'ความดื้อดึง การไม่ยอมเปลี่ยนแปลง',
+    uprightDetail: '<span class="highlight">ลองมองสิ่งต่างๆ จากมุมใหม่</span> บางครั้งการหยุดพักและปล่อยวางจะนำไปสู่ความเข้าใจที่ลึกซึ้งขึ้น อย่ารีบร้อน',
+    reversedDetail: '<span class="highlight">คุณกำลังต่อต้านการเปลี่ยนแปลงที่จำเป็น</span> ลองเปิดใจและยอมรับว่าบางสิ่งต้องเปลี่ยนไป',
+    element: 'น้ำ', color: 'linear-gradient(135deg, #483D8B, #9370DB)' },
+  { id: 13, numeral: 'XIII', name: 'Death', nameTh: 'ความตาย', icon: '🦅',
+    upright: 'การเปลี่ยนแปลง การจบสิ้น การเริ่มต้นใหม่ การปล่อยวาง',
+    reversed: 'การต่อต้านการเปลี่ยนแปลง การยึดมั่นในอดีต',
+    uprightDetail: '<span class="highlight">บทหนึ่งกำลังจะจบลง เพื่อเปิดทางให้บทใหม่</span> อย่ากลัวการเปลี่ยนแปลง ปล่อยวางสิ่งที่ไม่เหมาะกับคุณอีกต่อไป สิ่งที่ดีกว่ากำลังรอคุณ',
+    reversedDetail: '<span class="highlight">คุณกำลังยึดมั่นในสิ่งที่ควรปล่อยไป</span> การต่อต้านการเปลี่ยนแปลงจะทำให้เจ็บปวดมากขึ้น จงกล้าที่จะก้าวต่อไป',
+    element: 'น้ำ', color: 'linear-gradient(135deg, #1C1C1C, #696969)' },
+  { id: 14, numeral: 'XIV', name: 'Temperance', nameTh: 'ความพอดี', icon: '🕊️',
+    upright: 'ความสมดุล ความอดทน การประนีประนอม ความกลมกลืน',
+    reversed: 'ความไม่สมดุล ความสุดโต่ง',
+    uprightDetail: '<span class="highlight">รักษาสมดุลในทุกด้านของชีวิต</span> ความพอดีคือกุญแจสู่ความสุข อดทนและค่อยๆ ก้าวไป ทุกอย่างจะลงตัว',
+    reversedDetail: '<span class="highlight">คุณอาจใช้ชีวิตสุดโต่งเกินไป</span> ลองหาจุดสมดุลระหว่างด้านต่างๆ ของชีวิต',
+    element: 'ไฟ', color: 'linear-gradient(135deg, #20B2AA, #AFEEEE)' },
+  { id: 15, numeral: 'XV', name: 'The Devil', nameTh: 'ปีศาจ', icon: '🔥',
+    upright: 'การยึดติด สิ่งล่อลวง ด้านมืด กิเลส',
+    reversed: 'การปลดปล่อย การหลุดพ้น อิสรภาพ',
+    uprightDetail: '<span class="highlight">ระวังสิ่งล่อลวงที่ผูกมัดคุณ</span> อาจเป็นนิสัยไม่ดี ความสัมพันธ์ที่เป็นพิษ หรือสิ่งเสพติด ตระหนักรู้คือก้าวแรกสู่อิสรภาพ',
+    reversedDetail: '<span class="highlight">คุณกำลังหลุดพ้นจากสิ่งที่ผูกมัด!</span> นี่เป็นช่วงเวลาแห่งอิสรภาพ จงก้าวต่อไปอย่างมั่นใจ',
+    element: 'ดิน', color: 'linear-gradient(135deg, #8B0000, #2F0000)' },
+  { id: 16, numeral: 'XVI', name: 'The Tower', nameTh: 'หอคอย', icon: '⚡',
+    upright: 'การพังทลาย การเปลี่ยนแปลงฉับพลัน การตื่นรู้',
+    reversed: 'การหลีกเลี่ยงภัยพิบัติ การเปลี่ยนแปลงส่วนตัว',
+    uprightDetail: '<span class="highlight">การเปลี่ยนแปลงครั้งใหญ่กำลังมา</span> อาจรู้สึกสั่นสะเทือน แต่การพังทลายของสิ่งเก่าจะเปิดทางให้สิ่งใหม่ที่แข็งแกร่งกว่า',
+    reversedDetail: '<span class="highlight">คุณอาจรอดพ้นจากวิกฤตครั้งใหญ่</span> หรือกำลังเผชิญการเปลี่ยนแปลงภายในที่สำคัญ ใช้มันเป็นบทเรียน',
+    element: 'ไฟ', color: 'linear-gradient(135deg, #4A0E0E, #FF4500)' },
+  { id: 17, numeral: 'XVII', name: 'The Star', nameTh: 'ดวงดาว', icon: '⭐',
+    upright: 'ความหวัง แรงบันดาลใจ การฟื้นฟู ความสงบ',
+    reversed: 'การสูญเสียความหวัง ความผิดหวัง',
+    uprightDetail: '<span class="highlight">ดวงดาวส่องแสงนำทางคุณ!</span> นี่คือช่วงเวลาแห่งความหวังและการฟื้นฟู ฝันใหญ่ได้เลย จักรวาลกำลังสนับสนุนคุณ',
+    reversedDetail: '<span class="highlight">อย่ายอมสูญเสียความหวัง</span> แม้ตอนนี้จะมืดมน แต่ดวงดาวยังอยู่เหนือเมฆเสมอ จงอดทนรอ',
+    element: 'ลม', color: 'linear-gradient(135deg, #000080, #FFD700)' },
+  { id: 18, numeral: 'XVIII', name: 'The Moon', nameTh: 'ดวงจันทร์', icon: '🌙',
+    upright: 'ภาพลวงตา จิตใต้สำนึก ความกลัว ความฝัน',
+    reversed: 'ความจริงปรากฏ ความกลัวลดลง',
+    uprightDetail: '<span class="highlight">อย่าเชื่อทุกสิ่งที่เห็น</span> อาจมีภาพลวงตาหรือความเข้าใจผิดรอบตัว ฟังจิตใต้สำนึกและความฝัน มันกำลังบอกอะไรบางอย่าง',
+    reversedDetail: '<span class="highlight">ม่านหมอกกำลังจางหายไป</span> ความจริงกำลังปรากฏ ความกลัวที่เคยมีจะค่อยๆ หายไป จงเปิดตารับแสงสว่าง',
+    element: 'น้ำ', color: 'linear-gradient(135deg, #191970, #C0C0C0)' },
+  { id: 19, numeral: 'XIX', name: 'The Sun', nameTh: 'ดวงอาทิตย์', icon: '☀️',
+    upright: 'ความสุข ความสำเร็จ ความมีชีวิตชีวา ความมั่นใจ',
+    reversed: 'ความสุขชั่วคราว ความคาดหวังสูงเกินไป',
+    uprightDetail: '<span class="highlight">แสงอาทิตย์ส่องสว่างในชีวิตคุณ!</span> นี่คือช่วงเวลาที่ดีที่สุด ความสุข ความสำเร็จ และพลังบวกเต็มเปี่ยม สนุกกับมัน!',
+    reversedDetail: '<span class="highlight">ความสุขอาจอยู่ไม่นาน</span> จงเพลิดเพลินกับปัจจุบัน แต่อย่าคาดหวังว่าทุกอย่างจะสมบูรณ์แบบตลอดไป',
+    element: 'ไฟ', color: 'linear-gradient(135deg, #FFD700, #FFA500)' },
+  { id: 20, numeral: 'XX', name: 'Judgement', nameTh: 'การพิพากษา', icon: '📯',
+    upright: 'การตื่นรู้ การเกิดใหม่ การตัดสินใจ การเรียกร้อง',
+    reversed: 'ความสงสัยในตัวเอง การหลีกเลี่ยงการตัดสินใจ',
+    uprightDetail: '<span class="highlight">ถึงเวลาแห่งการตัดสินใจครั้งสำคัญ</span> คุณได้เรียนรู้มากพอแล้ว จงใช้ประสบการณ์ทั้งหมดเพื่อก้าวขึ้นสู่ระดับใหม่ของชีวิต',
+    reversedDetail: '<span class="highlight">อย่าลังเลกับการตัดสินใจ</span> คุณรู้ในใจแล้วว่าอะไรคือสิ่งที่ถูกต้อง จงกล้าที่จะเลือก',
+    element: 'ไฟ', color: 'linear-gradient(135deg, #FF6347, #FFD700)' },
+  { id: 21, numeral: 'XXI', name: 'The World', nameTh: 'โลก', icon: '🌍',
+    upright: 'ความสำเร็จ ความสมบูรณ์ การเดินทาง ความสำเร็จ',
+    reversed: 'ยังไม่สำเร็จ ขาดการปิดฉาก',
+    uprightDetail: '<span class="highlight">ยินดีด้วย! คุณมาถึงจุดสำเร็จแล้ว!</span> ทุกอย่างลงตัว วัฏจักรหนึ่งเสร็จสมบูรณ์ เตรียมตัวรับการเริ่มต้นที่ยิ่งใหญ่กว่า',
+    reversedDetail: '<span class="highlight">ยังมีอีกนิดก่อนจะสำเร็จ</span> อย่าเพิ่งยอมแพ้ คุณใกล้ถึงเส้นชัยมากแล้ว ทำให้สำเร็จก่อนเริ่มสิ่งใหม่',
+    element: 'ดิน', color: 'linear-gradient(135deg, #4169E1, #90EE90)' },
+];
+
+const positionLabels = {
+  1: ['คำตอบของคุณ'],
+  3: ['อดีต', 'ปัจจุบัน', 'อนาคต'],
+  5: ['ปัจจุบัน', 'อุปสรรค', 'อดีต', 'อนาคต', 'คำแนะนำ']
+};
+
+let selectedSpread = 1;
+let drawnCards = [];
+let flippedCount = 0;
+
+// ====== INIT ======
+function init() {
+  createStars();
+  createParticles();
+}
+
+function createStars() {
+  const container = document.getElementById('stars');
+  for (let i = 0; i < 150; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.setProperty('--duration', (2 + Math.random() * 4) + 's');
+    star.style.setProperty('--max-opacity', (0.3 + Math.random() * 0.7));
+    star.style.animationDelay = Math.random() * 4 + 's';
+    container.appendChild(star);
+  }
+}
+
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.setProperty('--duration', (8 + Math.random() * 12) + 's');
+    particle.style.animationDelay = Math.random() * 10 + 's';
+    container.appendChild(particle);
+  }
+}
+
+function selectSpread(n) {
+  selectedSpread = n;
+  document.querySelectorAll('.spread-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.spread) === n);
+  });
+  resetReading();
+}
+
+// ====== DEAL CARDS ======
+function dealCards() {
+  const deck = shuffleDeck();
+  drawnCards = [];
+  flippedCount = 0;
+
+  for (let i = 0; i < selectedSpread; i++) {
+    const card = { ...deck[i] };
+    card.isReversed = Math.random() < 0.3; // 30% chance reversed
+    drawnCards.push(card);
+  }
+
+  document.getElementById('deckArea').classList.add('hidden');
+  document.getElementById('readingSection').classList.add('hidden');
+  document.getElementById('actionArea').classList.add('hidden');
+
+  const cardArea = document.getElementById('cardArea');
+  cardArea.classList.remove('hidden');
+  cardArea.innerHTML = '';
+
+  drawnCards.forEach((card, i) => {
+    setTimeout(() => {
+      const slot = createCardSlot(card, i);
+      cardArea.appendChild(slot);
+    }, i * 300);
+  });
+}
+
+function shuffleDeck() {
+  const deck = [...majorArcana];
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+  return deck;
+}
+
+function createCardSlot(card, index) {
+  const labels = positionLabels[selectedSpread];
+  const slot = document.createElement('div');
+  slot.className = 'tarot-slot';
+
+  slot.innerHTML = `
+    <div class="tarot-card dealing" style="animation-delay: ${index * 0.1}s" onclick="flipCard(this, ${index})">
+      <div class="card-face card-back">
+        <div class="card-back-design"></div>
+      </div>
+      <div class="card-face card-front ${card.isReversed ? 'reversed' : ''}" style="background: ${card.color}">
+        <div class="card-numeral">${card.numeral}</div>
+        <div class="card-image">${card.icon}</div>
+        <div class="card-name">${card.name}</div>
+        <div class="card-name-th">${card.nameTh}</div>
+        ${card.isReversed ? '<div class="reversed-badge">กลับหัว</div>' : ''}
+        <div class="card-keyword">${card.isReversed ? card.reversed.split(' ').slice(0, 3).join(' ') : card.upright.split(' ').slice(0, 3).join(' ')}</div>
+      </div>
+    </div>
+    <div class="position-label" style="animation-delay: ${0.3 + index * 0.1}s">${labels[index]}</div>
+  `;
+
+  return slot;
+}
+
+function flipCard(cardEl, index) {
+  if (cardEl.classList.contains('flipped')) return;
+
+  cardEl.classList.add('flipped');
+  createSparkles(cardEl);
+  flippedCount++;
+
+  // Play reveal sound effect (visual only - sparkles)
+  setTimeout(() => {
+    if (flippedCount === selectedSpread) {
+      showReading();
+    }
+  }, 900);
+}
+
+function createSparkles(cardEl) {
+  const container = document.createElement('div');
+  container.className = 'sparkle-container';
+  cardEl.appendChild(container);
+
+  for (let i = 0; i < 20; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+    const angle = (Math.PI * 2 / 20) * i;
+    const distance = 50 + Math.random() * 80;
+    sparkle.style.left = '50%';
+    sparkle.style.top = '50%';
+    sparkle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+    sparkle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+    sparkle.style.animationDelay = Math.random() * 0.3 + 's';
+    container.appendChild(sparkle);
+  }
+
+  setTimeout(() => container.remove(), 1200);
+}
+
+// ====== READING ======
+function showReading() {
+  const section = document.getElementById('readingSection');
+  section.classList.remove('hidden');
+  section.innerHTML = '';
+
+  const labels = positionLabels[selectedSpread];
+
+  drawnCards.forEach((card, i) => {
+    const result = document.createElement('div');
+    result.className = 'reading-card-result';
+    result.style.animationDelay = i * 0.2 + 's';
+
+    const detail = card.isReversed ? card.reversedDetail : card.uprightDetail;
+    const keywords = card.isReversed ? card.reversed : card.upright;
+
+    result.innerHTML = `
+      <div class="result-header">
+        <span class="result-icon">${card.icon}</span>
+        <div>
+          <div class="result-title">${card.name} ${card.isReversed ? '(กลับหัว)' : ''}</div>
+          <div class="result-position">${labels[i]} — ${card.nameTh}</div>
+        </div>
+      </div>
+      <div class="result-meaning">
+        <p style="margin-bottom:8px">${detail}</p>
+        <p style="font-size:0.85rem; color: rgba(200,180,230,0.7)">คีย์เวิร์ด: ${keywords}</p>
+      </div>
+    `;
+    section.appendChild(result);
+  });
+
+  // Overall reading for 3+ cards
+  if (selectedSpread >= 3) {
+    const overall = document.createElement('div');
+    overall.className = 'overall-reading';
+    overall.style.animationDelay = drawnCards.length * 0.2 + 's';
+    overall.innerHTML = `
+      <h3>สรุปภาพรวม</h3>
+      <p>${generateOverallReading()}</p>
+    `;
+    section.appendChild(overall);
+  }
+
+  document.getElementById('actionArea').classList.remove('hidden');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function generateOverallReading() {
+  const hasReversed = drawnCards.some(c => c.isReversed);
+  const positiveCards = [17, 19, 21, 1, 3, 10, 14]; // Star, Sun, World, Magician, Empress, Wheel, Temperance
+  const challengeCards = [13, 15, 16, 18]; // Death, Devil, Tower, Moon
+
+  const positiveCount = drawnCards.filter(c => positiveCards.includes(c.id) && !c.isReversed).length;
+  const challengeCount = drawnCards.filter(c => challengeCards.includes(c.id) || c.isReversed).length;
+
+  const messages = [];
+
+  if (positiveCount > challengeCount) {
+    messages.push('ภาพรวมของไพ่บ่งบอกว่า<span class="highlight">คุณกำลังอยู่ในช่วงเวลาที่ดี</span> พลังบวกกำลังเข้ามาในชีวิต');
+  } else if (challengeCount > positiveCount) {
+    messages.push('ไพ่บอกว่า<span class="highlight">คุณกำลังเผชิญช่วงเวลาแห่งความท้าทาย</span> แต่จงจำไว้ว่าทุกความท้าทายคือโอกาสในการเติบโต');
+  } else {
+    messages.push('ไพ่แสดงให้เห็นว่า<span class="highlight">ชีวิตของคุณกำลังอยู่ในจุดสมดุล</span> ระหว่างความท้าทายและโอกาส');
+  }
+
+  if (selectedSpread >= 3) {
+    const future = drawnCards[selectedSpread === 3 ? 2 : 3];
+    if (!future.isReversed && positiveCards.includes(future.id)) {
+      messages.push('อนาคตดูสดใส มีสิ่งดีๆ รอคุณอยู่');
+    } else if (future.isReversed) {
+      messages.push('อนาคตต้องการความระมัดระวัง แต่คุณมีพลังพอที่จะรับมือ');
+    }
+  }
+
+  if (hasReversed) {
+    messages.push('ไพ่กลับหัวเตือนให้คุณหยุดและทบทวนบางสิ่งในชีวิต ฟังเสียงภายในของตัวเอง');
+  }
+
+  messages.push('จงเชื่อมั่นในตัวเอง แล้วทุกอย่างจะลงตัวในเวลาที่เหมาะสม ✨');
+
+  return messages.join(' ');
+}
+
+function resetReading() {
+  flippedCount = 0;
+  drawnCards = [];
+  document.getElementById('cardArea').classList.add('hidden');
+  document.getElementById('cardArea').innerHTML = '';
+  document.getElementById('readingSection').classList.add('hidden');
+  document.getElementById('readingSection').innerHTML = '';
+  document.getElementById('actionArea').classList.add('hidden');
+  document.getElementById('deckArea').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init
+init();
+</script>
+</body>
+</html>
