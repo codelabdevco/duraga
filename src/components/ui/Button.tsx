@@ -10,10 +10,10 @@ interface ButtonProps {
 }
 
 export default function Button({ children, onClick, variant = "gold", className = "" }: ButtonProps) {
-  const base = "px-10 py-3.5 rounded-full font-semibold text-base tracking-wide transition-all";
+  const base = "px-10 py-3.5 rounded-full font-semibold text-sm tracking-wider transition-all";
   const variants = {
-    gold: "bg-gradient-to-br from-gold to-[#8b6914] text-[#0a0a0f] shadow-[0_4px_24px_rgba(212,168,67,.4)]",
-    outline: "border-[1.5px] border-gold bg-transparent text-gold",
+    gold: "bg-gradient-to-br from-[#e8d48b] to-[#c4a850] text-[#08090e] shadow-[0_4px_24px_rgba(232,212,139,.25)]",
+    outline: "border border-gold/40 bg-transparent text-gold hover:bg-gold/5",
   };
 
   return (
@@ -22,6 +22,7 @@ export default function Button({ children, onClick, variant = "gold", className 
       onClick={onClick}
       whileTap={{ scale: 0.95 }}
       whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
     >
       {children}
     </motion.button>

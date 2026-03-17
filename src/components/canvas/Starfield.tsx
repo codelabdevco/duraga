@@ -44,7 +44,7 @@ export default function Starfield() {
         const a = s.maxAlpha * (0.5 + 0.5 * Math.sin(s.phase + t * s.speed));
         ctx!.beginPath();
         ctx!.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(212,168,67,${a})`;
+        ctx!.fillStyle = `rgba(232,212,139,${a})`;
         ctx!.fill();
       });
       rafId = requestAnimationFrame(draw);

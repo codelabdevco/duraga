@@ -1,17 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Noto_Sans_Thai } from "next/font/google";
+import { Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 
-const cinzel = Cinzel({
-  subsets: ["latin"],
-  variable: "--font-cinzel",
-  display: "swap",
-});
-
 const notoSansThai = Noto_Sans_Thai({
-  subsets: ["thai"],
-  variable: "--font-thai",
+  subsets: ["thai", "latin"],
+  variable: "--font-noto",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -32,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="th" className={`${cinzel.variable} ${notoSansThai.variable}`}>
-      <body className="font-thai antialiased">{children}</body>
+    <html lang="th" className={notoSansThai.variable}>
+      <body className="font-noto antialiased">{children}</body>
     </html>
   );
 }

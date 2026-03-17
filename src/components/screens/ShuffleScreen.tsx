@@ -2,7 +2,7 @@
 
 import { motion, useAnimate } from "framer-motion";
 import { useEffect } from "react";
-import SunSymbol from "@/components/ui/SunSymbol";
+import MiniCardBack from "@/components/ui/MiniCardBack";
 import { useTarotStore } from "@/store/useTarotStore";
 import { Screen } from "@/types/tarot";
 
@@ -17,31 +17,29 @@ export default function ShuffleScreen() {
       const cards = scope.current?.querySelectorAll(".shuffle-card");
       if (!cards) return;
 
-      for (let step = 0; step < 10; step++) {
+      for (let step = 0; step < 8; step++) {
         if (cancelled) return;
-        // Spread out
+        const dir = step % 2 === 0 ? 1 : -1;
         const promises = Array.from(cards).map((card, i) => {
-          const offset = (i - 2) * 35;
-          const rot = (i - 2) * 10 + (Math.random() * 6 - 3);
-          const extraX = (step % 2 === 0 ? 1 : -1) * (Math.random() * 15);
+          const offset = (i - 2) * 32 * dir;
+          const rot = (i - 2) * 8 * dir + (Math.random() * 4 - 2);
           return animate(
             card as Element,
-            { x: offset + extraX, y: Math.random() * 8 - 4, rotate: rot },
-            { duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }
+            { x: offset, y: Math.random() * 6 - 3, rotate: rot },
+            { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
           );
         });
         await Promise.all(promises);
 
         if (cancelled) return;
-        // Stack back
         const stackPromises = Array.from(cards).map((card) =>
-          animate(card as Element, { x: 0, y: 0, rotate: 0 }, { duration: 0.25, ease: "easeOut" })
+          animate(card as Element, { x: 0, y: 0, rotate: 0 }, { duration: 0.35, ease: [0.22, 1, 0.36, 1] })
         );
         await Promise.all(stackPromises);
       }
 
       if (!cancelled) {
-        setTimeout(() => goToScreen(Screen.MEDITATE), 400);
+        setTimeout(() => goToScreen(Screen.MEDITATE), 500);
       }
     }
 
@@ -52,27 +50,27 @@ export default function ShuffleScreen() {
   return (
     <motion.div
       className="flex flex-col items-center justify-center min-h-full"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -40 }}
-      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <motion.p
-        className="font-cinzel text-lg text-gold tracking-widest mb-4"
-        animate={{ opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 2, repeat: Infinity }}
+        className="text-lg text-gold tracking-[0.15em] font-semibold mb-4"
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
       >
         กำลังสับการ์ด
       </motion.p>
-      <p className="text-white/40 text-sm mb-10">โปรดรอสักครู่...</p>
+      <p className="text-white/30 text-sm mb-10">โปรดรอสักครู่...</p>
 
       <div ref={scope} className="relative w-[180px] h-[260px]">
         {[0, 1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="shuffle-card absolute left-1/2 top-1/2 -ml-[75px] -mt-[115px] w-[150px] h-[230px] rounded-xl border-[1.5px] border-gold bg-gradient-to-br from-[#1a1824] to-[#0d0c14] flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,.5)]"
+            className="shuffle-card absolute left-1/2 top-1/2 -ml-[70px] -mt-[112px]"
+            style={{ filter: `brightness(${1 - i * 0.05})` }}
           >
-            <SunSymbol size={45} />
+            <MiniCardBack width={140} height={224} />
           </div>
         ))}
       </div>

@@ -11,10 +11,11 @@ const config: Config = {
         "gold-light": "var(--gold-light)",
         "gold-dim": "var(--gold-dim)",
         bg: "var(--bg)",
+        surface: "var(--surface)",
+        "card-bg": "var(--card-bg)",
       },
       fontFamily: {
-        cinzel: ["Cinzel", "serif"],
-        thai: ["Noto Sans Thai", "sans-serif"],
+        noto: ["var(--font-noto)", "Noto Sans Thai", "sans-serif"],
       },
     },
   },

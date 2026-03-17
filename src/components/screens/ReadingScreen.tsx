@@ -13,10 +13,9 @@ export default function ReadingScreen() {
       className="flex flex-col items-center min-h-full px-4 pt-2 pb-16 overflow-y-auto"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -40 }}
-      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
-      <h2 className="font-cinzel text-xl text-gold text-center mb-5 tracking-widest">
+      <h2 className="text-xl text-gold text-center mb-5 tracking-[0.15em] font-semibold">
         คำทำนายไพ่ทาโร่
       </h2>
 
@@ -25,7 +24,7 @@ export default function ReadingScreen() {
         {drawnCards.map((card, i) => (
           <motion.div
             key={i}
-            className="w-[50px] h-[75px] rounded-md border border-gold/30 overflow-hidden relative bg-[#1a1824]"
+            className="w-[50px] h-[75px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e]"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.05, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
@@ -49,14 +48,14 @@ export default function ReadingScreen() {
         {drawnCards.map((card, i) => (
           <motion.div
             key={i}
-            className="bg-gradient-to-br from-[#1a1824]/90 to-[#0d0c14]/95 border border-gold/20 rounded-2xl overflow-hidden"
+            className="bg-gradient-to-br from-surface/90 to-[#08090e]/95 border border-gold/15 rounded-2xl overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 + i * 0.1, duration: 0.5, ease: "easeOut" }}
           >
             {/* Card image header */}
             <div className="flex gap-4 p-4 items-start">
-              <div className="w-[70px] h-[105px] rounded-lg border border-gold/30 overflow-hidden relative flex-shrink-0 bg-[#0d0c14]">
+              <div className="w-[70px] h-[105px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e]">
                 {card.image && (
                   <Image
                     src={card.image}

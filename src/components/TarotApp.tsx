@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTarotStore } from "@/store/useTarotStore";
 import { Screen } from "@/types/tarot";
 import Starfield from "@/components/canvas/Starfield";
@@ -34,24 +34,33 @@ export default function TarotApp() {
       <DustParticles />
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-5 py-3 bg-gradient-to-b from-[#0a0a0f]/95 to-transparent">
-        <span className="font-cinzel text-base text-gold tracking-widest font-semibold">
+      <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-5 py-3 bg-gradient-to-b from-[#08090e] via-[#08090e]/90 to-transparent">
+        <span className="text-sm text-gold/80 tracking-[0.2em] font-medium">
           สัมผัส ดีวาย
         </span>
         <div className="flex gap-3 items-center">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gold to-[#8b6914] flex items-center justify-center text-[0.65rem] text-[#0a0a0f] font-bold">
+          <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center text-[0.55rem] text-gold/60">
             ☽
           </div>
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gold to-[#8b6914] flex items-center justify-center text-[0.65rem] text-[#0a0a0f] font-bold">
+          <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center text-[0.55rem] text-gold/60">
             ☀
           </div>
         </div>
       </header>
 
-      {/* Screen area */}
+      {/* Screen area — crossfade with spring */}
       <main className="fixed inset-0 z-10 pt-[60px] pb-10 overflow-y-auto">
         <AnimatePresence mode="wait">
-          <ActiveScreen key={currentScreen} />
+          <motion.div
+            key={currentScreen}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="min-h-full"
+          >
+            <ActiveScreen />
+          </motion.div>
         </AnimatePresence>
       </main>
 
