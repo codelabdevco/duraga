@@ -287,7 +287,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "An angel has sounded the trumpet, spreading the gospel from heaven. Amid the inspiring sound of trumpets, souls that have slept for long emerge from their inner tombs, or perhaps from inner confusion. They stand under the angel's wings with grateful hearts, carefully listening to the heavenly gospel.",
     "goldenSentence": "Awaken and rebirth, the Year of the Horse will bring you new life.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงการตื่นรู้และการเกิดใหม่ เตือนให้เรียนรู้จากบทเรียนในอดีต",
+    "analysisTh": "เทวดาเป่าแตร เผยแพร่ข่าวดีจากสวรรค์ ท่ามกลางเสียงแตรที่ปลุกใจ ดวงวิญญาณที่หลับใหลมานานโผล่ออกมาจากหลุมฝังศพภายใน พวกเขายืนใต้ปีกเทวดาด้วยหัวใจที่สำนึกบุญคุณ ตั้งใจฟังข่าวดีจากสวรรค์",
+    "goldenSentenceTh": "ตื่นรู้และเกิดใหม่ จะนำพาชีวิตใหม่"
   },
   {
     "id": 21,
@@ -1082,6 +1085,7 @@ export const allTarotCards: TarotCard[] = [
     "goldenSentenceTh": "ความมั่งคั่งและความสำเร็จเป็นของคุณแล้ว จงนำพาชีวิตสู่ความรุ่งโรจน์อย่างเต็มภาคภูมิ"
   }
 ];
+
 
 
 

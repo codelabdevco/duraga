@@ -473,7 +473,6 @@ export default function TarotFlow() {
                         <h3 className="text-sm text-gold-light font-semibold mb-0.5">
                           {card.nameTh} {card.isReversed && <span className="text-red-400/60 text-xs">(กลับหัว)</span>}
                         </h3>
-                        <p className="text-xs text-white/30 mb-1">{card.nameEn}</p>
                         <p className="text-[0.65rem] text-gold/40 mb-2">{pos?.nameTH}</p>
                         <p className="text-xs text-white/60 leading-6">{card.meaningTh || card.meaning}</p>
                       </div>
