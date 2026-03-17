@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { useTarotStore } from "@/store/useTarotStore";
 import Button from "@/components/ui/Button";
 
@@ -30,13 +29,11 @@ export default function ReadingScreen() {
             transition={{ delay: i * 0.05, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
           >
             {card.image && (
-              <Image
+              <img
                 src={card.image}
                 alt={card.nameEn}
-                fill
-                className="object-cover"
-                sizes="50px"
-                unoptimized
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="eager"
               />
             )}
           </motion.div>
@@ -57,13 +54,11 @@ export default function ReadingScreen() {
             <div className="flex gap-4 p-4 items-start">
               <div className="w-[70px] h-[105px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e]">
                 {card.image && (
-                  <Image
+                  <img
                     src={card.image}
                     alt={card.nameEn}
-                    fill
-                    className="object-cover"
-                    sizes="70px"
-                    unoptimized
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
                   />
                 )}
               </div>

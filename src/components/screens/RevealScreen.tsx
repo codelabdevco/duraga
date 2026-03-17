@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useTarotStore } from "@/store/useTarotStore";
 import { Screen } from "@/types/tarot";
 
@@ -102,13 +101,11 @@ export default function RevealScreen() {
                 {/* Front */}
                 <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-lg border-[1.5px] border-gold/40 overflow-hidden bg-[#08090e]">
                   {card.image && (
-                    <Image
+                    <img
                       src={card.image}
                       alt={card.nameEn}
-                      fill
-                      className="object-cover"
-                      sizes="65px"
-                      unoptimized
+                      className="absolute inset-0 w-full h-full object-cover"
+                      loading="eager"
                     />
                   )}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-1">
