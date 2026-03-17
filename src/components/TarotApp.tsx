@@ -8,26 +8,10 @@ import GoldenMist from "@/components/effects/GoldenMist";
 import DustParticles from "@/components/effects/DustParticles";
 import ProgressDots from "@/components/ui/ProgressDots";
 import WelcomeScreen from "@/components/screens/WelcomeScreen";
-import ShuffleScreen from "@/components/screens/ShuffleScreen";
-import MeditateScreen from "@/components/screens/MeditateScreen";
-import SpreadPickScreen from "@/components/screens/SpreadPickScreen";
-import SelectScreen from "@/components/screens/SelectScreen";
-import RevealScreen from "@/components/screens/RevealScreen";
-import ReadingScreen from "@/components/screens/ReadingScreen";
-
-const screenComponents: Record<Screen, React.ComponentType> = {
-  [Screen.WELCOME]: WelcomeScreen,
-  [Screen.SHUFFLE]: ShuffleScreen,
-  [Screen.MEDITATE]: MeditateScreen,
-  [Screen.SPREAD_PICK]: SpreadPickScreen,
-  [Screen.SELECT]: SelectScreen,
-  [Screen.REVEAL]: RevealScreen,
-  [Screen.READING]: ReadingScreen,
-};
+import TarotFlow from "@/components/TarotFlow";
 
 export default function TarotApp() {
   const currentScreen = useTarotStore((s) => s.currentScreen);
-  const ActiveScreen = screenComponents[currentScreen];
 
   return (
     <>
@@ -50,21 +34,21 @@ export default function TarotApp() {
         </div>
       </header>
 
-      {/* Screen area — crossfade with spring */}
-      <main className="fixed inset-0 z-10 pt-[60px] pb-10 overflow-y-auto">
-        <AnimatePresence mode="wait">
+      {/* Welcome screen with exit animation */}
+      <AnimatePresence>
+        {currentScreen === Screen.WELCOME && (
           <motion.div
-            key={currentScreen}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="min-h-full"
+            className="fixed inset-0 z-10 pt-[60px] pb-10"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}
           >
-            <ActiveScreen />
+            <WelcomeScreen />
           </motion.div>
-        </AnimatePresence>
-      </main>
+        )}
+      </AnimatePresence>
+
+      {/* Main flow (Shuffle → Meditate → Pick → Select → Reveal → Reading) */}
+      {currentScreen !== Screen.WELCOME && <TarotFlow />}
 
       <ProgressDots current={currentScreen} />
     </>
