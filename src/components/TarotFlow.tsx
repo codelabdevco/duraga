@@ -9,14 +9,7 @@ import MiniCardBack from "@/components/ui/MiniCardBack";
 import Button from "@/components/ui/Button";
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
-const SHUFFLE_CARDS = 7;
-
-// Shared transition wrapper — crossfade with scale
-const pageTransition = {
-  initial: { opacity: 0, scale: 0.97, filter: "blur(4px)" },
-  animate: { opacity: 1, scale: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: EASE } },
-  exit: { opacity: 0, scale: 0.97, filter: "blur(4px)", transition: { duration: 0.4, ease: EASE } },
-};
+const MAX_CARDS = 20;
 
 export default function TarotFlow() {
   const {
@@ -27,17 +20,31 @@ export default function TarotFlow() {
     reset,
   } = useTarotStore();
 
-  const [scope, animate] = useAnimate();
+  const [cardScope, animateCard] = useAnimate();
   const [flippedSet, setFlippedSet] = useState<Set<number>>(new Set());
   const hasAutoAdvanced = useRef(false);
-  const [meditateExiting, setMeditateExiting] = useState(false);
+  const prevScreen = useRef(screen);
+  const floatRef = useRef<number | null>(null);
 
-  // ===== SHUFFLE AUTO-START =====
+  // ===== SCREEN CHANGE HANDLER =====
   useEffect(() => {
+    const prev = prevScreen.current;
+    prevScreen.current = screen;
+
     if (screen === Screen.SHUFFLE) {
       hasAutoAdvanced.current = false;
-      setMeditateExiting(false);
       runShuffle();
+    } else if (screen === Screen.MEDITATE) {
+      runMeditate();
+    } else if (screen === Screen.SPREAD_PICK) {
+      runSpreadPick();
+    } else if (screen === Screen.SELECT) {
+      runSelect();
+    } else if (screen === Screen.REVEAL) {
+      runReveal();
+    } else if (screen === Screen.READING) {
+      // Cards handled by reading section, hide persistent cards
+      hideAllCards(0.4);
     }
   }, [screen]);
 
@@ -47,7 +54,10 @@ export default function TarotFlow() {
     if (screen === Screen.SELECT && selectedCardIndices.length === cfg.count && !hasAutoAdvanced.current) {
       hasAutoAdvanced.current = true;
       drawAndAssign();
-      setTimeout(() => goToScreen(Screen.REVEAL), 700);
+      // Animate selected cards gathering to center before reveal
+      gatherSelectedCards().then(() => {
+        goToScreen(Screen.REVEAL);
+      });
     }
   }, [selectedCardIndices.length, screen]);
 
@@ -64,25 +74,46 @@ export default function TarotFlow() {
     }
   }, [screen, drawnCards.length]);
 
-  // ===== SHUFFLE ANIMATION =====
+  // ===== HELPERS =====
+  function getCards() {
+    return Array.from(cardScope.current?.querySelectorAll(".pcard") || []) as Element[];
+  }
+
+  function hideAllCards(dur = 0.3) {
+    stopFloat();
+    getCards().forEach(c => animateCard(c, { opacity: 0, scale: 0.5 }, { duration: dur, ease: EASE }));
+  }
+
+  function stopFloat() {
+    if (floatRef.current) { cancelAnimationFrame(floatRef.current); floatRef.current = null; }
+  }
+
+  // ===== SHUFFLE =====
   async function runShuffle() {
-    await new Promise(r => setTimeout(r, 150));
-    const cards = scope.current?.querySelectorAll(".s-card");
-    if (!cards) return;
-    const arr = Array.from(cards) as Element[];
-    const mid = Math.floor(SHUFFLE_CARDS / 2);
+    stopFloat();
+    const cards = getCards();
+    const mid = 3;
+    // Show 7 cards stacked at center, hide rest
+    cards.forEach((c, i) => {
+      animateCard(c, {
+        x: 0, y: 0, rotate: 0, scale: 1, opacity: i < 7 ? 1 : 0,
+      }, { duration: 0.01 });
+    });
+    await new Promise(r => setTimeout(r, 200));
+
+    const arr = cards.slice(0, 7);
 
     // Phase 1: Fan
     await Promise.all(arr.map((c, i) =>
-      animate(c, { x: (i - mid) * 30, rotate: (i - mid) * 6, y: Math.abs(i - mid) * 8, opacity: 1 }, { duration: 0.7, ease: EASE })
+      animateCard(c, { x: (i - mid) * 30, rotate: (i - mid) * 6, y: Math.abs(i - mid) * 8 }, { duration: 0.7, ease: EASE })
     ));
 
     // Phase 2: Riffle x2
     for (let round = 0; round < 2; round++) {
       const left = arr.slice(0, mid), right = arr.slice(mid);
       await Promise.all([
-        ...left.map((c, i) => animate(c, { x: -60 + i * 4, rotate: -3, y: i * 3 }, { duration: 0.35, ease: EASE })),
-        ...right.map((c, i) => animate(c, { x: 60 - i * 4, rotate: 3, y: i * 3 }, { duration: 0.35, ease: EASE })),
+        ...left.map((c, i) => animateCard(c, { x: -60 + i * 4, rotate: -3, y: i * 3 }, { duration: 0.35, ease: EASE })),
+        ...right.map((c, i) => animateCard(c, { x: 60 - i * 4, rotate: 3, y: i * 3 }, { duration: 0.35, ease: EASE })),
       ]);
       const order: Element[] = [];
       for (let i = 0; i < Math.max(left.length, right.length); i++) {
@@ -90,7 +121,7 @@ export default function TarotFlow() {
         if (i < left.length) order.push(left[i]);
       }
       for (const c of order) {
-        animate(c, { x: 0, y: 0, rotate: (Math.random() - 0.5) * 2 }, { duration: 0.12, ease: "easeOut" });
+        animateCard(c, { x: 0, y: 0, rotate: (Math.random() - 0.5) * 2 }, { duration: 0.12, ease: "easeOut" });
         await new Promise(r => setTimeout(r, 40));
       }
       await new Promise(r => setTimeout(r, 150));
@@ -99,274 +130,343 @@ export default function TarotFlow() {
     // Phase 3: Arc
     await Promise.all(arr.map((c, i) => {
       const angle = ((i - mid) / mid) * 0.6;
-      return animate(c, { x: Math.sin(angle) * 110, y: -Math.cos(angle) * 110 + 80, rotate: (i - mid) * 10, scale: 0.9 }, { duration: 0.5, ease: EASE });
+      return animateCard(c, { x: Math.sin(angle) * 110, y: -Math.cos(angle) * 110 + 80, rotate: (i - mid) * 10, scale: 0.9 }, { duration: 0.5, ease: EASE });
     }));
     await new Promise(r => setTimeout(r, 250));
 
     // Phase 4: Gather
     await Promise.all(arr.map((c, i) =>
-      animate(c, { x: 0, y: 0, rotate: 0, scale: 1 }, { duration: 0.5, ease: EASE, delay: i * 0.03 })
+      animateCard(c, { x: 0, y: 0, rotate: 0, scale: 1 }, { duration: 0.5, ease: EASE, delay: i * 0.03 })
     ));
-
-    // Glow
-    const glow = scope.current?.querySelector(".glow-ring");
-    if (glow) await animate(glow as Element, { opacity: [0, 0.5, 0], scale: [0.8, 1.3, 1.5] }, { duration: 0.8, ease: "easeOut" });
 
     goToScreen(Screen.MEDITATE);
   }
 
-  // Meditate → SpreadPick
-  function handleMeditateNext() {
-    setMeditateExiting(true);
-    // Small delay for exit animation to start, then switch
-    setTimeout(() => goToScreen(Screen.SPREAD_PICK), 300);
+  // ===== MEDITATE: single card floating =====
+  async function runMeditate() {
+    const cards = getCards();
+    // Hide all except first, stack first at center
+    await Promise.all(cards.map((c, i) =>
+      animateCard(c, { x: 0, y: 0, rotate: 0, scale: 1, opacity: i === 0 ? 1 : 0 }, { duration: 0.5, ease: EASE })
+    ));
+    // Float animation loop
+    let dir = -1;
+    function floatLoop() {
+      dir *= -1;
+      const card = cards[0];
+      if (card) {
+        animateCard(card, { y: dir * 12 }, { duration: 2, ease: "easeInOut" });
+      }
+      floatRef.current = requestAnimationFrame(() => {
+        setTimeout(floatLoop, 2000);
+      });
+    }
+    floatLoop();
+  }
+
+  // ===== SPREAD PICK: card shrinks to top =====
+  async function runSpreadPick() {
+    stopFloat();
+    const cards = getCards();
+    // Shrink card to small at top
+    await animateCard(cards[0], { y: -120, scale: 0.4, opacity: 0.6 }, { duration: 0.5, ease: EASE });
+    // Then fade out
+    await animateCard(cards[0], { opacity: 0 }, { duration: 0.3 });
+  }
+
+  // ===== SELECT: cards deal into grid =====
+  async function runSelect() {
+    stopFloat();
+    const cards = getCards();
+    const cfg = SPREAD_CONFIG[spreadType];
+    const cols = cfg.gridCards <= 9 ? 3 : 5;
+    const cardW = 80, cardH = 128, gap = 10;
+    const gridW = cols * cardW + (cols - 1) * gap;
+    const rows = Math.ceil(cfg.gridCards / cols);
+    const gridH = rows * cardH + (rows - 1) * gap;
+    const startX = -gridW / 2 + cardW / 2;
+    const startY = -gridH / 2 + cardH / 2 + 40; // offset for header
+
+    // Start all from center, then deal out
+    cards.forEach((c, i) => {
+      animateCard(c, { x: 0, y: 0, scale: 0.3, opacity: 0, rotate: 0 }, { duration: 0.01 });
+    });
+    await new Promise(r => setTimeout(r, 100));
+
+    for (let i = 0; i < cfg.gridCards; i++) {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      const x = startX + col * (cardW + gap);
+      const y = startY + row * (cardH + gap);
+      animateCard(cards[i], {
+        x, y, scale: 0.57, opacity: 1, rotate: 0,
+      }, { duration: 0.4, ease: EASE, delay: i * 0.03 });
+    }
+  }
+
+  // ===== Gather selected before reveal =====
+  async function gatherSelectedCards() {
+    const cards = getCards();
+    const cfg = SPREAD_CONFIG[spreadType];
+    // Fade out unselected
+    cards.forEach((c, i) => {
+      if (i >= cfg.gridCards || !selectedCardIndices.includes(i)) {
+        animateCard(c, { opacity: 0, scale: 0.3 }, { duration: 0.3, ease: EASE });
+      }
+    });
+    await new Promise(r => setTimeout(r, 200));
+    // Gather selected to center
+    const selected = selectedCardIndices.map(idx => cards[idx]).filter(Boolean);
+    await Promise.all(selected.map((c, i) =>
+      animateCard(c, { x: (i - selected.length / 2) * 20, y: 0, scale: 0.5, rotate: (i - selected.length / 2) * 3 }, { duration: 0.5, ease: EASE })
+    ));
+    await new Promise(r => setTimeout(r, 300));
+  }
+
+  // ===== REVEAL: spread cards out face-down then flip =====
+  async function runReveal() {
+    stopFloat();
+    const cards = getCards();
+    const count = drawnCards.length;
+    const cols = count <= 3 ? count : 5;
+    const cardW = 85, gap = 10;
+    const totalW = Math.min(count, cols) * (cardW + gap) - gap;
+    const startX = -totalW / 2 + cardW / 2;
+    const rows = Math.ceil(count / cols);
+
+    // Hide all first
+    cards.forEach(c => animateCard(c, { opacity: 0 }, { duration: 0.01 }));
+    await new Promise(r => setTimeout(r, 100));
+
+    // Position and spring in
+    for (let i = 0; i < count; i++) {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      const x = startX + col * (cardW + gap);
+      const y = -40 + row * (cardW * 1.6 + gap);
+      animateCard(cards[i], {
+        x, y, scale: 0.6, opacity: 1, rotate: 0,
+      }, { duration: 0.5, ease: EASE, delay: i * 0.06 });
+    }
+  }
+
+  // ===== CARD TAP HANDLER (for select screen) =====
+  function handleCardTap(i: number) {
+    if (screen !== Screen.SELECT) return;
+    const cards = getCards();
+    const cfg = SPREAD_CONFIG[spreadType];
+    const isSel = selectedCardIndices.includes(i);
+
+    if (!isSel && selectedCardIndices.length >= cfg.count) return;
+
+    toggleCard(i);
+
+    // Visual feedback
+    if (!isSel) {
+      // Selecting: pulse + slight shrink
+      animateCard(cards[i], { scale: 0.52 }, { duration: 0.15 }).then(() =>
+        animateCard(cards[i], { scale: 0.54 }, { duration: 0.2 })
+      );
+    } else {
+      // Deselecting: back to normal
+      animateCard(cards[i], { scale: 0.57 }, { duration: 0.2 });
+    }
   }
 
   function handleReset() {
+    stopFloat();
     setFlippedSet(new Set());
-    setMeditateExiting(false);
     hasAutoAdvanced.current = false;
     reset();
   }
 
-  // ===== Determine which phase group to show =====
-  const isCardStage = screen === Screen.SHUFFLE || screen === Screen.MEDITATE;
+  const showRevealOverlay = screen === Screen.REVEAL && drawnCards.length > 0;
 
   return (
-    <div className="fixed inset-0 z-10 pt-[60px] pb-10 overflow-y-auto">
+    <div className="fixed inset-0 z-10 pt-[60px] pb-10">
 
-      {/* ============ SHUFFLE + MEDITATE (persistent card stage) ============ */}
-      <AnimatePresence mode="wait">
-        {isCardStage && (
-          <motion.div
-            key="card-stage"
-            className="absolute inset-0 flex flex-col items-center justify-center z-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.3 } }}
+      {/* ===== PERSISTENT CARD LAYER ===== */}
+      <div
+        ref={cardScope}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-30"
+        style={{ perspective: 800 }}
+      >
+        {Array.from({ length: MAX_CARDS }, (_, i) => (
+          <div
+            key={i}
+            className="pcard absolute opacity-0"
+            style={{ pointerEvents: screen === Screen.SELECT ? "auto" : "none" }}
+            onClick={() => handleCardTap(i)}
           >
-            {/* Text crossfade */}
-            <div className="text-center mb-8 min-h-[56px]">
-              <AnimatePresence mode="wait">
-                {screen === Screen.SHUFFLE ? (
-                  <motion.div key="s-txt"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.4 }}>
-                    <motion.p className="text-lg text-gold tracking-[0.15em] font-semibold mb-2"
-                      animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}>
-                      กำลังสับไพ่
-                    </motion.p>
-                    <p className="text-white/25 text-xs">เตรียมสำรับไพ่ให้คุณ...</p>
-                  </motion.div>
-                ) : (
-                  <motion.div key="m-txt"
-                    initial={{ opacity: 0, y: 8 }} animate={{ opacity: meditateExiting ? 0 : 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.5, ease: EASE }}>
-                    <p className="text-lg text-gold-light font-semibold mb-2">หลับตาแล้วอธิษฐาน</p>
-                    <p className="text-white/30 text-xs leading-6">ตั้งจิตนึกถึงคำถามที่อยากรู้</p>
-                  </motion.div>
+            {/* Show flipped card image in reveal, otherwise card back */}
+            {showRevealOverlay && i < drawnCards.length && flippedSet.has(i) ? (
+              <div className="w-[85px] h-[136px] rounded-lg border-[1.5px] border-gold/40 overflow-hidden bg-[#08090e] relative">
+                {drawnCards[i].image && (
+                  <img src={drawnCards[i].image} alt={drawnCards[i].nameEn}
+                    className="absolute inset-0 w-full h-full object-cover" loading="eager" />
                 )}
-              </AnimatePresence>
-            </div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-1">
+                  <p className="text-[0.45rem] text-gold text-center leading-tight truncate">{drawnCards[i].nameTh}</p>
+                </div>
+              </div>
+            ) : (
+              <CardBack width={140} height={224} />
+            )}
+          </div>
+        ))}
+      </div>
 
-            {/* Card stage */}
-            <div ref={scope} className="relative w-[280px] h-[360px]">
-              <div className="glow-ring absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-0"
-                style={{ background: "radial-gradient(circle, rgba(232,212,139,0.15) 0%, transparent 70%)" }} />
-              {Array.from({ length: SHUFFLE_CARDS }, (_, i) => (
-                <motion.div
-                  key={i}
-                  className="s-card absolute left-1/2 top-1/2"
-                  style={{ zIndex: SHUFFLE_CARDS - i, filter: `brightness(${1 - i * 0.03})`, marginLeft: -88, marginTop: -140 }}
-                  animate={screen === Screen.MEDITATE && !meditateExiting ? { y: [0, -12, 0], opacity: i === 0 ? 1 : 0 } : {}}
-                  transition={screen === Screen.MEDITATE ? { y: { duration: 4, repeat: Infinity, ease: "easeInOut" }, opacity: { duration: 0.5 } } : {}}
-                >
-                  <CardBack width={175} height={280} />
-                </motion.div>
-              ))}
-            </div>
+      {/* ===== TEXT/UI OVERLAY LAYER ===== */}
+      <div className="absolute inset-0 z-40 overflow-y-auto">
 
-            {/* Meditate button with fade */}
-            <AnimatePresence>
-              {screen === Screen.MEDITATE && !meditateExiting && (
-                <motion.div
-                  key="m-btn"
-                  className="mt-6 relative z-30"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10, transition: { duration: 0.3 } }}
-                  transition={{ delay: 0.4, duration: 0.6, ease: EASE }}
-                >
-                  <Button onClick={handleMeditateNext}>พร้อมแล้ว</Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* SHUFFLE text */}
+        <AnimatePresence>
+          {screen === Screen.SHUFFLE && (
+            <motion.div key="shuf-ui" className="absolute inset-x-0 top-8 text-center z-40"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.4 }}>
+              <motion.p className="text-lg text-gold tracking-[0.15em] font-semibold mb-2"
+                animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}>
+                กำลังสับไพ่
+              </motion.p>
+              <p className="text-white/25 text-xs">เตรียมสำรับไพ่ให้คุณ...</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      {/* ============ SPREAD PICK ============ */}
-      <AnimatePresence mode="wait">
-        {screen === Screen.SPREAD_PICK && (
-          <motion.div key="spread" className="absolute inset-0 flex flex-col items-center justify-center px-5 z-20"
-            {...pageTransition}>
-            <p className="text-lg text-gold tracking-[0.1em] font-semibold mb-2">เลือกรูปแบบการดูไพ่</p>
-            <p className="text-white/30 text-xs mb-8">แต่ละแบบให้ความลึกต่างกัน</p>
-            <div className="w-full max-w-[340px] space-y-3">
-              {(["single", "three", "celtic"] as SpreadType[]).map((sp, idx) => {
-                const cfg = SPREAD_CONFIG[sp];
-                return (
-                  <motion.button key={sp}
-                    className="w-full flex items-center gap-4 p-4 rounded-2xl border border-gold/20 bg-[#0c0d14]/80 text-left active:bg-gold/5"
-                    initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 + idx * 0.1, duration: 0.5, ease: EASE }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => { setSpreadType(sp); hasAutoAdvanced.current = false; goToScreen(Screen.SELECT); }}>
-                    <div className="flex-shrink-0 flex items-end gap-[2px]">
-                      {Array.from({ length: Math.min(cfg.count, 3) }, (_, i) => (
-                        <div key={i} style={{ transform: `rotate(${cfg.count === 1 ? 0 : (i - 1) * 8}deg)` }}>
-                          <MiniCardBack width={32} height={51} />
+        {/* MEDITATE text + button */}
+        <AnimatePresence>
+          {screen === Screen.MEDITATE && (
+            <motion.div key="med-ui" className="absolute inset-0 flex flex-col items-center justify-end pb-24 z-40"
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: EASE }}>
+              <p className="text-lg text-gold-light font-semibold mb-2">หลับตาแล้วอธิษฐาน</p>
+              <p className="text-white/30 text-xs leading-6 mb-6 text-center">ตั้งจิตนึกถึงคำถามที่อยากรู้</p>
+              <Button onClick={() => goToScreen(Screen.SPREAD_PICK)}>พร้อมแล้ว</Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* SPREAD PICK */}
+        <AnimatePresence>
+          {screen === Screen.SPREAD_PICK && (
+            <motion.div key="pick-ui" className="absolute inset-0 flex flex-col items-center justify-center px-5 z-40"
+              initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: EASE }}>
+              <p className="text-lg text-gold tracking-[0.1em] font-semibold mb-2">เลือกรูปแบบการดูไพ่</p>
+              <p className="text-white/30 text-xs mb-8">แต่ละแบบให้ความลึกต่างกัน</p>
+              <div className="w-full max-w-[340px] space-y-3">
+                {(["single", "three", "celtic"] as SpreadType[]).map((sp, idx) => {
+                  const cfg = SPREAD_CONFIG[sp];
+                  return (
+                    <motion.button key={sp}
+                      className="w-full flex items-center gap-4 p-4 rounded-2xl border border-gold/20 bg-[#0c0d14]/90 text-left active:bg-gold/5 backdrop-blur-sm"
+                      initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 + idx * 0.1, duration: 0.5, ease: EASE }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => { setSpreadType(sp); hasAutoAdvanced.current = false; goToScreen(Screen.SELECT); }}>
+                      <div className="flex-shrink-0 flex items-end gap-[2px]">
+                        {Array.from({ length: Math.min(cfg.count, 3) }, (_, i) => (
+                          <div key={i} style={{ transform: `rotate(${cfg.count === 1 ? 0 : (i - 1) * 8}deg)` }}>
+                            <MiniCardBack width={32} height={51} />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-gold/50 text-sm">{cfg.icon}</span>
+                          <span className="text-gold font-semibold text-sm">{cfg.label}</span>
+                          <span className="text-[0.65rem] text-white/20 ml-auto">{cfg.count} ใบ</span>
                         </div>
-                      ))}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-gold/50 text-sm">{cfg.icon}</span>
-                        <span className="text-gold font-semibold text-sm">{cfg.label}</span>
-                        <span className="text-[0.65rem] text-white/20 ml-auto">{cfg.count} ใบ</span>
+                        <p className="text-xs text-white/40 leading-5">{cfg.desc}</p>
                       </div>
-                      <p className="text-xs text-white/40 leading-5">{cfg.desc}</p>
-                    </div>
-                    <span className="text-gold/30 text-sm">›</span>
-                  </motion.button>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ============ SELECT CARDS ============ */}
-      <AnimatePresence mode="wait">
-        {screen === Screen.SELECT && (
-          <motion.div key="select" className="absolute inset-0 flex flex-col items-center pt-4 px-4 z-20"
-            {...pageTransition}>
-            <p className="text-gold font-semibold text-base mb-1">เลือกการ์ด {SPREAD_CONFIG[spreadType].count} ใบ</p>
-            <p className="text-white/30 text-xs mb-3">แตะไพ่ที่คุณรู้สึกดึงดูด</p>
-            <motion.div className="px-4 py-1.5 border border-gold/20 rounded-full text-gold text-sm mb-4"
-              key={selectedCardIndices.length} animate={{ scale: [1, 1.08, 1] }} transition={{ duration: 0.3 }}>
-              {selectedCardIndices.length} / {SPREAD_CONFIG[spreadType].count}
+                      <span className="text-gold/30 text-sm">›</span>
+                    </motion.button>
+                  );
+                })}
+              </div>
             </motion.div>
-            <div className="w-full max-w-[380px]"
-              style={{ display: "grid", gridTemplateColumns: `repeat(${SPREAD_CONFIG[spreadType].gridCards <= 9 ? 3 : 5}, 1fr)`, gap: "10px" }}>
-              {Array.from({ length: SPREAD_CONFIG[spreadType].gridCards }, (_, i) => {
-                const isSel = selectedCardIndices.includes(i);
-                const isDis = selectedCardIndices.length >= SPREAD_CONFIG[spreadType].count && !isSel;
-                return (
-                  <motion.div key={i}
-                    className={`relative rounded-lg cursor-pointer overflow-hidden
-                      ${isSel ? "ring-1 ring-gold shadow-[0_0_16px_rgba(232,212,139,.2)]" : ""}
-                      ${isDis ? "opacity-15 pointer-events-none" : ""}`}
-                    initial={{ opacity: 0, scale: 0.85, y: 15 }}
-                    animate={{ opacity: isDis ? 0.15 : 1, scale: isSel ? 0.92 : 1, y: 0 }}
-                    transition={{ delay: 0.1 + i * 0.025, type: "spring", stiffness: 150, damping: 16 }}
-                    whileTap={{ scale: 0.82 }}
-                    onClick={() => toggleCard(i)}>
-                    <MiniCardBack width={80} height={128} />
-                    {isSel && <motion.div className="absolute inset-0 bg-gold/10 rounded-lg"
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} />}
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
 
-      {/* ============ REVEAL ============ */}
-      <AnimatePresence mode="wait">
-        {screen === Screen.REVEAL && (
-          <motion.div key="reveal" className="absolute inset-0 flex flex-col items-center justify-center px-4 z-20"
-            {...pageTransition}>
-            <motion.p className="text-lg text-gold tracking-[0.15em] font-semibold mb-6"
-              animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}>
-              กำลังดีดไพ่
-            </motion.p>
-            <div className="flex flex-wrap gap-2.5 justify-center max-w-[400px]">
-              {drawnCards.map((card, i) => (
-                <motion.div key={i} className="w-[85px] h-[136px] [perspective:800px]"
-                  initial={{ opacity: 0, y: 40, scale: 0.8, rotate: (Math.random() - 0.5) * 10 }}
-                  animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-                  transition={{ delay: 0.2 + i * 0.08, type: "spring", stiffness: 80, damping: 12 }}>
-                  <motion.div className="w-full h-full relative [transform-style:preserve-3d]"
-                    animate={{ rotateY: flippedSet.has(i) ? 180 : 0 }} transition={{ duration: 1, ease: EASE }}>
-                    <div className="absolute inset-0 [backface-visibility:hidden] rounded-lg overflow-hidden">
-                      <MiniCardBack width={85} height={136} />
-                    </div>
-                    <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-lg border-[1.5px] border-gold/40 overflow-hidden bg-[#08090e]">
-                      {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" loading="eager" />}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-1">
-                        <p className="text-[0.45rem] text-gold text-center leading-tight truncate">{card.nameTh}</p>
+        {/* SELECT counter */}
+        <AnimatePresence>
+          {screen === Screen.SELECT && (
+            <motion.div key="sel-ui" className="absolute inset-x-0 top-4 flex flex-col items-center z-40"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+              <p className="text-gold font-semibold text-base mb-1">เลือกการ์ด {SPREAD_CONFIG[spreadType].count} ใบ</p>
+              <p className="text-white/30 text-xs mb-3">แตะไพ่ที่คุณรู้สึกดึงดูด</p>
+              <motion.div className="px-4 py-1.5 border border-gold/20 rounded-full text-gold text-sm"
+                key={selectedCardIndices.length} animate={{ scale: [1, 1.08, 1] }} transition={{ duration: 0.3 }}>
+                {selectedCardIndices.length} / {SPREAD_CONFIG[spreadType].count}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* REVEAL text */}
+        <AnimatePresence>
+          {screen === Screen.REVEAL && (
+            <motion.div key="rev-ui" className="absolute inset-x-0 top-4 text-center z-40"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+              <motion.p className="text-lg text-gold tracking-[0.15em] font-semibold"
+                animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}>
+                กำลังดีดไพ่
+              </motion.p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* READING (full content — cards are hidden, images inline) */}
+        <AnimatePresence>
+          {screen === Screen.READING && (
+            <motion.div key="read-ui" className="flex flex-col items-center min-h-full px-4 pt-2 pb-16"
+              initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: EASE }}>
+              <h2 className="text-xl text-gold text-center mb-5 tracking-[0.15em] font-semibold">คำทำนายไพ่ทาโร่</h2>
+              <div className="flex gap-1.5 flex-wrap justify-center mb-6 max-w-[420px]">
+                {drawnCards.map((card, i) => (
+                  <motion.div key={i} className="w-[58px] h-[87px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e]"
+                    initial={{ opacity: 0, scale: 0.7, y: -20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.5, ease: EASE }}>
+                    {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" loading="eager" />}
+                  </motion.div>
+                ))}
+              </div>
+              <div className="w-full max-w-[420px] space-y-4">
+                {drawnCards.map((card, i) => (
+                  <motion.div key={i} className="bg-gradient-to-br from-surface/90 to-[#08090e]/95 border border-gold/15 rounded-2xl overflow-hidden"
+                    initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 + i * 0.1, duration: 0.6, ease: EASE }}>
+                    <div className="flex gap-4 p-4 items-start">
+                      <div className="w-[90px] h-[135px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e]">
+                        {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base text-gold-light font-semibold mb-0.5">{card.nameEn}</h3>
+                        <p className="text-sm text-gold/60 mb-1">{card.nameTh}</p>
+                        <p className="text-[0.7rem] text-white/30 mb-2">ตำแหน่ง {i + 1}: {card.position}</p>
+                        <p className="text-xs text-white/50 leading-5">{card.meaningTh || card.meaning}</p>
                       </div>
                     </div>
+                    {(card.analysisTh || card.analysis) && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm leading-7 text-white/75">{card.analysisTh || card.analysis}</p>
+                        {(card.goldenSentenceTh || card.goldenSentence) && (
+                          <p className="mt-3 text-sm text-gold/80 italic leading-6 border-l-2 border-gold/30 pl-3">
+                            &ldquo;{card.goldenSentenceTh || card.goldenSentence}&rdquo;
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </motion.div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ============ READING ============ */}
-      <AnimatePresence mode="wait">
-        {screen === Screen.READING && (
-          <motion.div key="reading" className="flex flex-col items-center min-h-full px-4 pt-2 pb-16 z-20"
-            {...pageTransition}>
-            <h2 className="text-xl text-gold text-center mb-5 tracking-[0.15em] font-semibold">คำทำนายไพ่ทาโร่</h2>
-            <div className="flex gap-1.5 flex-wrap justify-center mb-6 max-w-[420px]">
-              {drawnCards.map((card, i) => (
-                <motion.div key={i} className="w-[58px] h-[87px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e]"
-                  initial={{ opacity: 0, scale: 0.7, y: -20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ delay: i * 0.05, duration: 0.5, ease: EASE }}>
-                  {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" loading="eager" />}
-                </motion.div>
-              ))}
-            </div>
-            <div className="w-full max-w-[420px] space-y-4">
-              {drawnCards.map((card, i) => (
-                <motion.div key={i} className="bg-gradient-to-br from-surface/90 to-[#08090e]/95 border border-gold/15 rounded-2xl overflow-hidden"
-                  initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.1, duration: 0.6, ease: EASE }}>
-                  <div className="flex gap-4 p-4 items-start">
-                    <div className="w-[90px] h-[135px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e]">
-                      {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-base text-gold-light font-semibold mb-0.5">{card.nameEn}</h3>
-                      <p className="text-sm text-gold/60 mb-1">{card.nameTh}</p>
-                      <p className="text-[0.7rem] text-white/30 mb-2">ตำแหน่ง {i + 1}: {card.position}</p>
-                      <p className="text-xs text-white/50 leading-5">{card.meaningTh || card.meaning}</p>
-                    </div>
-                  </div>
-                  {(card.analysisTh || card.analysis) && (
-                    <div className="px-4 pb-4">
-                      <p className="text-sm leading-7 text-white/75">{card.analysisTh || card.analysis}</p>
-                      {(card.goldenSentenceTh || card.goldenSentence) && (
-                        <p className="mt-3 text-sm text-gold/80 italic leading-6 border-l-2 border-gold/30 pl-3">
-                          &ldquo;{card.goldenSentenceTh || card.goldenSentence}&rdquo;
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-            <motion.div className="mt-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>
-              <Button variant="outline" onClick={handleReset}>ดูไพ่อีกครั้ง</Button>
+                ))}
+              </div>
+              <motion.div className="mt-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>
+                <Button variant="outline" onClick={handleReset}>ดูไพ่อีกครั้ง</Button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+
+      </div>
     </div>
   );
 }
