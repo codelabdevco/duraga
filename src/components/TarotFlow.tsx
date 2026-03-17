@@ -259,7 +259,7 @@ export default function TarotFlow() {
         {phase === "fan" && selectedSpread && (() => {
           const ROWS = 5;
           const PER_ROW = Math.ceil(78 / ROWS); // 16
-          const ARC_DEG = 70; // total arc degrees
+          const ARC_DEG = 160; // half circle arc
           const remaining = selectedSpread.cardCount - pickedCards.length;
 
           return (
@@ -303,13 +303,13 @@ export default function TarotFlow() {
                         // Arc rotation: -35° to +35° (70° total)
                         const t = count > 1 ? col / (count - 1) : 0.5;
                         const angle = -ARC_DEG / 2 + ARC_DEG * t;
-                        // Vertical offset: edges lower (parabola)
-                        const liftY = 14 * (1 - 4 * t * (1 - t));
+                        // Vertical offset: deeper arc for half circle
+                        const liftY = 35 * (1 - 4 * t * (1 - t));
 
                         return (
                           <motion.button key={card.id} type="button"
                             className="relative p-0 border-0 bg-transparent"
-                            style={{ height: 80, overflow: "visible" }}
+                            style={{ height: 100, overflow: "visible" }}
                             animate={{ opacity: isDisabled ? 0.15 : isPicked ? 0.4 : 1 }}
                             transition={{ duration: 0.2 }}
                             whileTap={{ scale: 0.88 }}
