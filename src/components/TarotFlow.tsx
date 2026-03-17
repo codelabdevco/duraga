@@ -41,6 +41,8 @@ export default function TarotFlow() {
   const { setPhase, selectTopic, selectSpread, setQuestion, shuffleDeck, pickCard, flipCard, flipAll, reset } = store;
 
   const [shuffleScope, animateShuffle] = useAnimate();
+  const [isGathering, setIsGathering] = useState(false);
+  const gatheringTriggered = useRef(false);
 
   // ===== SHUFFLE ANIMATION (4-phase: fan → riffle → cascade → glow) =====
   async function handleShuffle() {
@@ -116,6 +118,29 @@ export default function TarotFlow() {
       }, { duration: 0.9, ease: "easeOut" });
     }
   }
+
+  // ===== GATHERING: cards picked → animate → layout =====
+  useEffect(() => {
+    if (!selectedSpread || phase !== "fan") return;
+    if (pickedCards.length === selectedSpread.cardCount && !gatheringTriggered.current) {
+      gatheringTriggered.current = true;
+      setIsGathering(true);
+      // Wait for gathering animation (CSS driven), then go to layout
+      setTimeout(() => {
+        setIsGathering(false);
+        gatheringTriggered.current = false;
+        setPhase("layout");
+      }, 1400); // 600ms fade + 800ms gather
+    }
+  }, [pickedCards.length, selectedSpread, phase]);
+
+  // Reset gathering when phase changes
+  useEffect(() => {
+    if (phase !== "fan") {
+      gatheringTriggered.current = false;
+      setIsGathering(false);
+    }
+  }, [phase]);
 
   // ===== RENDER =====
   return (
@@ -267,14 +292,28 @@ export default function TarotFlow() {
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: EASE }}>
 
               <div className="text-center mb-2">
-                <motion.p className="text-gold font-semibold text-sm"
-                  key={pickedCards.length}
-                  animate={{ scale: [1, 1.08, 1] }} transition={{ duration: 0.3 }}>
-                  {remaining > 0 ? `เลือกอีก ${remaining} ใบ` : "เลือกครบแล้ว!"}
-                </motion.p>
+                <AnimatePresence mode="wait">
+                  {isGathering ? (
+                    <motion.p key="gather-text" className="text-gold font-semibold text-sm"
+                      initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, ease: EASE }}>
+                      กำลังเตรียมวางไพ่...
+                    </motion.p>
+                  ) : (
+                    <motion.p key="pick-text" className="text-gold font-semibold text-sm"
+                      initial={{ opacity: 0 }} animate={{ opacity: 1, scale: [1, 1.08, 1] }}
+                      exit={{ opacity: 0, y: -5 }} transition={{ duration: 0.3 }}>
+                      {remaining > 0 ? `เลือกอีก ${remaining} ใบ` : "เลือกครบแล้ว!"}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
                 <div className="flex justify-center gap-[3px] mt-1">
                   {Array.from({ length: selectedSpread.cardCount }, (_, i) => (
-                    <div key={i} className={`w-[6px] h-[6px] rounded-full ${i < pickedCards.length ? "bg-gold" : "bg-white/15"}`} />
+                    <motion.div key={i}
+                      className={`w-[6px] h-[6px] rounded-full ${i < pickedCards.length ? "bg-gold" : "bg-white/15"}`}
+                      animate={isGathering ? { scale: [1, 1.3, 1], opacity: [1, 0.5, 1] } : {}}
+                      transition={isGathering ? { duration: 0.8, repeat: Infinity, delay: i * 0.08 } : {}}
+                    />
                   ))}
                 </div>
               </div>
@@ -306,14 +345,24 @@ export default function TarotFlow() {
                         // Vertical offset: deeper arc for half circle
                         const liftY = 50 * (1 - 4 * t * (1 - t));
 
+                        // Gathering: non-picked fade to 0, picked glow + shrink to center
+                        const gathering = isGathering;
+                        const gatherOpacity = gathering
+                          ? (isPicked ? 1 : 0)
+                          : (isDisabled ? 0.15 : isPicked ? 0.4 : 1);
+
                         return (
                           <motion.button key={card.id} type="button"
                             className="relative p-0 border-0 bg-transparent"
                             style={{ height: 115, overflow: "visible" }}
-                            animate={{ opacity: isDisabled ? 0.15 : isPicked ? 0.4 : 1 }}
-                            transition={{ duration: 0.2 }}
-                            whileTap={{ scale: 0.88 }}
+                            animate={{
+                              opacity: gatherOpacity,
+                              scale: gathering && !isPicked ? 0.3 : 1,
+                            }}
+                            transition={{ duration: gathering ? 0.5 : 0.2, ease: EASE }}
+                            whileTap={!gathering ? { scale: 0.88 } : {}}
                             onClick={() => {
+                              if (gathering) return;
                               if (isPicked) store.unpickCard(card.id);
                               else if (!isDisabled) pickCard(globalIdx);
                             }}>
@@ -326,15 +375,23 @@ export default function TarotFlow() {
                                 left: "50%", top: liftY,
                                 marginLeft: -20,
                                 transformOrigin: "center bottom",
-                                transform: `rotate(${angle}deg)`,
                               }}
                               animate={{
-                                y: isPicked ? -12 : 0,
-                                scale: isPicked ? 0.85 : 1,
+                                y: gathering && isPicked ? -20 : isPicked ? -12 : 0,
+                                scale: gathering && isPicked ? 1.15 : isPicked ? 0.85 : 1,
+                                rotate: gathering && isPicked ? 0 : angle,
                               }}
-                              transition={{ duration: 0.2 }}>
+                              transition={{ duration: gathering ? 0.6 : 0.2, ease: EASE }}>
                               <MiniCardBack width={40} height={64} />
-                              {isPicked && (
+                              {/* Glow ring when gathering */}
+                              {gathering && isPicked && (
+                                <motion.div className="absolute -inset-2 rounded-xl"
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: [0, 0.6, 0.3] }}
+                                  transition={{ duration: 0.8, ease: "easeOut" }}
+                                  style={{ background: "radial-gradient(circle, rgba(232,212,139,0.25) 0%, transparent 70%)" }} />
+                              )}
+                              {isPicked && !gathering && (
                                 <motion.div className="absolute inset-0 flex items-center justify-center"
                                   initial={{ scale: 0 }} animate={{ scale: 1 }}
                                   transition={{ type: "spring", stiffness: 300, damping: 15 }}>
@@ -395,9 +452,9 @@ export default function TarotFlow() {
                       transform: "translate(-50%, -50%)",
                       width: w, height: h,
                     }}
-                    initial={{ opacity: 0, scale: 0.5, y: 30 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ delay: i * 0.15, duration: 0.5, ease: EASE }}
+                    initial={{ opacity: 0, scale: 0.3, y: 0, x: 0 }}
+                    animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.2, duration: 0.7, type: "spring", stiffness: 80, damping: 14 }}
                     onClick={() => flipCard(i)}
                   >
                     <motion.div

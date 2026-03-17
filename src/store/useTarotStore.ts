@@ -76,10 +76,7 @@ export const useTarotStore = create<TarotState>((set, get) => ({
     const newPicked = [...state.pickedCards, picked];
     set({ pickedCards: newPicked });
 
-    // Auto advance when all cards picked
-    if (newPicked.length === spread.cardCount) {
-      setTimeout(() => set({ phase: "layout" }), 600);
-    }
+    // Don't auto-advance — let TarotFlow handle the gathering animation
   },
 
   unpickCard: (cardId) => {
