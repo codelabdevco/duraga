@@ -255,13 +255,12 @@ export default function TarotFlow() {
           </motion.div>
         )}
 
-        {/* ===== STEP 6: PICK CARDS (5 curved rows) ===== */}
+        {/* ===== STEP 6: PICK CARDS ===== */}
         {phase === "fan" && selectedSpread && (
-          <motion.div key="fan" className="flex flex-col items-center justify-between min-h-full pt-1 pb-3 px-1"
+          <motion.div key="fan" className="flex flex-col items-center min-h-full pt-1 pb-4 px-2"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: EASE }}>
 
-            {/* Header */}
-            <div className="text-center mb-1">
+            <div className="text-center mb-2">
               <motion.p className="text-gold font-semibold text-sm"
                 key={pickedCards.length}
                 animate={{ scale: [1, 1.08, 1] }} transition={{ duration: 0.3 }}>
@@ -271,92 +270,52 @@ export default function TarotFlow() {
               </motion.p>
               <div className="flex justify-center gap-[3px] mt-1">
                 {Array.from({ length: selectedSpread.cardCount }, (_, i) => (
-                  <motion.div key={i}
-                    className={`w-[6px] h-[6px] rounded-full ${i < pickedCards.length ? "bg-gold" : "bg-white/15"}`}
-                    animate={i === pickedCards.length - 1 && i >= 0 ? { scale: [1, 1.5, 1] } : {}}
-                    transition={{ duration: 0.3 }}
-                  />
+                  <div key={i} className={`w-[6px] h-[6px] rounded-full ${i < pickedCards.length ? "bg-gold" : "bg-white/15"}`} />
                 ))}
               </div>
             </div>
 
-            {/* 5 curved rows — grid approach for reliable click */}
-            <div className="flex flex-col items-center gap-1 w-full max-w-[390px] px-1">
-              {Array.from({ length: 5 }, (_, row) => {
-                const perRow = Math.ceil(shuffledDeck.length / 5);
-                const startIdx = row * perRow;
-                const rowCards = shuffledDeck.slice(startIdx, startIdx + perRow);
+            <div className="grid grid-cols-6 gap-1 w-full max-w-[372px]">
+              {shuffledDeck.map((card, i) => {
+                const isPicked = pickedCards.some(p => p.id === card.id);
+                const pickNum = pickedCards.findIndex(p => p.id === card.id) + 1;
+                const isFull = pickedCards.length >= selectedSpread.cardCount;
+                const isDisabled = isFull && !isPicked;
 
                 return (
-                  <motion.div key={row}
-                    className="flex justify-center"
-                    style={{ gap: 0 }}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.05 + row * 0.08, duration: 0.5, ease: EASE }}>
-                    {rowCards.map((card, col) => {
-                      const globalIdx = startIdx + col;
-                      const isPicked = pickedCards.some(p => p.id === card.id);
-                      const pickNum = pickedCards.findIndex(p => p.id === card.id) + 1;
-                      const isFull = pickedCards.length >= selectedSpread.cardCount;
-                      const isDisabled = isFull && !isPicked;
-
-                      // Arc curve
-                      const t = rowCards.length > 1 ? col / (rowCards.length - 1) : 0.5;
-                      const curveY = 10 * (1 - 4 * t * (1 - t)); // edges down, center up
-
-                      return (
-                        <motion.button
-                          key={card.id}
-                          className="relative flex-shrink-0 p-0 border-0 bg-transparent"
-                          style={{
-                            width: 24,
-                            height: 70,
-                            marginTop: curveY,
-                            zIndex: isPicked ? 80 : col,
-                          }}
-                          animate={{
-                            opacity: isPicked ? 0.4 : isDisabled ? 0.2 : 1,
-                          }}
-                          transition={{ duration: 0.2, ease: EASE }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => {
-                            if (isPicked) {
-                              store.unpickCard(card.id);
-                            } else if (!isDisabled) {
-                              pickCard(globalIdx);
-                            }
-                          }}
-                        >
-                          {/* Card visual — wider than tap zone, overflow visible */}
-                          <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none"
-                            style={{ width: 40, height: 64 }}>
-                            <motion.div
-                              animate={{ y: isPicked ? -8 : 0, scale: isPicked ? 0.88 : 1 }}
-                              transition={{ duration: 0.2 }}>
-                              <MiniCardBack width={40} height={64} />
-                            </motion.div>
-                            {/* Pick badge */}
-                            {isPicked && (
-                              <motion.div className="absolute inset-0 flex items-center justify-center"
-                                initial={{ scale: 0 }} animate={{ scale: 1 }}
-                                transition={{ type: "spring", stiffness: 300, damping: 15 }}>
-                                <div className="w-5 h-5 rounded-full bg-gold/60 border border-gold flex items-center justify-center shadow-[0_0_10px_rgba(232,212,139,.4)]">
-                                  <span className="text-[0.5rem] text-[#08090e] font-bold">{pickNum}</span>
-                                </div>
-                              </motion.div>
-                            )}
-                          </div>
-                        </motion.button>
-                      );
-                    })}
-                  </motion.div>
+                  <motion.button
+                    key={card.id}
+                    type="button"
+                    className={`relative rounded overflow-visible p-0 border-0 bg-transparent
+                      ${isDisabled ? "opacity-20" : ""}`}
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: isDisabled ? 0.2 : isPicked ? 0.5 : 1, scale: isPicked ? 0.9 : 1 }}
+                    transition={{ delay: i * 0.005, duration: 0.3, ease: EASE }}
+                    whileTap={{ scale: 0.85 }}
+                    onClick={() => {
+                      if (isPicked) {
+                        store.unpickCard(card.id);
+                      } else if (!isDisabled) {
+                        pickCard(i);
+                      }
+                    }}
+                  >
+                    <MiniCardBack width={58} height={93} />
+                    {isPicked && (
+                      <motion.div className="absolute inset-0 flex items-center justify-center"
+                        initial={{ scale: 0 }} animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 15 }}>
+                        <div className="w-6 h-6 rounded-full bg-gold/60 border border-gold flex items-center justify-center shadow-[0_0_10px_rgba(232,212,139,.4)]">
+                          <span className="text-[0.55rem] text-[#08090e] font-bold">{pickNum}</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.button>
                 );
               })}
             </div>
 
-            {/* Hint */}
-            <p className="text-white/20 text-[0.6rem] mt-1">78 ใบ · แตะเลือก · แตะอีกทีเพื่อยกเลิก</p>
+            <p className="text-white/20 text-[0.55rem] mt-2">แตะเลือก · แตะอีกทีเพื่อยกเลิก</p>
           </motion.div>
         )}
 
