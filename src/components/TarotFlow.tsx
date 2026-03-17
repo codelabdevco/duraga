@@ -174,18 +174,18 @@ export default function TarotFlow() {
             </div>
 
             {/* Card stage */}
-            <div ref={scope} className="relative w-[240px] h-[280px]">
-              <div className="glow-ring absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] rounded-full opacity-0"
+            <div ref={scope} className="relative w-[280px] h-[360px]">
+              <div className="glow-ring absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-0"
                 style={{ background: "radial-gradient(circle, rgba(232,212,139,0.15) 0%, transparent 70%)" }} />
               {Array.from({ length: SHUFFLE_CARDS }, (_, i) => (
                 <motion.div
                   key={i}
                   className="s-card absolute left-1/2 top-1/2"
-                  style={{ zIndex: SHUFFLE_CARDS - i, filter: `brightness(${1 - i * 0.03})`, marginLeft: -70, marginTop: -112 }}
+                  style={{ zIndex: SHUFFLE_CARDS - i, filter: `brightness(${1 - i * 0.03})`, marginLeft: -88, marginTop: -140 }}
                   animate={screen === Screen.MEDITATE && !meditateExiting ? { y: [0, -12, 0], opacity: i === 0 ? 1 : 0 } : {}}
                   transition={screen === Screen.MEDITATE ? { y: { duration: 4, repeat: Infinity, ease: "easeInOut" }, opacity: { duration: 0.5 } } : {}}
                 >
-                  <CardBack width={140} height={224} />
+                  <CardBack width={175} height={280} />
                 </motion.div>
               ))}
             </div>
@@ -229,7 +229,7 @@ export default function TarotFlow() {
                     <div className="flex-shrink-0 flex items-end gap-[2px]">
                       {Array.from({ length: Math.min(cfg.count, 3) }, (_, i) => (
                         <div key={i} style={{ transform: `rotate(${cfg.count === 1 ? 0 : (i - 1) * 8}deg)` }}>
-                          <MiniCardBack width={28} height={45} />
+                          <MiniCardBack width={32} height={51} />
                         </div>
                       ))}
                     </div>
@@ -276,7 +276,7 @@ export default function TarotFlow() {
                     transition={{ delay: 0.1 + i * 0.025, type: "spring", stiffness: 150, damping: 16 }}
                     whileTap={{ scale: 0.82 }}
                     onClick={() => toggleCard(i)}>
-                    <MiniCardBack width={68} height={109} />
+                    <MiniCardBack width={80} height={128} />
                     {isSel && <motion.div className="absolute inset-0 bg-gold/10 rounded-lg"
                       initial={{ opacity: 0 }} animate={{ opacity: 1 }} />}
                   </motion.div>
@@ -298,14 +298,14 @@ export default function TarotFlow() {
             </motion.p>
             <div className="flex flex-wrap gap-2.5 justify-center max-w-[400px]">
               {drawnCards.map((card, i) => (
-                <motion.div key={i} className="w-[72px] h-[115px] [perspective:800px]"
+                <motion.div key={i} className="w-[85px] h-[136px] [perspective:800px]"
                   initial={{ opacity: 0, y: 40, scale: 0.8, rotate: (Math.random() - 0.5) * 10 }}
                   animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
                   transition={{ delay: 0.2 + i * 0.08, type: "spring", stiffness: 80, damping: 12 }}>
                   <motion.div className="w-full h-full relative [transform-style:preserve-3d]"
                     animate={{ rotateY: flippedSet.has(i) ? 180 : 0 }} transition={{ duration: 1, ease: EASE }}>
                     <div className="absolute inset-0 [backface-visibility:hidden] rounded-lg overflow-hidden">
-                      <MiniCardBack width={72} height={115} />
+                      <MiniCardBack width={85} height={136} />
                     </div>
                     <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-lg border-[1.5px] border-gold/40 overflow-hidden bg-[#08090e]">
                       {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" loading="eager" />}
@@ -329,7 +329,7 @@ export default function TarotFlow() {
             <h2 className="text-xl text-gold text-center mb-5 tracking-[0.15em] font-semibold">คำทำนายไพ่ทาโร่</h2>
             <div className="flex gap-1.5 flex-wrap justify-center mb-6 max-w-[420px]">
               {drawnCards.map((card, i) => (
-                <motion.div key={i} className="w-[52px] h-[78px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e]"
+                <motion.div key={i} className="w-[58px] h-[87px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e]"
                   initial={{ opacity: 0, scale: 0.7, y: -20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ delay: i * 0.05, duration: 0.5, ease: EASE }}>
                   {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" loading="eager" />}
@@ -342,7 +342,7 @@ export default function TarotFlow() {
                   initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + i * 0.1, duration: 0.6, ease: EASE }}>
                   <div className="flex gap-4 p-4 items-start">
-                    <div className="w-[75px] h-[112px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e]">
+                    <div className="w-[90px] h-[135px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e]">
                       {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />}
                     </div>
                     <div className="flex-1 min-w-0">
