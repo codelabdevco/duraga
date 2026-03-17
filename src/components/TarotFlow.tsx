@@ -42,20 +42,78 @@ export default function TarotFlow() {
 
   const [shuffleScope, animateShuffle] = useAnimate();
 
-  // ===== SHUFFLE ANIMATION =====
+  // ===== SHUFFLE ANIMATION (4-phase: fan → riffle → cascade → glow) =====
   async function handleShuffle() {
     shuffleDeck();
     const cards = shuffleScope.current?.querySelectorAll(".shuf-card");
     if (!cards) return;
     const arr = Array.from(cards) as Element[];
+    const mid = 3; // center index for 7 cards
 
-    for (let round = 0; round < 3; round++) {
-      await Promise.all(arr.map((c, i) =>
-        animateShuffle(c, { x: (i - 2) * 25, rotate: (i - 2) * 6, y: Math.abs(i - 2) * 6 }, { duration: 0.4, ease: EASE })
-      ));
-      await Promise.all(arr.map(c =>
-        animateShuffle(c, { x: 0, y: 0, rotate: (Math.random() - 0.5) * 3 }, { duration: 0.3, ease: EASE })
-      ));
+    // Phase 1: Fan out from stack
+    await Promise.all(arr.map((c, i) =>
+      animateShuffle(c, {
+        x: (i - mid) * 32,
+        rotate: (i - mid) * 7,
+        y: Math.abs(i - mid) * 10,
+        opacity: 1,
+      }, { duration: 0.7, ease: EASE })
+    ));
+
+    // Phase 2: Riffle shuffle × 2
+    for (let round = 0; round < 2; round++) {
+      const left = arr.slice(0, mid);
+      const right = arr.slice(mid);
+
+      // Split left/right
+      await Promise.all([
+        ...left.map((c, i) => animateShuffle(c, { x: -65 + i * 5, rotate: -4 + Math.random() * 2, y: i * 4 }, { duration: 0.4, ease: EASE })),
+        ...right.map((c, i) => animateShuffle(c, { x: 65 - i * 5, rotate: 4 - Math.random() * 2, y: i * 4 }, { duration: 0.4, ease: EASE })),
+      ]);
+
+      // Interleave one by one
+      const order: Element[] = [];
+      for (let i = 0; i < Math.max(left.length, right.length); i++) {
+        if (i < right.length) order.push(right[i]);
+        if (i < left.length) order.push(left[i]);
+      }
+      for (let j = 0; j < order.length; j++) {
+        animateShuffle(order[j], {
+          x: 0, y: -j * 2,
+          rotate: (Math.random() - 0.5) * 3,
+        }, { duration: 0.13, ease: "easeOut" });
+        await new Promise(r => setTimeout(r, 45));
+      }
+      await new Promise(r => setTimeout(r, 180));
+    }
+
+    // Phase 3: Cascade arc
+    await Promise.all(arr.map((c, i) => {
+      const angle = ((i - mid) / mid) * 0.65;
+      const radius = 120;
+      return animateShuffle(c, {
+        x: Math.sin(angle) * radius,
+        y: -Math.cos(angle) * radius + radius - 25,
+        rotate: (i - mid) * 12,
+        scale: 0.88,
+      }, { duration: 0.55, ease: EASE });
+    }));
+    await new Promise(r => setTimeout(r, 280));
+
+    // Gather back to stack
+    await Promise.all(arr.map((c, i) =>
+      animateShuffle(c, {
+        x: 0, y: -i * 2, rotate: 0, scale: 1,
+      }, { duration: 0.5, ease: EASE, delay: i * 0.035 })
+    ));
+
+    // Phase 4: Glow pulse
+    const glow = shuffleScope.current?.querySelector(".glow-ring");
+    if (glow) {
+      await animateShuffle(glow as Element, {
+        opacity: [0, 0.6, 0],
+        scale: [0.7, 1.4, 1.6],
+      }, { duration: 0.9, ease: "easeOut" });
     }
   }
 
@@ -172,11 +230,15 @@ export default function TarotFlow() {
             </p>
             <p className="text-lg text-gold font-semibold mb-8 tracking-wide">สับไพ่</p>
 
-            <div ref={shuffleScope} className="relative w-[200px] h-[280px] mb-8">
-              {Array.from({ length: 5 }, (_, i) => (
+            <div ref={shuffleScope} className="relative w-[240px] h-[300px] mb-8">
+              {/* Glow ring */}
+              <div className="glow-ring absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full opacity-0"
+                style={{ background: "radial-gradient(circle, rgba(232,212,139,0.18) 0%, transparent 70%)" }} />
+              {/* 7 cards */}
+              {Array.from({ length: 7 }, (_, i) => (
                 <div key={i} className="shuf-card absolute left-1/2 top-1/2"
-                  style={{ marginLeft: -70, marginTop: -112, zIndex: 5 - i, filter: `brightness(${1 - i * 0.04})` }}>
-                  <CardBack width={140} height={224} />
+                  style={{ marginLeft: -75, marginTop: -120, zIndex: 7 - i, filter: `brightness(${1 - i * 0.03})` }}>
+                  <CardBack width={150} height={240} />
                 </div>
               ))}
             </div>
