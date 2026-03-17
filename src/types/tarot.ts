@@ -10,10 +10,10 @@ export enum Screen {
 
 export type SpreadType = "single" | "three" | "celtic";
 
-export const SPREAD_CONFIG: Record<SpreadType, { label: string; desc: string; count: number; gridCards: number; icon: string }> = {
-  single: { label: "ไพ่ใบเดียว", desc: "คำตอบสั้น กระชับ ตรงประเด็น", count: 1, gridCards: 5, icon: "✦" },
-  three: { label: "3 ใบ", desc: "อดีต · ปัจจุบัน · อนาคต", count: 3, gridCards: 9, icon: "☽" },
-  celtic: { label: "10 ใบ", desc: "Celtic Cross วิเคราะห์เชิงลึก", count: 10, gridCards: 20, icon: "✧" },
+export const SPREAD_CONFIG: Record<SpreadType, { label: string; desc: string; count: number; icon: string }> = {
+  single: { label: "ไพ่ใบเดียว", desc: "คำตอบสั้น กระชับ ตรงประเด็น", count: 1, icon: "✦" },
+  three: { label: "3 ใบ", desc: "อดีต · ปัจจุบัน · อนาคต", count: 3, icon: "☽" },
+  celtic: { label: "10 ใบ", desc: "Celtic Cross วิเคราะห์เชิงลึก", count: 10, icon: "✧" },
 };
 
 export interface TarotCard {
