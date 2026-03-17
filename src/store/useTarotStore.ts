@@ -1,61 +1,113 @@
 import { create } from "zustand";
-import { Screen, DrawnCard, SpreadType, SPREAD_CONFIG } from "@/types/tarot";
-import { allTarotCards, positionNamesBySpread } from "@/data/tarot";
+import { Phase, Topic, Spread, TarotCard, PickedCard, SPREADS, TOPIC_DEFAULT_SPREAD } from "@/types/tarot";
+import { allTarotCards } from "@/data/tarot";
 import { shuffleArray } from "@/lib/utils";
 
 interface TarotState {
-  currentScreen: Screen;
-  spreadType: SpreadType;
-  selectedCardIndices: number[];
-  drawnCards: DrawnCard[];
+  phase: Phase;
+  selectedTopic: Topic | null;
+  selectedSpread: Spread | null;
+  userQuestion: string;
+  shuffledDeck: TarotCard[];
+  pickedCards: PickedCard[];
+  flippedCardIds: Set<number>;
+  aiReading: string | null;
+  isLoadingAI: boolean;
+  hasShuffled: boolean;
 
-  goToScreen: (screen: Screen) => void;
-  setSpreadType: (spread: SpreadType) => void;
-  toggleCard: (index: number) => void;
-  drawAndAssign: () => void;
+  setPhase: (p: Phase) => void;
+  selectTopic: (t: Topic) => void;
+  selectSpread: (s: Spread) => void;
+  setQuestion: (q: string) => void;
+  shuffleDeck: () => void;
+  pickCard: (deckIndex: number) => void;
+  flipCard: (posIndex: number) => void;
+  flipAll: () => void;
+  setAiReading: (r: string) => void;
+  setLoadingAI: (l: boolean) => void;
   reset: () => void;
 }
 
 export const useTarotStore = create<TarotState>((set, get) => ({
-  currentScreen: Screen.WELCOME,
-  spreadType: "celtic",
-  selectedCardIndices: [],
-  drawnCards: [],
+  phase: "landing",
+  selectedTopic: null,
+  selectedSpread: null,
+  userQuestion: "",
+  shuffledDeck: [],
+  pickedCards: [],
+  flippedCardIds: new Set(),
+  aiReading: null,
+  isLoadingAI: false,
+  hasShuffled: false,
 
-  goToScreen: (screen) => set({ currentScreen: screen }),
+  setPhase: (p) => set({ phase: p }),
 
-  setSpreadType: (spread) => set({ spreadType: spread }),
+  selectTopic: (t) => {
+    const defaultSpreadId = TOPIC_DEFAULT_SPREAD[t.id] || "three";
+    const defaultSpread = SPREADS.find(s => s.id === defaultSpreadId) || SPREADS[2];
+    set({ selectedTopic: t, selectedSpread: defaultSpread, phase: "spread" });
+  },
 
-  toggleCard: (index) =>
-    set((state) => {
-      const selected = state.selectedCardIndices;
-      const max = SPREAD_CONFIG[state.spreadType].count;
-      if (selected.includes(index)) {
-        return { selectedCardIndices: selected.filter((i) => i !== index) };
-      }
-      if (selected.length >= max) return state;
-      return { selectedCardIndices: [...selected, index] };
-    }),
+  selectSpread: (s) => set({ selectedSpread: s }),
 
-  drawAndAssign: () =>
-    set(() => {
-      const spread = get().spreadType;
-      const count = SPREAD_CONFIG[spread].count;
-      const positions = positionNamesBySpread[spread];
-      const cards = shuffleArray(allTarotCards).slice(0, count);
-      const drawn: DrawnCard[] = cards.map((card, i) => ({
-        ...card,
-        position: positions[i] || `ตำแหน่ง ${i + 1}`,
-        positionIndex: i,
-      }));
-      return { drawnCards: drawn };
-    }),
+  setQuestion: (q) => set({ userQuestion: q }),
 
-  reset: () =>
-    set({
-      currentScreen: Screen.WELCOME,
-      spreadType: "celtic",
-      selectedCardIndices: [],
-      drawnCards: [],
-    }),
+  shuffleDeck: () => {
+    set({ shuffledDeck: shuffleArray(allTarotCards), hasShuffled: true });
+  },
+
+  pickCard: (deckIndex) => {
+    const state = get();
+    const spread = state.selectedSpread;
+    if (!spread) return;
+    if (state.pickedCards.length >= spread.cardCount) return;
+
+    const card = state.shuffledDeck[deckIndex];
+    if (!card) return;
+    if (state.pickedCards.some(p => p.id === card.id)) return;
+
+    const picked: PickedCard = {
+      ...card,
+      positionIndex: state.pickedCards.length,
+      isReversed: Math.random() < 0.3,
+    };
+
+    const newPicked = [...state.pickedCards, picked];
+    set({ pickedCards: newPicked });
+
+    // Auto advance when all cards picked
+    if (newPicked.length === spread.cardCount) {
+      setTimeout(() => set({ phase: "layout" }), 600);
+    }
+  },
+
+  flipCard: (posIndex) => {
+    set(state => {
+      const newSet = new Set(state.flippedCardIds);
+      newSet.add(posIndex);
+      return { flippedCardIds: newSet };
+    });
+  },
+
+  flipAll: () => {
+    const state = get();
+    const all = new Set(state.pickedCards.map((_, i) => i));
+    set({ flippedCardIds: all });
+  },
+
+  setAiReading: (r) => set({ aiReading: r, isLoadingAI: false }),
+  setLoadingAI: (l) => set({ isLoadingAI: l }),
+
+  reset: () => set({
+    phase: "landing",
+    selectedTopic: null,
+    selectedSpread: null,
+    userQuestion: "",
+    shuffledDeck: [],
+    pickedCards: [],
+    flippedCardIds: new Set(),
+    aiReading: null,
+    isLoadingAI: false,
+    hasShuffled: false,
+  }),
 }));
