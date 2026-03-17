@@ -11,7 +11,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The Fool approaches the cliff edge wearing exaggerated and ridiculous clothes, his expression seemingly unaware that he is already at the edge of danger. Beside him follows a dog, seemingly reminding him that danger is right in front of him, trying to call him back to face the real world. But at this moment, the Fool's heart is completely covered with joy and happiness. He only wants to act freely, while the next step remains unknown!",
     "goldenSentence": "Bravely embark on a new journey, the Year of the Horse will bring you infinite possibilities.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงการเริ่มต้นใหม่ เต็มไปด้วยความหวังและความเป็นไปได้ เป็นสัญลักษณ์ของอิสรภาพและจิตวิญญาณแห่งการผจญภัย",
+    "analysisTh": "คนโง่เดินเข้าใกล้ขอบหน้าผาด้วยเสื้อผ้าแปลกตา สีหน้าเขาดูเหมือนไม่รู้ว่ากำลังยืนอยู่ริมอันตราย ข้างๆ มีสุนัขตัวหนึ่งคอยเตือนว่าอันตรายอยู่ข้างหน้า แต่หัวใจของเขาเต็มไปด้วยความสุข ก้าวต่อไปยังคงเป็นสิ่งที่ไม่รู้!",
+    "goldenSentenceTh": "จงกล้าที่จะก้าวออกเดินทางใหม่ ความเป็นไปได้ไม่มีที่สิ้นสุดกำลังรอคุณอยู่"
   },
   {
     "id": 1,
@@ -22,7 +25,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Look at this Magician who seems to possess unlimited abilities. On the table are placed swords, cups, stars, and wands, but he holds his wand as if praying to heaven for strength, invoking magic. What exactly can he transform from this void?",
     "goldenSentence": "Unleash your creativity, the Year of the Horse will be your stage to showcase your talents.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงความคิดสร้างสรรค์และความมั่นใจ คุณมีความสามารถที่จะบรรลุเป้าหมาย",
+    "analysisTh": "นักมายากลผู้ดูเหมือนมีความสามารถไร้ขีดจำกัด บนโต๊ะวางดาบ ถ้วย ดาว และไม้เท้า เขาถือไม้เท้าเหมือนกำลังอ้อนวอนพลังจากสวรรค์ เรียกใช้มายากล เขาจะแปลงอะไรจากความว่างเปล่านี้?",
+    "goldenSentenceTh": "ปลดปล่อยความคิดสร้างสรรค์ของคุณ นี่คือเวทีที่จะแสดงความสามารถ"
   },
   {
     "id": 2,
@@ -33,7 +39,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The High Priestess is said to be the messenger of the moon, devout and silent yet showing alertness and wisdom. She symbolizes intuition and wisdom. In contrast to the Magician's passion and initiative, the High Priestess only holds her religious books silently in prayer late at night. If the Magician emanates masculinity, then the High Priestess represents femininity, revealing stability in silence and wisdom in few words.",
     "goldenSentence": "Listen to your inner voice, the Year of the Horse will bring you profound insights.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงสัญชาตญาณและปัญญาภายใน เตือนให้คุณเชื่อมั่นในสัญชาตญาณของตัวเอง",
+    "analysisTh": "นักบวชหญิงเป็นผู้ส่งสารแห่งดวงจันทร์ เงียบแต่แสดงถึงความตื่นตัวและปัญญา เธอสื่อถึงสัญชาตญาณและปัญญา ต่างจากนักมายากลที่กระตือรือร้น นักบวชหญิงถือหนังสือศาสนาสวดมนต์ในความเงียบของค่ำคืน",
+    "goldenSentenceTh": "ฟังเสียงภายในของคุณ จะนำพาความเข้าใจอันลึกซึ้ง"
   },
   {
     "id": 3,
@@ -44,7 +53,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Under the Empress's scepter, the golden wheat fields beneath her feet and the dense forests in the distance present a scene of vitality. Under the Empress's red seat is a heart-shaped mark with the symbol of Venus carved on it, indicating maternal nature, symbolizing the Empress's inclusiveness and the abundance she brings to her people.",
     "goldenSentence": "Embrace your inner power, the Year of the Horse will bring you abundant harvests.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงความอุดมสมบูรณ์และพลังแห่งความเป็นแม่ ชีวิตที่เต็มเปี่ยมและมั่งคั่ง",
+    "analysisTh": "ภายใต้คทาของจักรพรรดินี ทุ่งข้าวสาลีสีทองใต้เท้าและป่าทึบในระยะไกลเต็มไปด้วยพลังชีวิต เครื่องหมายรูปหัวใจกับสัญลักษณ์ดาวศุกร์แสดงถึงความเป็นแม่ สื่อถึงความโอบอ้อมอารีและความอุดมสมบูรณ์ที่เธอมอบให้ผู้คน",
+    "goldenSentenceTh": "โอบรับพลังภายในของคุณ จะนำพาผลเก็บเกี่ยวอันอุดม"
   },
   {
     "id": 4,
@@ -55,7 +67,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Sitting majestically on the throne is the supreme Emperor, wearing a crown studded with gems, holding the scepter that symbolizes power and status. With rich experience, his expression is solemn; even though he is already a monarch, he still wears armor, always ready to meet challenges for his country.",
     "goldenSentence": "Establish your goals, the Year of the Horse will bring you opportunities for success.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงอำนาจและโครงสร้าง เตือนให้คุณสร้างรากฐานที่มั่นคง",
+    "analysisTh": "จักรพรรดินั่งอย่างสง่างามบนบัลลังก์ สวมมงกุฎประดับอัญมณี ถือคทาแห่งอำนาจ ด้วยประสบการณ์อันมากมาย สีหน้าของเขาเคร่งขรึม แม้จะเป็นกษัตริย์แล้วก็ยังสวมเกราะ พร้อมเผชิญความท้าทายเสมอ",
+    "goldenSentenceTh": "ตั้งเป้าหมายของคุณ จะนำพาโอกาสแห่งความสำเร็จ"
   },
   {
     "id": 5,
@@ -65,7 +80,9 @@ export const allTarotCards: TarotCard[] = [
     "meaning": "Symbolizes tradition and guidance, representing the pursuit of wisdom and spiritual growth.",
     "goldenSentence": "Seek the light of wisdom, the Year of the Horse will bring you spiritual elevation.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงประเพณีและการชี้นำ แสวงหาปัญญาและการเติบโตทางจิตวิญญาณ",
+    "goldenSentenceTh": "แสวงหาแสงสว่างแห่งปัญญา จะยกระดับจิตวิญญาณของคุณ"
   },
   {
     "id": 6,
@@ -76,7 +93,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Set against the backdrop of the Garden of Eden, this card features the love story of Adam and Eve as its theme, elucidating the true essence of love. In the card, Adam and Eve stand on either side, with fertile land beneath their feet and vibrant life all around. They experience the romance and warmth of love under the blessing of angels.",
     "goldenSentence": "Cherish those around you, the Year of the Horse will bring you wonderful relationships.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงความรักและความสัมพันธ์ เป็นสัญลักษณ์ของการเลือกและความกลมกลืน",
+    "analysisTh": "ฉากหลังเป็นสวนอีเดน ไพ่นี้ใช้เรื่องราวความรักของอาดัมและอีฟ อาดัมและอีฟยืนอยู่คนละข้าง มีดินอุดมใต้เท้าและชีวิตอันสดใสรอบตัว พวกเขาสัมผัสความโรแมนติกและอบอุ่นของความรักภายใต้พรของเทวดา",
+    "goldenSentenceTh": "ดูแลคนรอบข้างของคุณ จะนำพาความสัมพันธ์ที่งดงาม"
   },
   {
     "id": 7,
@@ -87,7 +107,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The victor on the chariot stands in a powerful posture, demonstrating his great achievements in the world. The two lions pulling the chariot, one black and one white, are always ready to move forward.",
     "goldenSentence": "March forward bravely, the Year of the Horse will bring you the strength to overcome challenges.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงชัยชนะและพลังใจ แสดงถึงความกล้าในการเอาชนะอุปสรรค",
+    "analysisTh": "ผู้พิชิตบนรถศึกยืนอย่างทรงพลัง สิงโตสองตัวที่ลากรถ ตัวดำตัวขาว พร้อมเดินหน้าเสมอ",
+    "goldenSentenceTh": "เดินหน้าอย่างกล้าหาญ จะนำพาพลังเอาชนะความท้าทาย"
   },
   {
     "id": 8,
@@ -98,7 +121,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The goddess of victory bends down stroking a fierce lion, soothing the lion of fear in her arms with gentleness and love. It is a symbol of love and strong will. Precisely because of love and will, humanity can overcome difficulties and advance continuously in the course of history. The lion represents human instinct, while the woman symbolizes love and submission. The two must maintain harmony and support each other to become the force to conquer the world. Furthermore, it also means you have the ability to solve the difficult situation you are facing and have confidence in your inner strength.",
     "goldenSentence": "Overcome hardness with softness, the Year of the Horse will bring you gentle yet powerful strength.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงพลังภายในและความกล้าหาญ เป็นสัญลักษณ์ของพลังอ่อนโยน",
+    "analysisTh": "เทพีแห่งชัยชนะก้มลงลูบสิงโตดุร้าย ปลอบประโลมสิงโตแห่งความกลัวด้วยความอ่อนโยนและความรัก เป็นสัญลักษณ์ของความรักและเจตจำนงอันแข็งแกร่ง เพราะความรักและเจตจำนง มนุษย์จึงเอาชนะความยากลำบากได้",
+    "goldenSentenceTh": "ใช้ความอ่อนโยนเอาชนะความแข็งกร้าว จะนำพาพลังอันอ่อนโยนแต่ทรงพลัง"
   },
   {
     "id": 9,
@@ -109,7 +135,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The Hermit, draped in a robe, holds a lamp and leans on a staff, advancing alone in the darkness. This card represents solitude; the hermit tries to abandon external temptations to achieve inner peace, and then gain truth through meditation in a quiet environment. In silence, one can only hear the voice from within, thus better understand one's thoughts and find a true ultimate goal for oneself.",
     "goldenSentence": "Seek answers in silence, the Year of the Horse will bring you inner peace.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงการทบทวนตนเองและปัญญา เตือนให้คุณใช้เวลาอยู่กับตัวเอง",
+    "analysisTh": "ฤๅษีห่มเสื้อคลุม ถือตะเกียงและพิงไม้เท้า เดินเพียงลำพังในความมืด ไพ่นี้สื่อถึงความสันโดษ ฤๅษีพยายามละทิ้งสิ่งล่อลวงภายนอกเพื่อสงบภายใน แล้วค้นพบความจริงผ่านการทำสมาธิ",
+    "goldenSentenceTh": "ค้นหาคำตอบในความเงียบ จะนำพาความสงบภายใน"
   },
   {
     "id": 10,
@@ -120,7 +149,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The central circle symbolizes the Wheel of Fortune, with jackal, sword, lion, and snake around the wheel. The four animals at the corners of the card represent the four living creatures that Saint John saw before God's throne in Revelation. Each having wings represents their ability to maintain stability amid change, while reading represents gaining wisdom in change.",
     "goldenSentence": "The Wheel of Fortune turns, the Year of the Horse will bring you unexpected opportunities.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงการเปลี่ยนแปลงและจุดเปลี่ยนของชะตา เตือนให้คุณไหลไปกับกระแสชีวิต",
+    "analysisTh": "วงกลมตรงกลางคือวงล้อแห่งโชคชะตา มีสัตว์สี่ตัวที่มุมไพ่แสดงถึงสิ่งมีชีวิตสี่ตัวที่นักบุญจอห์นเห็น แต่ละตัวมีปีกแสดงถึงความสามารถในการรักษาเสถียรภาพท่ามกลางการเปลี่ยนแปลง",
+    "goldenSentenceTh": "วงล้อแห่งโชคชะตาหมุนไป จะนำพาโอกาสที่ไม่คาดคิด"
   },
   {
     "id": 11,
@@ -131,7 +163,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The stern Goddess of Justice sits upright on a stone chair, holding a sword of justice in her right hand and a scale to distinguish good from evil in her left. With these two sacred implements, the Goddess of Justice can easily understand the ins and outs of events and their future developments, allowing her to face everything before her with ease. It also teaches the world the principle of cause and effect, warning people to have a tolerant heart, abide by morality, and uphold justice.",
     "goldenSentence": "Uphold justice, the Year of the Horse will bring you just rewards.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงความยุติธรรมและสมดุล เตือนให้คุณเลือกสิ่งที่ถูกต้อง",
+    "analysisTh": "เทพีแห่งความยุติธรรมนั่งตรงบนเก้าอี้หิน มือขวาถือดาบแห่งความยุติธรรม มือซ้ายถือตาชั่งแยกแยะดีชั่ว ด้วยสองสิ่งศักดิ์สิทธิ์นี้ เทพีสามารถเข้าใจเหตุการณ์ทั้งหมดและเผชิญทุกสิ่งได้อย่างง่ายดาย",
+    "goldenSentenceTh": "ยืนหยัดในความยุติธรรม จะนำพาผลตอบแทนที่เป็นธรรม"
   },
   {
     "id": 12,
@@ -142,7 +177,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Although the person is hanging upside down, it provides him with a completely different perspective to observe and gain different understanding. The Hanged Man knows that futile struggles are useless and only exhaust himself; it's better to use that energy to reflect on himself.",
     "goldenSentence": "See the world from a different angle, the Year of the Horse will bring you new insights.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงการเสียสละและมุมมองใหม่ เตือนให้มองสิ่งต่างๆ จากมุมที่แตกต่าง",
+    "analysisTh": "แม้จะถูกแขวนกลับหัว แต่มันให้มุมมองที่แตกต่างโดยสิ้นเชิงในการสังเกตและเข้าใจ คนแขวนคอรู้ว่าการดิ้นรนไร้ประโยชน์จะทำให้เหนื่อยเปล่า สู้เอาพลังนั้นมาทบทวนตัวเองดีกว่า",
+    "goldenSentenceTh": "มองโลกจากมุมที่ต่างออกไป จะนำพาความเข้าใจใหม่"
   },
   {
     "id": 13,
@@ -153,7 +191,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Death sits high atop a white horse, looking down upon the creatures below. In his hand he raises a black banner bearing the Rosicrucian totem. Whether rich or poor, male or female, death is an irresistible natural phenomenon that cannot and need not be avoided.",
     "goldenSentence": "Say goodbye to the past, the Year of the Horse will bring you a brand new beginning.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงการสิ้นสุดและการเริ่มต้นใหม่ เตือนให้โอบรับการเปลี่ยนแปลง",
+    "analysisTh": "ความตายนั่งสูงบนหลังม้าขาว มองลงมายังสรรพสิ่งเบื้องล่าง มือถือธงดำที่มีตราดอกกุหลาบ ไม่ว่าจะรวยหรือจน ชายหรือหญิง ความตายเป็นปรากฏการณ์ธรรมชาติที่ไม่อาจต้านทาน",
+    "goldenSentenceTh": "บอกลาอดีต จะนำพาการเริ่มต้นใหม่ที่สดใส"
   },
   {
     "id": 14,
@@ -164,7 +205,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "An angel holds two chalices in her hands, representing 'material' and 'spiritual' respectively. She continuously pours water between the chalices, trying to maintain balance between the two.",
     "goldenSentence": "Maintain balance, the Year of the Horse will bring you a harmonious life.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงสมดุลและความพอประมาณ เตือนให้รักษาความสงบภายใน",
+    "analysisTh": "เทวดาถือถ้วยสองใบ ใบหนึ่งแทน 'วัตถุ' อีกใบแทน 'จิตวิญญาณ' เธอเทน้ำระหว่างถ้วยทั้งสองอย่างต่อเนื่อง พยายามรักษาสมดุลระหว่างสองสิ่ง",
+    "goldenSentenceTh": "รักษาสมดุล จะนำพาชีวิตที่กลมกลืน"
   },
   {
     "id": 15,
@@ -174,7 +218,9 @@ export const allTarotCards: TarotCard[] = [
     "meaning": "Symbolizes bondage and temptation, reminding you to be wary of inner desires.",
     "goldenSentence": "Overcome your inner demons, the Year of the Horse will bring you true freedom.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงพันธนาการและสิ่งล่อลวง เตือนให้ระวังกิเลสภายใน",
+    "goldenSentenceTh": "เอาชนะปีศาจภายใน จะนำพาอิสรภาพที่แท้จริง"
   },
   {
     "id": 16,
@@ -185,7 +231,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "A towering tower reaching the clouds is destroyed by lightning, with two people falling to the ground from the collapsing tower. Sudden and unpredictable intense changes are hard to accept; no matter how proud humans are, they cannot compare with the power of nature. Challenging nature only invites divine wrath.",
     "goldenSentence": "Grow through change, the Year of the Horse will bring you opportunities to rebuild.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงการเปลี่ยนแปลงฉับพลันและการเปิดเผยความจริง เตือนให้ยอมรับผลกระทบ",
+    "analysisTh": "หอคอยสูงเสียดฟ้าถูกฟ้าผ่าทำลาย คนสองคนร่วงตกจากหอคอยที่พังทลาย การเปลี่ยนแปลงรุนแรงที่ฉับพลันและคาดไม่ถึงนั้นยากจะยอมรับ ไม่ว่ามนุษย์จะภาคภูมิแค่ไหน ก็ไม่อาจเทียบกับพลังธรรมชาติ",
+    "goldenSentenceTh": "เติบโตผ่านการเปลี่ยนแปลง จะนำพาโอกาสในการสร้างใหม่"
   },
   {
     "id": 17,
@@ -196,7 +245,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Eight stars in the night sky, one large and seven small, with the large one said to be Sirius, bringing hope and confidence to those seeking help. Under the twinkling starlight, there is a naked woman kneeling with her left knee on the ground beside a pool, her right foot in the water, continuously pouring two jugs of water of life into the pool and onto the shore.",
     "goldenSentence": "Look up at the stars, the Year of the Horse will bring you endless hope.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงความหวังและแรงบันดาลใจ แสดงถึงอนาคตที่สดใส",
+    "analysisTh": "ดาวแปดดวงบนท้องฟ้ายามค่ำ ดวงใหญ่หนึ่งดวงและเล็กเจ็ดดวง ดวงใหญ่ว่ากันว่าเป็นดาวซิริอุส นำความหวังและความมั่นใจมาสู่ผู้แสวงหา ภายใต้แสงดาวระยิบ มีหญิงสาวเปลือยกายคุกเข่าข้างสระน้ำ เทน้ำแห่งชีวิตลงสระและบนฝั่ง",
+    "goldenSentenceTh": "เงยหน้ามองดวงดาว จะนำพาความหวังไม่สิ้นสุด"
   },
   {
     "id": 18,
@@ -207,7 +259,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The moon hangs high in the night sky, waxing and waning unpredictably. Under the moon, a wolf and a dog gaze up at the moon and bark, seemingly sympathizing with the moon's melancholy or perhaps asking something of it. The scorpion in the pond seems particularly drawn to the moon palace; it's striving to climb out of the water, preparing to follow the winding yellow path to reach its long-desired destination.",
     "goldenSentence": "Face your inner fears, the Year of the Horse will bring you true courage.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงภาพลวงตาและจิตใต้สำนึก เตือนให้ระวังความกลัวภายใน",
+    "analysisTh": "ดวงจันทร์แขวนอยู่สูงบนท้องฟ้ายามค่ำ ข้างขึ้นข้างแรมอย่างคาดเดาไม่ได้ ใต้แสงจันทร์ สุนัขป่าและสุนัขเลี้ยงเงยหน้าเห่าหอน แมงป่องในสระดูเหมือนถูกดึงดูดโดยวังจันทร์ มันพยายามปีนขึ้นจากน้ำ",
+    "goldenSentenceTh": "เผชิญกับความกลัวภายใน จะนำพาความกล้าหาญที่แท้จริง"
   },
   {
     "id": 19,
@@ -218,7 +273,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "A child with a youthful face and sweet smile rides on horseback, leaping out from gray walls. The child has a daisy wreath and a familiar feather on his head, identical to the one on the Fool and Death cards, said to symbolize transcending death and rebirth. Behind the gray walls, golden sunflowers are planted abundantly, seeming like a man-made garden.",
     "goldenSentence": "Embrace the sunshine, the Year of the Horse will bring you a bright future.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงความสำเร็จและความสุข แสดงถึงแสงสว่างและความอบอุ่น",
+    "analysisTh": "เด็กน้อยหน้าอ่อนเยาว์ยิ้มหวาน ขี่ม้ากระโจนออกจากกำแพงสีเทา มีพวงมาลัยเดซี่และขนนกบนหัว เหมือนกับที่อยู่บนไพ่คนโง่และความตาย ว่ากันว่าสื่อถึงการก้าวข้ามความตายและการเกิดใหม่",
+    "goldenSentenceTh": "โอบรับแสงอาทิตย์ จะนำพาอนาคตที่สดใส"
   },
   {
     "id": 20,
@@ -229,7 +287,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "An angel has sounded the trumpet, spreading the gospel from heaven. Amid the inspiring sound of trumpets, souls that have slept for long emerge from their inner tombs, or perhaps from inner confusion. They stand under the angel's wings with grateful hearts, carefully listening to the heavenly gospel.",
     "goldenSentence": "Awaken and rebirth, the Year of the Horse will bring you new life.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงการตื่นรู้และการเกิดใหม่ เตือนให้เรียนรู้จากบทเรียนในอดีต",
+    "analysisTh": "เทวดาเป่าแตร เผยแพร่ข่าวดีจากสวรรค์ ท่ามกลางเสียงแตรที่ปลุกใจ ดวงวิญญาณที่หลับใหลมานานโผล่ออกมาจากหลุมฝังศพภายใน พวกเขายืนใต้ปีกเทวดาด้วยหัวใจที่สำนึกบุญคุณ ตั้งใจฟังข่าวดีจากสวรรค์",
+    "goldenSentenceTh": "ตื่นรู้และเกิดใหม่ จะนำพาชีวิตใหม่"
   },
   {
     "id": 21,
@@ -240,7 +301,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The World represents the center of the universe; the four directions still have the lion, eagle, angel, and ox, but the center is no longer the Wheel of Fortune, rather a young maiden dancing gracefully in a laurel wreath. With one hand holding a key, she cheers for those entering the climax, or perhaps calling out, guiding the victors to the door of wisdom to receive from her hand the key that opens happiness.",
     "goldenSentence": "Complete and fulfilled, the Year of the Horse will bring you a new journey.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg",
-    "suit": "major"
+    "suit": "major",
+    "meaningTh": "สื่อถึงความสำเร็จและความสมบูรณ์ แสดงถึงจุดสิ้นสุดของการเดินทางและการเริ่มต้นใหม่",
+    "analysisTh": "โลกแสดงถึงศูนย์กลางจักรวาล สี่ทิศยังมีสิงโต นกอินทรี เทวดา และวัว แต่ตรงกลางไม่ใช่วงล้อโชคชะตาอีกต่อไป แต่เป็นหญิงสาวเต้นรำอย่างสง่างามในพวงมาลัยลอเรล มือหนึ่งถือกุญแจ เธอโห่ร้องให้ผู้ที่เข้าสู่จุดสุดยอด",
+    "goldenSentenceTh": "สมบูรณ์แล้ว จะนำพาการเดินทางใหม่"
   },
   {
     "id": 22,
@@ -856,6 +920,7 @@ export const allTarotCards: TarotCard[] = [
     "suit": "pentacles"
   }
 ];
+
 
 export const majorArcana = allTarotCards.filter(c => c.suit === "major");
 export const minorArcana = allTarotCards.filter(c => c.suit !== "major");

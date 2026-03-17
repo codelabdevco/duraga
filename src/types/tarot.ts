@@ -13,8 +13,11 @@ export interface TarotCard {
   nameEn: string;
   nameTh: string;
   meaning: string;
+  meaningTh?: string;
   analysis?: string;
+  analysisTh?: string;
   goldenSentence: string;
+  goldenSentenceTh?: string;
   image: string;
   suit: "major" | "cups" | "swords" | "wands" | "pentacles";
 }

@@ -77,20 +77,20 @@ export default function ReadingScreen() {
                   ตำแหน่ง {i + 1}: {card.position}
                 </p>
                 <p className="text-xs text-white/50 leading-5">
-                  {card.meaning}
+                  {card.meaningTh || card.meaning}
                 </p>
               </div>
             </div>
 
             {/* Analysis */}
-            {card.analysis && (
+            {(card.analysisTh || card.analysis) && (
               <div className="px-4 pb-4">
                 <p className="text-sm leading-7 text-white/75">
-                  {card.analysis}
+                  {card.analysisTh || card.analysis}
                 </p>
-                {card.goldenSentence && (
+                {(card.goldenSentenceTh || card.goldenSentence) && (
                   <p className="mt-3 text-sm text-gold/80 italic leading-6 border-l-2 border-gold/30 pl-3">
-                    &ldquo;{card.goldenSentence}&rdquo;
+                    &ldquo;{card.goldenSentenceTh || card.goldenSentence}&rdquo;
                   </p>
                 )}
               </div>
