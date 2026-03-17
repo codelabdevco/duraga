@@ -312,7 +312,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The wand symbolizes new energy, and the Ace of Wands represents infinite potential, like a spark with the potential to ignite a prairie fire. Mountains, grasslands, trees, flowing water, and a distant castle; above the vast earth, from the clouds extends a strong and powerful hand, grasping a wand symbolizing strength. The wand is thick with green leaves, dancing in the air. Around the great hand, white radiance symbolizes that this hand is supreme, conveying the will of God.",
     "goldenSentence": "Ignite your passion, the Year of the Horse will bring you infinite motivation.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/1/11/Wands01.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "สื่อถึงการเริ่มต้นใหม่และความคิดสร้างสรรค์ เป็นสัญลักษณ์แห่งความหลงใหลและพลังแห่งการลงมือทำ",
+    "analysisTh": "ไม้เท้าเป็นสัญลักษณ์ของพลังงานใหม่ และเอสแห่งไม้เท้าคือตัวแทนของศักยภาพอันไร้ขีดจำกัด ดังประกายไฟที่พร้อมลุกโชนจนกลายเป็นเปลวเพลิงท่วมทุ่ง เบื้องหน้าคือภูเขา ทุ่งหญ้า ต้นไม้ สายน้ำ และปราสาทในระยะไกล เหนือพื้นดินอันกว้างใหญ่ มือที่แข็งแกร่งและทรงพลังยื่นออกมาจากกลุ่มเมฆ กำไม้เท้าอันเป็นสัญลักษณ์แห่งอำนาจไว้อย่างมั่นคง",
+    "goldenSentenceTh": "จุดประกายไฟแห่งความหลงใหลในตัวเอง พลังแรงบันดาลใจอันไม่มีที่สิ้นสุดกำลังรอคุณอยู่"
   },
   {
     "id": 23,
@@ -323,7 +326,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Looking out toward the sea, mountains, and the inhabited land. He holds a wand in his left hand, resting it on a carved stone base symbolizing the foundation of wisdom and strength. What he holds in his right hand looks both like a miniature representation of the Earth and a mysterious crystal ball, symbolizing the energy of dominating power.",
     "goldenSentence": "Plan for the future, the Year of the Horse will bring you clear direction.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Wands02.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "สื่อถึงการวางแผนและการตัดสินใจ เตือนให้เตรียมพร้อมสำหรับเส้นทางข้างหน้า",
+    "analysisTh": "เขามองออกไปยังทะเล ภูเขา และดินแดนที่มีผู้คนอาศัย มือซ้ายถือไม้เท้าพิงอยู่กับฐานหินแกะสลักอันเป็นสัญลักษณ์ของปัญญาและความเข้มแข็ง ส่วนที่อยู่ในมือขวานั้นดูเหมือนทั้งลูกโลกจำลองและลูกแก้วลึกลับพร้อมกัน เป็นสัญลักษณ์ของพลังแห่งการครอบครองและบัญชาการ",
+    "goldenSentenceTh": "วางแผนอนาคตให้ดี ทิศทางที่ชัดเจนกำลังรอให้คุณก้าวไปถึง"
   },
   {
     "id": 24,
@@ -334,7 +340,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The person standing on the mountain peak gazing at the sea resembles a successful merchant. He supports himself with a wand in his right hand, seeking the staff's support. The golden background symbolizes brightness; the sea is vast and calm, an excellent opportunity for departure, indicating success. Standing in a commanding posture on the mountain peak symbolizes leadership, and gazing into the distance symbolizes foresight and long-term vision.",
     "goldenSentence": "Look to the future, the Year of the Horse will bring you a broad vision.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Wands03.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "เป็นสัญลักษณ์ของวิสัยทัศน์และภาวะผู้นำ สื่อถึงความสามารถในการมองไปยังอนาคตอันไกลโพ้น",
+    "analysisTh": "ชายผู้ยืนบนยอดเขามองออกไปยังท้องทะเลนั้นดูประดุจพ่อค้าผู้ประสบความสำเร็จ เขาใช้มือขวาพิงไม้เท้าเพื่อพยุงตัว พื้นหลังสีทองสื่อถึงความรุ่งโรจน์ ทะเลเบื้องหน้ากว้างใหญ่และสงบนิ่ง เป็นฤกษ์งามของการออกเดินทาง",
+    "goldenSentenceTh": "จงมองไปยังอนาคต ขอบฟ้าอันกว้างไกลกำลังรอให้คุณก้าวออกไปพิชิต"
   },
   {
     "id": 25,
@@ -345,7 +354,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Four tall wands stand symmetrically and firmly on the ground, symbolizing stability and firmness. Vines heavy with fruit wrap around the wands, symbolizing prosperity and wealth. Below the wands, two women in colorful dresses dance with flower bouquets, and the crowd behind them cheer as if celebrating the joy of harvest, rejoicing in a stable and prosperous life. The high castle behind the wands represents a fortress, where people live harmoniously in this blissful harbor.",
     "goldenSentence": "Celebrate your achievements, the Year of the Horse will bring you more joy.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Wands04.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "สื่อถึงการเฉลิมฉลองและความมั่นคง เป็นสัญลักษณ์แห่งความสำเร็จและความปิติยินดี",
+    "analysisTh": "ไม้เท้าสูงสี่ต้นปักอยู่บนพื้นดินอย่างสมมาตรและมั่นคง เถาวัลย์ที่ห้อยย้อยพะรุงพะรังด้วยผลไม้พันรอบไม้เท้า สื่อถึงความอุดมสมบูรณ์และความมั่งคั่ง ด้านล่างมีหญิงสาวในชุดสีสันสดใสสองคนกำลังเต้นรำพร้อมช่อดอกไม้",
+    "goldenSentenceTh": "จงเฉลิมฉลองความสำเร็จของตัวเอง เพราะความสุขและความยินดียิ่งใหญ่กว่านี้ยังรออยู่"
   },
   {
     "id": 26,
@@ -356,7 +368,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The wands represent the element of fire, and the whole scene resembles a melee. Everyone holds a wand as a weapon, fighting each other. Their expressions reveal confusion. Their similar attire and appearance symbolize a fair war.",
     "goldenSentence": "Face challenges, the Year of the Horse will bring you opportunities for growth.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Wands05.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "เป็นสัญลักษณ์ของความขัดแย้งและการแข่งขัน เตือนให้เผชิญหน้ากับความท้าทายที่รออยู่",
+    "analysisTh": "ไม้เท้าเป็นตัวแทนของธาตุไฟ และภาพทั้งหมดดูเหมือนการต่อสู้ระยะประชิด ทุกคนถือไม้เท้าเป็นอาวุธและสู้รบกันอยู่ สีหน้าของแต่ละคนสื่อถึงความสับสนและไม่แน่ใจ",
+    "goldenSentenceTh": "จงเผชิญหน้ากับความท้าทาย เพราะอุปสรรคคือบันไดที่จะพาคุณเติบโตขึ้น"
   },
   {
     "id": 27,
@@ -367,7 +382,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The crowned male warrior returns in victory, riding a white horse, receiving welcome and admiration from the crowd. A victory wreath hangs from the wand he holds. The victory of Six of Wands is glorious, external, and visible to all. The white horse and green robes represent strength, while the warrior's red outer garment symbolizes his enthusiasm and fighting spirit. The warrior holds his head high with full confidence, having achieved success through his own efforts.",
     "goldenSentence": "Enjoy your victory, the Year of the Horse will bring you more honor.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Wands06.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "สื่อถึงชัยชนะและการได้รับการยอมรับ เป็นสัญลักษณ์แห่งความปิติในความสำเร็จ",
+    "analysisTh": "นักรบชายผู้สวมมงกุฎเดินทางกลับมาอย่างผู้ชนะ ขี่ม้าขาวและได้รับการต้อนรับจากผู้คนรอบข้างด้วยความชื่นชมยินดี พวงหรีดแห่งชัยชนะห้อยอยู่บนไม้เท้าที่เขาถือ",
+    "goldenSentenceTh": "จงชื่นชมยินดีกับชัยชนะของตัวเอง เกียรติยศและเกียรติภูมิยิ่งใหญ่กว่านี้กำลังรอคุณอยู่"
   },
   {
     "id": 28,
@@ -378,7 +396,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The scene of Seven of Wands takes place in battle. A person dressed in green raises his wand to deal with the attacking wands approaching him. He appears to be both attacking and defending, perhaps both at once.",
     "goldenSentence": "Stand your ground, the Year of the Horse will bring you firm beliefs.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Wands07.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "เป็นสัญลักษณ์ของความกล้าหาญและความอดทนมุ่งมั่น เตือนให้ยืนหยัดในจุดยืนของตัวเอง",
+    "analysisTh": "ภาพในเจ็ดแห่งไม้เท้าเกิดขึ้นในสนามรบ ชายผู้สวมเสื้อสีเขียวยกไม้เท้าขึ้นสู้กับไม้เท้าที่พุ่งเข้ามาโจมตี ท่าทางของเขาดูเหมือนทั้งกำลังโจมตีและป้องกันตัวพร้อมกัน",
+    "goldenSentenceTh": "จงยืนหยัดในจุดยืนของตัวเอง ความศรัทธาและความมุ่งมั่นจะนำพาคุณไปสู่ชัยชนะ"
   },
   {
     "id": 29,
@@ -389,7 +410,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Across the vast green grassland runs a river, with eight wands arranged in parallel above the river. The wands are tilted as if about to touch the river, reminiscent of Moses' staff, which symbolizes the beginning and end of all actions.",
     "goldenSentence": "Move forward quickly, the Year of the Horse will bring you efficient results.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Wands08.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "สื่อถึงความเร็วและการลงมือทำ เป็นสัญลักษณ์ของแรงผลักดันในการก้าวไปข้างหน้าอย่างรวดเร็ว",
+    "analysisTh": "เหนือทุ่งหญ้าเขียวขจีมีสายน้ำไหลผ่าน ไม้เท้าทั้งแปดวางเรียงขนานกันอยู่เหนือสายน้ำ ปลายไม้เท้าเอียงลงราวกับกำลังจะแตะผิวน้ำ",
+    "goldenSentenceTh": "จงก้าวไปข้างหน้าอย่างรวดเร็วและแน่วแน่ ผลลัพธ์อันงดงามรอคุณอยู่ที่ปลายทาง"
   },
   {
     "id": 30,
@@ -400,7 +424,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The figure in Nine of Wands has clearly experienced a difficult period: bandaged and supported by a single wand. This warrior has endured much warfare. Though the soldier in the card is indeed scarred, he has not fallen; he stands resiliently, never giving up.",
     "goldenSentence": "Maintain patience, the Year of the Horse will bring you final victory.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Wands09.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "เป็นสัญลักษณ์ของความทนทานและความเพียรพยายาม เตือนให้รักษาความอดทนเอาไว้",
+    "analysisTh": "บุคคลในเก้าแห่งไม้เท้าผ่านช่วงเวลาอันโหดร้ายมาอย่างเห็นได้ชัด บาดแผลถูกพันผ้า และเขาต้องพิงไม้เท้าเพื่อประคองตัว แม้ร่างกายจะเต็มไปด้วยรอยแผล แต่เขายังไม่ล้มลง เขายืนหยัดอยู่ด้วยพลังที่เหลืออยู่",
+    "goldenSentenceTh": "จงรักษาความอดทนเอาไว้ เพราะชัยชนะขั้นสุดท้ายกำลังรอคุณอยู่เบื้องหน้า"
   },
   {
     "id": 31,
@@ -411,7 +438,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "A man in red clothing carries ten wands, struggling to move forward. Ahead are green trees and houses, representing the destination and victory. However, the man is very tired; his back is bent, and his difficult steps symbolize that he bears enormous pressure beyond his capacity.",
     "goldenSentence": "Learn to let go, the Year of the Horse will bring you a lighter life.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/0/0b/Wands10.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "สื่อถึงภาระและความกดดัน เตือนให้เรียนรู้ที่จะปล่อยวาง",
+    "analysisTh": "ชายผู้สวมเสื้อสีแดงแบกไม้เท้าสิบต้นไว้อย่างยากลำบากและพยายามก้าวไปข้างหน้า เบื้องหน้ามีต้นไม้เขียวชอุ่มและบ้านเรือน ซึ่งเป็นสัญลักษณ์ของจุดหมายและชัยชนะ แต่ชายผู้นี้อ่อนล้าอย่างมาก",
+    "goldenSentenceTh": "จงเรียนรู้ที่จะปล่อยวาง เพราะชีวิตที่เบาสบายกว่านี้กำลังรอให้คุณก้าวเข้าหา"
   },
   {
     "id": 32,
@@ -422,7 +452,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The youth in the card covers the wand with both hands; the white hat symbolizes his purity, and the red feather reminds one of the feather on human heads, so one can imagine the Page of Wands' innocence, instability, and immaturity. Although he has foolish aspects, his expression is serious. He wears golden clothes, symbolizing his noble status and innate strength. The inside of his clothes is red, symbolizing his inner enthusiasm and bravery. He is somewhat eccentric and lively.",
     "goldenSentence": "Be full of enthusiasm, the Year of the Horse will bring you new adventures.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Wands11.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "เป็นสัญลักษณ์ของความกระตือรือร้นและการสำรวจ สื่อถึงการเริ่มต้นใหม่และการผจญภัย",
+    "analysisTh": "เยาวชนในไพ่นี้จับไม้เท้าไว้ด้วยทั้งสองมือ หมวกสีขาวสื่อถึงความบริสุทธิ์ใจ และขนนกสีแดงทำให้นึกถึงขนนกบนศีรษะมนุษย์ เสื้อผ้าสีทองสื่อถึงสถานะอันสูงส่งและพลังที่มีมาแต่กำเนิด",
+    "goldenSentenceTh": "จงเปี่ยมด้วยความกระตือรือร้น เพราะการผจญภัยอันน่าตื่นเต้นกำลังรอคุณอยู่"
   },
   {
     "id": 33,
@@ -432,7 +465,9 @@ export const allTarotCards: TarotCard[] = [
     "meaning": "Represents action and adventure, symbolizing bravery and impulsiveness.",
     "goldenSentence": "Be brave and adventurous, the Year of the Horse will bring you a wonderful journey.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/1/16/Wands12.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "สื่อถึงการลงมือทำและการผจญภัย เป็นสัญลักษณ์ของความกล้าหาญและความเด็ดเดี่ยวฉับไว",
+    "goldenSentenceTh": "จงกล้าหาญและออกผจญภัย การเดินทางอันยิ่งใหญ่กำลังรอคุณอยู่"
   },
   {
     "id": 34,
@@ -442,7 +477,9 @@ export const allTarotCards: TarotCard[] = [
     "meaning": "Symbolizes passion and leadership, representing confidence and creativity.",
     "goldenSentence": "Lead with confidence, the Year of the Horse will bring you a successful career.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Wands13.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "เป็นสัญลักษณ์ของความหลงใหลและภาวะผู้นำ สื่อถึงความมั่นใจในตัวเองและความคิดสร้างสรรค์",
+    "goldenSentenceTh": "จงนำพาด้วยความมั่นใจ เส้นทางอาชีพที่รุ่งเรืองกำลังรอให้คุณก้าวเดินไป"
   },
   {
     "id": 35,
@@ -452,7 +489,9 @@ export const allTarotCards: TarotCard[] = [
     "meaning": "Represents authority and leadership, symbolizing maturity and stability.",
     "goldenSentence": "Lead with stability, the Year of the Horse will bring you brilliant achievements.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Wands14.jpg",
-    "suit": "wands"
+    "suit": "wands",
+    "meaningTh": "สื่อถึงอำนาจและภาวะผู้นำ เป็นสัญลักษณ์ของความเจนจัดและความมั่นคงแห่งจิตใจ",
+    "goldenSentenceTh": "จงนำพาด้วยความมั่นคงและแน่วแน่ ความสำเร็จอันรุ่งโรจน์กำลังรอให้คุณประกาศ"
   },
   {
     "id": 36,
@@ -463,7 +502,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The chalice in the card is the one Jesus used at the Last Supper. After Jesus died, his blood was also held in this cup. The dove is the Catholic symbol of the Holy Spirit, representing the bread that symbolizes Jesus' body, descending from above into the chalice, symbolizing the soul entering the material world. Five streams of water flowing from the cup symbolize the five human senses. On the water surface below bloom lotus flowers, symbolizing the awakening of human souls. The hand extending from the clouds gently holds the chalice, filled with infinite love. The Ace of Cups often represents the beginning of new emotions.",
     "goldenSentence": "Open your heart, the Year of the Horse will bring you beautiful emotions.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Cups01.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "สื่อถึงการเริ่มต้นทางอารมณ์ครั้งใหม่ เป็นสัญลักษณ์แห่งความรักและการไหลเวียนของความรู้สึก",
+    "analysisTh": "ถ้วยในไพ่ใบนี้คือถ้วยที่พระเยซูทรงใช้ในมื้อสุดท้าย นกพิราบเป็นสัญลักษณ์คาทอลิกของพระวิญญาณบริสุทธิ์ ลำธารน้ำห้าสายที่ไหลออกมาจากถ้วยแทนประสาทสัมผัสทั้งห้าของมนุษย์ ด้านล่างมีดอกบัวบานอยู่บนผิวน้ำ เป็นสัญลักษณ์ของการตื่นตัวของวิญญาณมนุษย์",
+    "goldenSentenceTh": "เปิดใจรับสิ่งที่กำลังจะมา ความรู้สึกงดงามกำลังรอคุณอยู่"
   },
   {
     "id": 37,
@@ -474,7 +516,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "A man and woman wearing flower crowns face each other, holding chalices in mutual respect. The man leans forward, symbolizing an active, outward masculine force; the woman stands poised like a mountain, symbolizing a reserved, inward feminine force. Between them floats a staff entwined with two snakes, symbolizing commerce and trade. The lion head on the staff symbolizes communication, and the spread wings symbolize the Holy Spirit. The entire scene exudes a mystical power of union or cooperation.",
     "goldenSentence": "Cherish your love, the Year of the Horse will bring you a happy relationship.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Cups02.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "เป็นสัญลักษณ์ของความรักและความเป็นหุ้นส่วน สื่อถึงความสมดุลและความกลมกลืนในความสัมพันธ์",
+    "analysisTh": "ชายและหญิงที่สวมมงกุฎดอกไม้หันหน้าเข้าหากัน ถือถ้วยแสดงความเคารพซึ่งกันและกัน ระหว่างกลางมีไม้เท้าพันด้วยงูสองตัว เป็นสัญลักษณ์ของการค้าขายและการแลกเปลี่ยน ทั้งฉากสื่อถึงพลังลึกลับแห่งการรวมกันและความร่วมมือ",
+    "goldenSentenceTh": "ใส่ใจดูแลรักษาความรัก ความสัมพันธ์ที่อบอุ่นแสนสุขกำลังรอคุณอยู่"
   },
   {
     "id": 38,
@@ -485,7 +530,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Three women in colorful clothing wear garlands symbolizing harvest, forming a circle around raised chalices celebrating together. Happiness radiates from their faces, surrounded by pumpkins and gourds, with one woman holding a bunch of grapes, presenting a scene of abundance. The three women have different colored hair, eyes, and clothing, representing that they are independent individuals with their own personalities, yet they can coexist harmoniously, the circular formation indicating equality among them.",
     "goldenSentence": "Share your joy, the Year of the Horse will bring you sincere friendship.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Cups03.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "สื่อถึงการเฉลิมฉลองและมิตรภาพ เป็นสัญลักษณ์แห่งความสุขและการแบ่งปัน",
+    "analysisTh": "หญิงสาวสามคนในชุดสีสันสดใสสวมพวงมาลัยแห่งการเก็บเกี่ยว จับมือกันเป็นวงกลมและยกถ้วยขึ้นฉลองร่วมกัน ทั้งสามมีผม ดวงตา และเสื้อผ้าต่างกัน แสดงว่าพวกเธอต่างมีตัวตนเป็นของตนเอง แต่ก็อยู่ร่วมกันได้อย่างกลมเกลียว",
+    "goldenSentenceTh": "แบ่งปันความสุขจากใจ มิตรภาพแท้จริงกำลังรอต้อนรับคุณ"
   },
   {
     "id": 39,
@@ -496,7 +544,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The man in the card leans against a tree, looking bored. He keeps his eyes tightly closed, arms crossed over his chest, taking a defensive stance. Three cups placed side by side in front symbolize his past experiences; he stares at them silently, representing his inability to move on from old matters. A cup extending from the clouds symbolizes a new opportunity.",
     "goldenSentence": "Reassess your needs, the Year of the Horse will bring you new discoveries.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/35/Cups04.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "เป็นสัญลักษณ์ของความไม่พอใจและการทบทวนตนเอง เตือนให้มองดูความต้องการที่แท้จริงของตัวเอง",
+    "analysisTh": "ชายในไพ่นั่งพิงต้นไม้ด้วยสีหน้าเบื่อหน่าย หลับตาแน่นและกอดอกไว้ราวกับป้องกันตัวเอง ถ้วยสามใบวางเรียงอยู่ตรงหน้าแทนประสบการณ์ในอดีต ส่วนถ้วยที่ยื่นออกมาจากก้อนเมฆนั้นคือโอกาสใหม่ที่รอให้เขาหยิบฉวย",
+    "goldenSentenceTh": "ทบทวนสิ่งที่ต้องการอย่างแท้จริง การค้นพบใหม่กำลังรอคุณอยู่"
   },
   {
     "id": 40,
@@ -507,7 +558,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Under a dark sky, a man in a black cloak bows his head mourning three overturned cups before him. There is a bridge over the river ahead leading to a distant village, suggesting an opportunity to choose another life state. Three cups in front are overturned, while two cups stand behind.",
     "goldenSentence": "Accept your loss, the Year of the Horse will bring you new hope.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Cups05.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "สื่อถึงการสูญเสียและความเศร้าโศก เตือนให้ยอมรับในสิ่งที่จากไปและก้าวเดินต่อ",
+    "analysisTh": "ภายใต้ท้องฟ้าอันมืดครึ้ม ชายในเสื้อคลุมสีดำก้มหน้าโศกเศร้าอยู่กับถ้วยสามใบที่คว่ำอยู่ตรงหน้า ด้านหน้ามีสะพานข้ามแม่น้ำไปสู่หมู่บ้านในระยะไกล ถ้วยสองใบที่ยังตั้งอยู่ด้านหลังบ่งบอกว่ายังมีสิ่งดีๆ หลงเหลืออยู่",
+    "goldenSentenceTh": "ยอมรับในสิ่งที่สูญเสียไป แล้วความหวังใหม่จะเริ่มต้นขึ้น"
   },
   {
     "id": 41,
@@ -518,7 +572,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In a colorful garden, a little boy holds and smells flowers from a chalice, seemingly ready to offer it to the little girl before him. The entire scene is filled with rich fairy-tale colors, causing one to recall childhood memories.",
     "goldenSentence": "Cherish your memories, the Year of the Horse will bring you warm strength.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/1/17/Cups06.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "เป็นสัญลักษณ์ของความคิดถึงและความทรงจำ สื่อถึงความงดงามของอดีต",
+    "analysisTh": "ในสวนที่เต็มไปด้วยสีสัน เด็กชายหยิบดอกไม้จากถ้วยขึ้นมาดมอย่างดีใจ ดูเหมือนกำลังจะยื่นให้กับเด็กหญิงที่อยู่ตรงหน้า ทั้งฉากเต็มไปด้วยสีสันราวกับนิทาน",
+    "goldenSentenceTh": "หวงแหนความทรงจำดีๆ เอาไว้ พลังอันอบอุ่นกำลังหล่อเลี้ยงจิตใจคุณ"
   },
   {
     "id": 42,
@@ -529,7 +586,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The man in the card looks at seven chalices floating above the clouds with a helpless expression. He sighs for what is lost and cries over spilled milk. Moreover, the items placed in the clouds also symbolize an illusory existence, merely the man's daydreams.",
     "goldenSentence": "Face reality, the Year of the Horse will bring you clear understanding.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Cups07.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "สื่อถึงทางเลือกและภาพลวงตา เตือนให้หันกลับมาเผชิญกับความเป็นจริง",
+    "analysisTh": "ชายในไพ่มองดูถ้วยเจ็ดใบที่ลอยอยู่เหนือก้อนเมฆด้วยความท้อแท้ สิ่งของในก้อนเมฆล้วนเป็นภาพลวงตา เป็นเพียงความฝันกลางวันของชายผู้นั้นเท่านั้น",
+    "goldenSentenceTh": "เผชิญกับความจริงอย่างกล้าหาญ ความเข้าใจที่ชัดเจนจะเป็นแสงสว่างนำทางคุณ"
   },
   {
     "id": 43,
@@ -540,7 +600,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "On a moonlit night, a man in red clothing walks away with a staff from the eight chalices he laboriously built. Marshes surround him, symbolizing blocked emotions. He leaves because he discovers a crack in the built cups. Thus, to find one cup, he abandons the eight cups already built behind him. He could have taken the eight cups with him to search for that cup, but he did not do so. His red clothing and shoes symbolize his action power.",
     "goldenSentence": "Leave bravely, the Year of the Horse will bring you a new beginning.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "เป็นสัญลักษณ์ของการจากไปและการเริ่มต้นใหม่ สื่อถึงความกล้าหาญและความมุ่งมั่น",
+    "analysisTh": "ในคืนที่มีแสงจันทร์สาดส่อง ชายในชุดสีแดงถือไม้เท้าเดินจากไปจากถ้วยแปดใบที่เขาสร้างขึ้นอย่างยากลำบาก เขาจากไปเพราะค้นพบรอยร้าวในถ้วยที่สร้าง เสื้อผ้าและรองเท้าสีแดงของเขาเป็นสัญลักษณ์ของพลังในการลงมือทำ",
+    "goldenSentenceTh": "กล้าที่จะก้าวจากไป การเริ่มต้นใหม่กำลังรอคุณอยู่เบื้องหน้า"
   },
   {
     "id": 44,
@@ -551,7 +614,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The man in the card sits contentedly before a neat row of chalices, having received everything he desired, filling the entire scene with a satisfied and pleasant atmosphere. It is clear that the Nine of Cups represents all sensory pleasures, including visual, taste, and tactile enjoyment.",
     "goldenSentence": "Be content within, the Year of the Horse will bring you true happiness.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/2/24/Cups09.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "สื่อถึงความพึงพอใจและการสมหวัง เป็นสัญลักษณ์แห่งความสงบสุขภายในจิตใจ",
+    "analysisTh": "ชายในไพ่นั่งอย่างพึงพอใจอยู่หน้าแถวของถ้วยที่เรียงสวยงาม เขาได้รับทุกสิ่งที่ปรารถนา บรรยากาศทั้งฉากเต็มเปี่ยมไปด้วยความอิ่มเอมและสุขสบาย",
+    "goldenSentenceTh": "รู้จักพอใจในสิ่งที่มี ความสุขที่แท้จริงอยู่ในหัวใจของคุณเอง"
   },
   {
     "id": 45,
@@ -562,7 +628,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "This is a harmonious family, with the couple embracing and raising one hand each toward the chalice and rainbow symbolizing a good life. Two children play happily nearby. In the distance is their home. This is a warm and touching scene.",
     "goldenSentence": "Family happiness, the Year of the Horse will bring you a warm life.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/8/84/Cups10.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "เป็นสัญลักษณ์ของความสมบูรณ์ทางอารมณ์และความสุขในครอบครัว สื่อถึงความกลมเกลียวและความพึงพอใจ",
+    "analysisTh": "ครอบครัวอันอบอุ่นนี้ประกอบด้วยคู่รักที่กอดกันและยกมือชี้ไปยังถ้วยและรุ้งกินน้ำที่สื่อถึงชีวิตที่ดีงาม เด็กๆ สองคนเล่นอย่างสนุกสนานอยู่ใกล้ๆ",
+    "goldenSentenceTh": "ความสุขของครอบครัวคือสมบัติล้ำค่า ชีวิตที่อบอุ่นอยู่ในมือของคุณแล้ว"
   },
   {
     "id": 46,
@@ -573,7 +642,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "A young man stands at the seashore before the azure sea, excitedly watching fish in the chalice. His innocence reminds one of a kind and innocent child. He is emotionally rich and full of love, symbolizing love, warmth, and intimacy.",
     "goldenSentence": "Trust your intuition, the Year of the Horse will bring you emotional opportunities.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Cups11.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "สื่อถึงข่าวสารทางอารมณ์และสัญชาตญาณ เป็นสัญลักษณ์ของโอกาสใหม่ทางความรู้สึก",
+    "analysisTh": "ชายหนุ่มยืนอยู่ริมทะเลสีฟ้าครามมองดูปลาในถ้วยอย่างตื่นเต้นดีใจ ความบริสุทธิ์ของเขาชวนนึกถึงเด็กที่ใจดีและซื่อใส เขาเปี่ยมไปด้วยความรู้สึกและเต็มเปี่ยมด้วยความรัก",
+    "goldenSentenceTh": "เชื่อมั่นในสัญชาตญาณของตัวเอง โอกาสทางความรู้สึกกำลังเดินทางมาหาคุณ"
   },
   {
     "id": 47,
@@ -584,7 +656,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The knight sits upright on horseback, holding aloft the chalice symbolizing devotion, gazing深情ly while the playful horse dips its head and circles. The entire scene is filled with an atmosphere of devotion and romance. Here, the knight represents someone who is emotionally rich, trusts feelings, and is creative.",
     "goldenSentence": "Express your emotions, the Year of the Horse will bring you romantic experiences.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Cups12.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "เป็นสัญลักษณ์ของความโรแมนติกและจินตนาการ สื่อถึงการแสดงออกทางอารมณ์",
+    "analysisTh": "อัศวินนั่งตัวตรงบนหลังม้า ยกถ้วยขึ้นสูงเป็นสัญลักษณ์แห่งความทุ่มเท สายตาของเขาเต็มเปี่ยมด้วยความรักและความปรารถนา",
+    "goldenSentenceTh": "กล้าแสดงออกซึ่งความรู้สึกในใจ ประสบการณ์โรแมนติกกำลังรอพบคุณ"
   },
   {
     "id": 48,
@@ -595,7 +670,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The queen seated on the throne gazes tenderly at the cup in her hands with a sentimental and devoted expression. Additionally, the queen represents kindness, benevolence, and intuition. She is the type of mature and charming woman who would attract young men, not only for her beauty but also for her compassion.",
     "goldenSentence": "Be full of love, the Year of the Horse will bring you warm care.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/6/62/Cups13.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "สื่อถึงความสมบูรณ์ทางอารมณ์และสัญชาตญาณ เป็นสัญลักษณ์แห่งความรักและการใส่ใจดูแล",
+    "analysisTh": "ราชินีที่ประทับบนบัลลังก์จ้องมองถ้วยในมือด้วยสายตาอ่อนโยนและเปี่ยมความรู้สึก เธอคือแบบของสตรีที่เป็นผู้ใหญ่และมีเสน่ห์ ไม่เพียงด้วยความงาม แต่ด้วยความเห็นอกเห็นใจที่มีอยู่ในหัวใจ",
+    "goldenSentenceTh": "จงรักและดูแลด้วยหัวใจที่เปี่ยมความรัก ความอบอุ่นจะหวนกลับมาสู่คุณเสมอ"
   },
   {
     "id": 49,
@@ -606,7 +684,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The King of Cups sits upon his throne, holding a chalice, gazing forward, symbolizing his expansive vision and forward-looking perspective. His wide robe symbolizes broad-mindedness. At the same time, the King of Cups also represents composure, wisdom, and tact.",
     "goldenSentence": "Manage with wisdom, the Year of the Horse will bring you mature relationships.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/0/04/Cups14.jpg",
-    "suit": "cups"
+    "suit": "cups",
+    "meaningTh": "เป็นสัญลักษณ์ของปัญญาและความสมดุลทางอารมณ์ สื่อถึงความสัมพันธ์ที่เป็นผู้ใหญ่และมั่นคง",
+    "analysisTh": "ราชาถ้วยประทับบนบัลลังก์ถือถ้วยไว้ในมือ สายพระเนตรมองตรงไปข้างหน้า แสดงถึงวิสัยทัศน์ที่กว้างไกล เสื้อคลุมอันกว้างใหญ่ของพระองค์เป็นสัญลักษณ์ของความใจกว้าง",
+    "goldenSentenceTh": "บริหารชีวิตด้วยปัญญาและความสงบนิ่ง ความสัมพันธ์ที่มั่นคงอยู่ในเอื้อมมือของคุณ"
   },
   {
     "id": 50,
@@ -617,7 +698,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Above the mountains, a hand emerges from the sky, firmly grasping a sword whose tip pierces the crown at the top. The entire scene symbolizes a firm will to challenge desires. The sword represents harm, just like its double-edged nature: it can hurt others or oneself; it can save lives or take them. As a symbol here, the sword warns those who use it that carelessness can lead to adverse consequences, just as the sword in the picture pierces the crown, easily piercing the crown that symbolizes power.",
     "goldenSentence": "Think clearly, the Year of the Horse will bring you wise decisions.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Swords01.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "สื่อถึงแนวคิดใหม่และความคิดที่แจ่มชัด เป็นสัญลักษณ์ของเหตุผลและการตัดสินใจ",
+    "analysisTh": "เหนือขุนเขา มือหนึ่งโผล่ออกมาจากท้องฟ้า กำดาบอย่างมั่นคง ปลายดาบแทงผ่านมงกุฎที่วางอยู่ด้านบน ภาพทั้งหมดสื่อถึงเจตจำนงอันแน่วแน่ที่จะก้าวข้ามความปรารถนา",
+    "goldenSentenceTh": "จงคิดให้แจ่มชัด การตัดสินใจอย่างมีปัญญากำลังรอคุณอยู่ข้างหน้า"
   },
   {
     "id": 51,
@@ -628,7 +712,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, a woman in a gray robe turns her back to the turbulent ocean representing emotion. She sits on a stone bench, eyes covered with white cloth symbolizing escape from reality, holding swords with both hands crossed over her chest, taking a defensive stance. The woman turns her back to the ocean of emotion, with eyes covered, showing a self-deceiving attitude. Her crossed swords before her face, intersecting over her heart, indicate a closed mind. The woman sits still, the two swords crossing diagonally, like two opposing forces locked in stalemate, representing an awkward situation in interpersonal relationships.",
     "goldenSentence": "Make decisions decisively, the Year of the Horse will bring you clear direction.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Swords02.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "เป็นสัญลักษณ์ของความลังเลและทางเลือก เตือนให้คุณลงมือตัดสินใจเสียที",
+    "analysisTh": "หญิงสาวสวมชุดสีเทาหันหลังให้มหาสมุทรที่ปั่นป่วน เธอนั่งอยู่บนม้านั่งหิน ผ้าสีขาวปิดตาแสดงถึงการหลีกหนีจากความเป็นจริง ถือดาบสองเล่มไขว้กันอยู่หน้าอก",
+    "goldenSentenceTh": "จงตัดสินใจอย่างเด็ดขาด ทิศทางที่ชัดเจนกำลังรอให้คุณก้าวเดิน"
   },
   {
     "id": 52,
@@ -639,7 +726,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Three swords pierce a heart in unison, with a dark rainy background. This is a shocking scene that直观ly reveals the card's meaning - sorrow. However, the scene maintains a certain harmony amid chaos, the three swords seemingly forming a symmetrical shape unintentionally, repeatedly telling everyone that sadness is something everyone must experience, and sadness makes people grow.",
     "goldenSentence": "Move beyond sorrow, the Year of the Horse will bring you new hope.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/0/02/Swords03.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "สื่อถึงความเจ็บปวดและการพลัดพราก เป็นสัญลักษณ์ของความหัวใจสลายและความเศร้าโศก",
+    "analysisTh": "ดาบสามเล่มแทงทะลุหัวใจพร้อมกัน ฉากหลังมืดหม่นและสายฝนพรำลงมา ภาพที่สะเทือนใจนี้บอกเล่าว่าความเจ็บปวดเป็นสิ่งที่ทุกคนต้องผ่านพบ และความเศร้าคือสิ่งที่ทำให้มนุษย์เติบโต",
+    "goldenSentenceTh": "จงก้าวผ่านความเศร้าโศก แสงสว่างแห่งความหวังใหม่กำลังรอคุณอยู่เบื้องหน้า"
   },
   {
     "id": 53,
@@ -650,7 +740,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "A man rests quietly beneath three suspended swords, with another sword beside him that he can take up at any moment to take action. This card's scene is more peaceful and serene compared to other Sword cards, typically representing a passive and inactive state.",
     "goldenSentence": "Heal in peace, the Year of the Horse will bring you the power of recovery.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Swords04.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "เป็นสัญลักษณ์ของการพักผ่อนและการฟื้นฟู เตือนให้คุณมอบเวลาให้ตัวเองได้หายและเยียวยา",
+    "analysisTh": "ชายคนหนึ่งนอนพักผ่อนอย่างสงบใต้ดาบสามเล่มที่แขวนอยู่เบื้องบน และมีดาบอีกเล่มวางอยู่ข้างๆ ที่เขาสามารถหยิบขึ้นมาลงมือได้ตลอดเวลา",
+    "goldenSentenceTh": "จงพักฟื้นจิตใจในความสงบ พลังแห่งการเยียวยากำลังหล่อเลี้ยงตัวคุณ"
   },
   {
     "id": 54,
@@ -661,7 +754,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The victor has collected several swords from the defeated, watching the retreating figure of his vanquished opponent with a smile on his lips. One could say the happier the winner becomes the more dejected the loser feels. From the scene, it's clear that a violent struggle has just ended, with the winner still intoxicated by his triumph.",
     "goldenSentence": "Face challenges, the Year of the Horse will bring you the strength to overcome difficulties.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/2/23/Swords05.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "สื่อถึงความขัดแย้งและการทรยศ เตือนให้คุณพร้อมรับมือกับความท้าทาย",
+    "analysisTh": "ผู้ชนะรวบเอาดาบหลายเล่มจากผู้แพ้ คอยมองหลังของคู่ต่อสู้ที่พ่ายแพ้ถอยร่นไปพร้อมรอยยิ้ม ยิ่งผู้ชนะมีความสุขมากเท่าใด ผู้แพ้ก็ยิ่งสิ้นหวังมากเท่านั้น",
+    "goldenSentenceTh": "จงเผชิญหน้ากับความท้าทาย พลังในการเอาชนะอุปสรรคกำลังหล่อหลอมตัวคุณ"
   },
   {
     "id": 55,
@@ -672,7 +768,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "A boat with six swords inserted in it, with a boatman poling and a mother and daughter aboard, moves toward distant calm waters representing a bright future, while the water beneath churns turbulently. The six swords symbolizing harm cannot be removed, or the boat would sink. They can only move forward with danger, making harm their traveling companion. Things are not terrible, but they are not good either. The black bamboo pole in the boatman's hands - black symbolizes potential, suggesting that future events will unfold. Don't confine yourself by expecting certain outcomes; beyond the churning waters lies boundless tranquility.",
     "goldenSentence": "Move out of difficult situations, the Year of the Horse will bring you new hope.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/2/29/Swords06.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "เป็นสัญลักษณ์ของการเปลี่ยนผ่านและการจากไป สื่อถึงการก้าวออกจากสถานการณ์ที่ยากลำบาก",
+    "analysisTh": "เรือลำหนึ่งที่มีดาบหกเล่มปักอยู่ มีคนถ่อเรือและแม่ลูกนั่งอยู่บนเรือ แล่นไปยังน่านน้ำสงบในระยะไกล ดาบทั้งหกที่เป็นสัญลักษณ์แห่งอันตรายนั้นไม่อาจถอนออกได้ มิเช่นนั้นเรือจะจม จึงต้องเดินหน้าพร้อมกับความเสี่ยง",
+    "goldenSentenceTh": "จงก้าวออกจากห้วงแห่งความยากลำบาก ความหวังใหม่กำลังรอคุณอยู่ที่ปลายทาง"
   },
   {
     "id": 56,
@@ -683,7 +782,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "This is a scene of a man sneaking into a military camp to steal swords. He stole only five, leaving two others in place. A person's strength is always limited, so he has no way to confront the enemy openly and can only resort to cunning tactics to weaken the enemy's fighting power. The two swords left behind represent the danger of this action; a slight misstep could result in a tragic outcome.",
     "goldenSentence": "Stay vigilant, the Year of the Horse will bring you wise insight.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/34/Swords07.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "สื่อถึงการหลอกลวงและกลยุทธ์ เตือนให้คุณรักษาความระมัดระวังไว้เสมอ",
+    "analysisTh": "ภาพนี้เป็นฉากของชายคนหนึ่งที่แอบเล็ดลอดเข้าค่ายทหารเพื่อขโมยดาบ เขาขโมยไปเพียงห้าเล่ม ทิ้งอีกสองเล่มไว้ กำลังของคนคนเดียวมีขีดจำกัด จึงต้องอาศัยเล่ห์กลเพื่อลดพลังต่อสู้ของฝ่ายตรงข้าม",
+    "goldenSentenceTh": "จงรักษาความระแวดระวัง ปัญญาและสติปัญญาอันเฉียบคมกำลังนำทางคุณ"
   },
   {
     "id": 57,
@@ -694,7 +796,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The woman in the card is blindfolded and bound, trapped within a maze of swords. She cannot reach out, see anything, or move freely. Her home lies far away in the mountains behind her. The Eight of Swords symbolizes a helpless and isolated situation. But there is still hope; the warm home behind calls to encourage the woman to break through obstacles and run toward freedom.",
     "goldenSentence": "Break free from constraints, the Year of the Horse will bring you freedom of thought.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Swords08.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "เป็นสัญลักษณ์ของการถูกพันธนาการและข้อจำกัด เตือนให้คุณปลดปล่อยตัวเองจากโซ่ตรวนทางความคิด",
+    "analysisTh": "หญิงในภาพถูกปิดตาและมัดมือ ติดอยู่ในวงล้อมดาบหลายเล่ม แต่ยังมีความหวัง ไออุ่นของบ้านที่อยู่เบื้องหลังคอยกระตุ้นให้เธอทะลุผ่านอุปสรรคและวิ่งสู่อิสรภาพ",
+    "goldenSentenceTh": "จงปลดปล่อยตัวเองจากข้อจำกัดทั้งปวง อิสรภาพทางความคิดกำลังรอให้คุณก้าวออกมา"
   },
   {
     "id": 58,
@@ -705,7 +810,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The man in the card sits on the bed covering his face in anguish, the blanket having fallen to the ground, nine swords resembling window frames and ribs hanging on the wall beside him. At night, sadness and regret always feel particularly intense; when the trivial matters that distract people during the day come to an end, people always sink into their own thoughts, tortured to the point of sleepless nights.",
     "goldenSentence": "Let go of fear, the Year of the Horse will bring you inner peace.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Swords09.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "สื่อถึงความวิตกกังวลและความเป็นห่วง เตือนให้คุณปล่อยวางความกลัวภายในใจ",
+    "analysisTh": "ชายในภาพนั่งอยู่บนเตียง มือปิดหน้าด้วยความทุกข์ทรมาน ดาบเก้าเล่มแขวนอยู่บนผนัง ยามราตรี ความเศร้าและความเสียใจมักรู้สึกหนักหน่วงเป็นพิเศษ",
+    "goldenSentenceTh": "จงปล่อยวางความกลัว ความสงบสุขภายในจิตใจกำลังรอให้คุณค้นพบ"
   },
   {
     "id": 59,
@@ -716,7 +824,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Under a gray sky and layers of dark clouds, a man with his head bowed lies dead under ten swords on his back, with one sword piercing his head. The entire scene is shocking. The Ten of Swords is a bad card; its meaning is very negative, including everything unpleasant like anguish, sadness, and pain. The highlight of this card is the man wearing a red robe, symbolizing his love for life, while the fish-belly white appearing in the distance tells people that darkness is about to pass. The water by the roadside is calm and undisturbed, different from the turbulent waters in other scenes of this group, suggesting: maybe things are not as bad as imagined, the darkness has passed, and dawn is coming.",
     "goldenSentence": "Embrace new life, the Year of the Horse will bring you a brand new beginning.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords10.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "เป็นสัญลักษณ์ของการสิ้นสุดความเจ็บปวด สื่อถึงการเกิดใหม่หลังจากตกต่ำถึงขีดสุด",
+    "analysisTh": "ใต้ท้องฟ้าสีเทาและเมฆดำทับซ้อนกัน ชายคนหนึ่งนอนตายพร้อมดาบสิบเล่มปักอยู่บนหลัง จุดเด่นคือชายสวมเสื้อคลุมสีแดงสัญลักษณ์ของความรักในชีวิต ขณะที่ท้องฟ้าสีขาวในระยะไกลบอกว่าความมืดกำลังจะผ่านไป",
+    "goldenSentenceTh": "จงต้อนรับชีวิตใหม่ การเริ่มต้นที่สดใหม่กำลังก้าวเข้ามาในชีวิตคุณ"
   },
   {
     "id": 60,
@@ -727,7 +838,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, a man raises a sword with both hands, looking straight ahead with a resolute expression, as if without a trace of hesitation. He stands on a hill with a clear blue sky behind him, filled with an uplifting atmosphere. He is certainly not standing here without considering the odds and planning; it symbolizes a way of acting that is both capable and steady. At the same time, the man's posture also carries a defensive meaning, so the Page of Swords also has the meanings of defense and vigilance.",
     "goldenSentence": "Stay curious, the Year of the Horse will bring you new knowledge.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Swords11.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "สื่อถึงแนวคิดใหม่และความอยากรู้อยากเห็น เป็นสัญลักษณ์ของการสำรวจและการเรียนรู้",
+    "analysisTh": "ชายหนุ่มยกดาบขึ้นด้วยมือทั้งสอง จ้องมองตรงไปข้างหน้าด้วยสีหน้าเด็ดเดี่ยว เขายืนอยู่บนเนินเขา ท้องฟ้าสีฟ้าใสอยู่เบื้องหลัง บรรยากาศเต็มเปี่ยมด้วยพลัง",
+    "goldenSentenceTh": "จงรักษาความอยากรู้อยากเห็นไว้เสมอ ความรู้และประสบการณ์ใหม่กำลังรอให้คุณค้นพบ"
   },
   {
     "id": 61,
@@ -738,7 +852,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, a lightning-fast knight rides forward wielding a sword, wind making his robes flutter, the entire scene filled with an uplifting force. Though the knight is brave and fearless, his impatience makes him prone to losing rational power. He represents ambitious people who may lack emotion, but it's not coldness, just absent-mindedness. They have strong attraction to the opposite sex, yet cannot establish long-term relationships.",
     "goldenSentence": "Make quick decisions, the Year of the Horse will bring you efficient results.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Swords12.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "เป็นสัญลักษณ์ของการลงมือกระทำและความทะเยอทะยาน สื่อถึงความคิดที่รวดเร็วและการตัดสินใจที่เฉียบขาด",
+    "analysisTh": "อัศวินขี่ม้าพุ่งตัดหน้าอย่างรวดเร็วพร้อมฟันดาบ ลมพัดให้เสื้อคลุมโบยบิน แม้อัศวินจะกล้าหาญและไม่กลัวอะไร แต่ความใจร้อนของเขาทำให้เขามักสูญเสียความมีเหตุผล",
+    "goldenSentenceTh": "จงตัดสินใจอย่างรวดเร็วและเฉียบขาด ผลลัพธ์อันมีประสิทธิภาพกำลังรอให้คุณบรรลุ"
   },
   {
     "id": 62,
@@ -749,7 +866,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The Queen in the scene sits composedly on her throne, one hand holding a sword, the other raised as if preaching, seemingly making a judgment or announcing something to her subjects. She looks straight ahead, with a calm expression and leisurely demeanor, showing a knowing and confident appearance. She is like the goddess Athena - calm and majestic, and holding a sword distinguishes her from Queens in other suits, having less affection and tolerance, more seriousness and rigor, and always able to remove obstacles hindering her plans. She possesses water's intuition and air's intelligence, with extraordinary communication skills, symbolizing wisdom and broad-mindedness. She is usually single, with an independent career and values, so this card also represents wisdom and experience, sorrow and loneliness.",
     "goldenSentence": "Think rationally, the Year of the Horse will bring you clear judgment.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords13.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "สื่อถึงความมีเหตุผลและความเป็นอิสระ เป็นสัญลักษณ์ของความคิดที่แจ่มชัดและเที่ยงตรง",
+    "analysisTh": "ราชินีประทับอยู่บนพระบัลลังก์อย่างสง่างาม พระหัตถ์หนึ่งทรงดาบ อีกข้างยกขึ้นดั่งกำลังประกาศพระบรมราชโองการ ดั่งเทพธิดาอะธีน่า สงบและสง่างาม",
+    "goldenSentenceTh": "จงคิดอย่างมีเหตุผล การตัดสินที่แจ่มชัดและเที่ยงตรงกำลังนำทางคุณ"
   },
   {
     "id": 63,
@@ -760,7 +880,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, a majestic king sits on his throne. The king wears white undergarments, red outer garments, and a purple robe, holding a sword with its tip pointing diagonally toward the sky, exuding an aura of supreme self-importance. His expression is solemn, with an unshakeable and unmoved demeanor, reflecting his experience and skillful governance. He is a born ruler with innate power, shrewd and wise, but never merciful, so the King of Swords also represents a professional attitude.",
     "goldenSentence": "Lead with wisdom, the Year of the Horse will bring you successful decisions.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/33/Swords14.jpg",
-    "suit": "swords"
+    "suit": "swords",
+    "meaningTh": "เป็นสัญลักษณ์ของปัญญาและอำนาจ สื่อถึงความเป็นผู้นำที่ใช้เหตุผลนำทาง",
+    "analysisTh": "กษัตริย์ผู้ทรงอำนาจประทับอยู่บนพระบัลลังก์ ทรงถือดาบชี้เฉียงขึ้นสู่ท้องฟ้า แผ่รัศมีแห่งความยิ่งใหญ่สูงส่ง พระพักตร์เคร่งขรึม อากัปกิริยาหนักแน่นและมั่นคง",
+    "goldenSentenceTh": "จงนำพาด้วยปัญญาและวิจารณญาณ การตัดสินใจอันชาญฉลาดกำลังสร้างความสำเร็จให้คุณ"
   },
   {
     "id": 64,
@@ -771,7 +894,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "From the clouds extends a hand holding a gold coin, where the coin represents the most practical things in life, including money, wealth, and physical well-being; the garden and roads in the picture indicate that investments need channels; the earth on the ground is the most stable substance among all elements, unlike other elements that have movement and flow, so the earth itself represents stability.",
     "goldenSentence": "Seize opportunities, the Year of the Horse will bring you the beginning of wealth.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Pents01.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงโอกาสใหม่ทางวัตถุ เป็นสัญลักษณ์แห่งการเริ่มต้นของความมั่งคั่งและความรุ่งเรือง",
+    "analysisTh": "มือที่ยื่นออกมาจากกลุ่มเมฆถือเหรียญทองไว้ เหรียญนั้นแทนสิ่งที่จับต้องได้ในชีวิต ไม่ว่าจะเป็นเงินทอง ทรัพย์สิน หรือสุขภาพกาย ธาตุดินเป็นธาตุที่มั่นคงที่สุด เป็นสัญลักษณ์ของความมั่นคงและยั่งยืน",
+    "goldenSentenceTh": "จงคว้าโอกาสไว้ เพราะนี่คือจุดเริ่มต้นของความมั่งคั่งที่กำลังรอคุณอยู่"
   },
   {
     "id": 65,
@@ -782,7 +908,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, a man resembling a circus clown is juggling two pentacles, with a figure-eight shaped ribbon wrapping around the coins, like a wheel axle or an eternal symbol. The sea behind him surges violently, with ships sailing on the crests of waves.",
     "goldenSentence": "Manage finances flexibly, the Year of the Horse will bring you wealth growth.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Pents02.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความสมดุลและความยืดหยุ่น เป็นสัญลักษณ์ของการบริหารการเงินอย่างคล่องตัว",
+    "analysisTh": "ชายผู้หนึ่งที่แต่งกายคล้ายตัวตลกในละครสัตว์กำลังโยนเหรียญสองเหรียญขึ้นลงสลับกัน มีริบบิ้นรูปเลข 8 พันรอบเหรียญทั้งสอง ดุจดั่งสัญลักษณ์แห่งความไม่สิ้นสุด",
+    "goldenSentenceTh": "บริหารการเงินด้วยความยืดหยุ่น แล้วความมั่งคั่งจะเติบโตงอกเงยตามมา"
   },
   {
     "id": 66,
@@ -793,7 +922,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, a sculptor is diligently carving on a church column, with a monk and a nun standing beside him, offering advice. From their focused discussion, it appears they are cooperating well, indicating that Three of Pentacles often represents teamwork.",
     "goldenSentence": "Work as a team, the Year of the Horse will bring you shared success.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/4/42/Pents03.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงการทำงานเป็นทีมและทักษะฝีมือ เป็นสัญลักษณ์ของความร่วมมือที่สร้างคุณค่า",
+    "analysisTh": "ช่างแกะสลักกำลังขยันขันแข็งแกะสลักเสาโบสถ์อย่างตั้งใจ ขณะที่พระและภิกษุณีผู้หนึ่งยืนอยู่ข้างๆ คอยให้คำแนะนำ ทั้งสามร่วมมือกันเป็นอย่างดี",
+    "goldenSentenceTh": "จงทำงานร่วมกันเป็นทีม เพราะความสำเร็จที่ยิ่งใหญ่นั้นสร้างขึ้นจากน้ำใจและความสามัคคี"
   },
   {
     "id": 67,
@@ -804,7 +936,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The man in the scene, judging from his clothing, has a prominent status. A pentacle sits atop the crown on his head, one pentacle under each foot, and another clutched tightly in his arms, holding it with both hands as if afraid of it being stolen. He sits on a small stone seat, and judging from his expression, he is tense, indicating that he greatly fears losing any of his property. Behind him is a prosperous city, as if under his ownership or jurisdiction.",
     "goldenSentence": "Guard your wealth, the Year of the Horse will bring you stable returns.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/35/Pents04.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความมั่นคงและความระมัดระวัง เป็นสัญลักษณ์ของการปกป้องทรัพย์สมบัติ",
+    "analysisTh": "ชายในภาพมีฐานะสูงส่ง เหรียญหนึ่งวางอยู่บนมงกุฎบนหัว เหรียญหนึ่งอยู่ใต้เท้าแต่ละข้าง และอีกเหรียญหนึ่งถูกกอดรัดไว้แน่นด้วยสองมือราวกับกลัวจะถูกขโมยไป",
+    "goldenSentenceTh": "จงปกป้องทรัพย์สมบัติด้วยความรอบคอบ แล้วผลตอบแทนที่มั่นคงจะเป็นของคุณ"
   },
   {
     "id": 68,
@@ -815,7 +950,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The scene depicts a cold winter. Wind and snow mix as a ragged beggar couple walks slowly, passing by a church that symbolizes material, spiritual, and protective shelter, yet they remain oblivious. The man in the scene walks with crutches, wearing tattered clothes and covered in wounds, symbolizing illness and hardship. Yet the couple in the scene, though poor, support each other, symbolizing unwavering love.",
     "goldenSentence": "Face challenges, the Year of the Horse will bring you opportunities for improvement.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/9/96/Pents05.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความยากแค้นและความขัดสน เตือนใจให้เผชิญหน้ากับความท้าทายทางการเงิน",
+    "analysisTh": "ฤดูหนาวอันหนาวเหน็บ ลมหิมะพัดโหมกระหน่ำขณะที่คู่ขอทานในผ้าขี้ริ้วเดินผ่านโบสถ์ แม้จะยากจน แต่ทั้งคู่ยังคอยพยุงกัน แสดงถึงความรักที่ไม่สั่นคลอน",
+    "goldenSentenceTh": "จงเผชิญหน้ากับความท้าทายอย่างกล้าหาญ เพราะเส้นทางนี้จะนำพาคุณไปสู่บทใหม่ที่ดีกว่า"
   },
   {
     "id": 69,
@@ -826,7 +964,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, two beggars kneel before a man who looks like a merchant begging for alms. The man gives with his right hand while holding a scale that symbolizes balance in his left. The merchant is generous but also rational; charity must be fair, giving each person the appropriate amount. Giving too much or too little is not proper aid.",
     "goldenSentence": "Share generously, the Year of the Horse will bring you more returns.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Pents06.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความเอื้อเฟื้อและการแบ่งปัน เป็นสัญลักษณ์ของการช่วยเหลือผู้อื่น",
+    "analysisTh": "ขอทานสองคนคุกเข่าขอทานต่อหน้าชายผู้หนึ่งที่ดูเหมือนพ่อค้า เขาใช้มือขวาแจกทาน ขณะที่มือซ้ายถือตาชั่งซึ่งเป็นสัญลักษณ์แห่งความยุติธรรม การให้ทานต้องมีความเป็นธรรม",
+    "goldenSentenceTh": "จงแบ่งปันด้วยใจเอื้อเฟื้อ เพราะสิ่งที่คุณให้ออกไปจะวนกลับคืนมาเป็นทวีคูณ"
   },
   {
     "id": 70,
@@ -837,7 +978,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The man in the scene is a worker, the lush vines beside him symbolizing his past efforts. Seven stars hang from the vines, representing abundant fruits of labor. He looks somewhat tired, but his work has paid off, making all the effort worthwhile.",
     "goldenSentence": "Wait patiently, the Year of the Horse will bring you the best opportunities.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Pents07.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความอดทนและการประเมินผล เตือนใจให้รอคอยจังหวะที่เหมาะสม",
+    "analysisTh": "ชายในภาพเป็นกรรมกร เถาวัลย์เขียวชอุ่มเบื้องข้างสื่อถึงความพยายามที่ผ่านมา เหรียญเจ็ดดวงแขวนอยู่บนเถาวัลย์แทนผลแห่งความทุ่มเท การงานของเขาออกดอกออกผลแล้ว",
+    "goldenSentenceTh": "จงอดทนรอคอยด้วยจิตใจที่นิ่งสงบ เพราะจังหวะที่ดีที่สุดกำลังเดินทางมาหาคุณ"
   },
   {
     "id": 71,
@@ -848,7 +992,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, a man is concentrating on hammering and carving pentacles. Clearly, he has been working for a long time; seven pentacles are already completed, and the eighth pentacle is nearly finished. To work more concentratedly, he has distanced himself from the town behind him, so as to focus more attention on completing the work at hand.",
     "goldenSentence": "Work diligently, the Year of the Horse will bring you generous returns.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/4/49/Pents08.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความขยันหมั่นเพียรและความมุ่งมั่น เป็นสัญลักษณ์ของความสำเร็จที่มาจากการทำงานหนัก",
+    "analysisTh": "ชายผู้หนึ่งกำลังตั้งใจตอกและแกะสลักเหรียญอย่างเต็มสมาธิ เหรียญเจ็ดดวงสำเร็จแล้ว และดวงที่แปดก็ใกล้เสร็จ เพื่อให้มีสมาธิมากขึ้น เขาจึงแยกตัวออกมาห่างจากเมือง",
+    "goldenSentenceTh": "จงทุ่มเทกับงานด้วยความขยันขันแข็ง เพราะผลตอบแทนอันงดงามกำลังรอคุณอยู่"
   },
   {
     "id": 72,
@@ -859,7 +1006,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "Nine of Pentacles depicts a lady standing in her estate, with abundant grapevines all around. She rests her right hand on a pentacle, with a bird perched on the back of her left palm, though the bird wears a hood preventing it from flying, symbolizing the sacrifices made for success.",
     "goldenSentence": "Pursue independence, the Year of the Horse will bring you financial freedom.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Pents09.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความเป็นอิสระและการพึ่งพาตนเอง เป็นสัญลักษณ์แห่งอิสรภาพทางการเงิน",
+    "analysisTh": "สุภาพสตรียืนอยู่ในที่ดินของตน รายล้อมด้วยเถาองุ่นที่อุดมสมบูรณ์ นกเกาะอยู่บนหลังมือซ้าย แม้นกจะสวมหมวกครอบหัวไว้ไม่ให้บิน สื่อถึงการเสียสละบางสิ่งเพื่อแลกกับความสำเร็จ",
+    "goldenSentenceTh": "จงมุ่งสู่ความเป็นอิสระทางการเงิน เพราะอิสรภาพที่แท้จริงเริ่มต้นจากภายในตัวคุณเอง"
   },
   {
     "id": 73,
@@ -870,7 +1020,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The scene shows a warm family, with an elderly man comfortably sitting inside the house, two dogs symbolizing family harmony surrounding him. Outside the door stand his son and daughter-in-law, while his grandson stands behind his mother playfully touching the tail of one of the dogs.",
     "goldenSentence": "Enjoy your wealth, the Year of the Horse will bring you an abundant life.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/4/42/Pents10.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความมั่งคั่งและความสำเร็จ เป็นสัญลักษณ์ของชีวิตด้านวัตถุที่บริบูรณ์",
+    "analysisTh": "ครอบครัวอบอุ่น ชายชรานั่งพักผ่อนอย่างสบายใจภายในบ้าน มีสุนัขสองตัวสื่อถึงความสมานฉันท์ในครอบครัวอยู่รายรอบ นอกประตูลูกชายและลูกสะใภ้ยืนอยู่",
+    "goldenSentenceTh": "จงเพลิดเพลินกับความมั่งคั่งที่สร้างขึ้น เพราะชีวิตที่บริบูรณ์ทั้งทางกายและใจกำลังรอคุณอยู่"
   },
   {
     "id": 74,
@@ -881,7 +1034,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The Page of Pentacles holds up a gold coin, eyes focused intently on it, representing focused learning of a skill and hoping to apply this skill in real life. His green clothing symbolizes natural science and its vigorous vitality. He has no crown on his head, but wears a thick red hat, indicating he may not be a winner, nor a leader. The lush grass beneath his feet symbolizes abundant knowledge and a fulfilling future.",
     "goldenSentence": "Desire to learn, the Year of the Horse will bring you new skills.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Pents11.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงโอกาสแห่งการเรียนรู้ใหม่ เป็นสัญลักษณ์ของความกระหายในความรู้",
+    "analysisTh": "เด็กรับใช้แห่งเหรียญยกเหรียญทองขึ้นสูง สายตาจดจ่ออยู่กับมันอย่างเต็มสมาธิ ชุดสีเขียวสื่อถึงวิทยาศาสตร์ธรรมชาติและพลังแห่งชีวิต หญ้าเขียวชอุ่มใต้เท้าสื่อถึงความรู้อันอุดมสมบูรณ์",
+    "goldenSentenceTh": "จงมุ่งมั่นเรียนรู้ด้วยใจที่เปิดกว้าง เพราะความรู้ใหม่คือกุญแจที่จะปลดล็อกประตูแห่งโอกาส"
   },
   {
     "id": 75,
@@ -892,7 +1048,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The Knight of Pentacles is a pragmatic actor, with open cultivated fields behind him, indicating ongoing large-scale farming activities. Among the four court knight cards, his horse moves the slowest, representing practical stability, moving steadily step by step, working hard to earn money and improve himself. When upright, he works hard, and the future is promising, with expected gains being positive. The horse's four legs all walking on the ground also represent being down-to-earth.",
     "goldenSentence": "Work steadily, the Year of the Horse will bring you steady progress.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Pents12.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความขยันและความเป็นนักปฏิบัติ เป็นสัญลักษณ์ของทัศนคติการทำงานที่มั่นคงและจริงจัง",
+    "analysisTh": "อัศวินแห่งเหรียญคือนักลงมือทำที่ยึดความเป็นจริงเป็นหลัก ม้าของเขาเคลื่อนไหวช้าที่สุดในบรรดาอัศวินทั้งสี่ แทนความมั่นคงและการก้าวทีละขั้น เท้าทั้งสี่ของม้าที่ยืนอยู่บนพื้นสื่อถึงการยึดโยงกับความเป็นจริง",
+    "goldenSentenceTh": "จงก้าวไปอย่างมั่นคงทีละขั้น เพราะความสำเร็จที่ยืนยาวสร้างขึ้นจากรากฐานที่แข็งแกร่ง"
   },
   {
     "id": 76,
@@ -903,7 +1062,10 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "In the scene, the Queen of Pentacles is surrounded by flowers, with lush vegetation on the grass covered with red fruits, and rabbits running beside her, creating a peaceful and serene atmosphere. The Queen of Pentacles sits on her throne in a gentle pose, lovingly looking at the pentacle in her hand and the plants around her, as if caressing her children. The white undergarment represents her purity, the red robe represents passion, hospitality, love, and motherhood; the green scarf under her golden crown represents her nurturing abilities.",
     "goldenSentence": "Enjoy life, the Year of the Horse will bring you abundant harvest.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/8/88/Pents13.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความรุ่งเรืองและความอุดมสมบูรณ์ เป็นสัญลักษณ์ของการเพลิดเพลินกับชีวิตด้านวัตถุ",
+    "analysisTh": "ราชินีแห่งเหรียญล้อมรอบด้วยดอกไม้ หญ้าเขียวชอุ่มมีผลแดงเต็มต้น และกระต่ายวิ่งเล่นอยู่ข้างๆ พระนางประทับบนบัลลังก์ด้วยท่าทีอ่อนโยน มองเหรียญในมือและพืชพรรณรอบข้างด้วยความรัก",
+    "goldenSentenceTh": "จงเพลิดเพลินกับชีวิตอย่างเต็มอิ่ม เพราะความอุดมสมบูรณ์กำลังหลั่งไหลเข้ามาในทุกด้านของชีวิตคุณ"
   },
   {
     "id": 77,
@@ -914,9 +1076,13 @@ export const allTarotCards: TarotCard[] = [
     "analysis": "The King of Pentacles is a successful ruler. He sits confidently on his throne with a self-assured expression, as if everything is under his control. Green vines fill his surroundings and cover his body, bearing fruits that symbolize wisdom. This represents that under his rule, his people live happy and prosperous lives. On his head he wears a laurel wreath symbolizing victory and a golden crown symbolizing power, with red flowers embedded on top representing wisdom and potential. The magnificent castle behind him also represents his abundant wealth.",
     "goldenSentence": "Wealth and success, the Year of the Horse will bring you a brilliant career.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/1/1c/Pents14.jpg",
-    "suit": "pentacles"
+    "suit": "pentacles",
+    "meaningTh": "สื่อถึงความมั่งคั่งและอำนาจ เป็นสัญลักษณ์ของความสำเร็จทางการเงิน",
+    "analysisTh": "ราชาแห่งเหรียญคือผู้ปกครองที่ประสบความสำเร็จ พระองค์ประทับบนบัลลังก์อย่างมั่นใจ เถาวัลย์สีเขียวเต็มไปหมดรอบพระองค์ ออกผลสื่อถึงปัญญา บนพระเศียรสวมพวงมาลัยลอเรลสัญลักษณ์แห่งชัยชนะ",
+    "goldenSentenceTh": "ความมั่งคั่งและความสำเร็จเป็นของคุณแล้ว จงนำพาชีวิตสู่ความรุ่งโรจน์อย่างเต็มภาคภูมิ"
   }
 ];
+
 
 
 export const majorArcana = allTarotCards.filter(c => c.suit === "major");
