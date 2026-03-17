@@ -10,6 +10,7 @@ import ProgressDots from "@/components/ui/ProgressDots";
 import WelcomeScreen from "@/components/screens/WelcomeScreen";
 import ShuffleScreen from "@/components/screens/ShuffleScreen";
 import MeditateScreen from "@/components/screens/MeditateScreen";
+import SpreadPickScreen from "@/components/screens/SpreadPickScreen";
 import SelectScreen from "@/components/screens/SelectScreen";
 import RevealScreen from "@/components/screens/RevealScreen";
 import ReadingScreen from "@/components/screens/ReadingScreen";
@@ -18,6 +19,7 @@ const screenComponents: Record<Screen, React.ComponentType> = {
   [Screen.WELCOME]: WelcomeScreen,
   [Screen.SHUFFLE]: ShuffleScreen,
   [Screen.MEDITATE]: MeditateScreen,
+  [Screen.SPREAD_PICK]: SpreadPickScreen,
   [Screen.SELECT]: SelectScreen,
   [Screen.REVEAL]: RevealScreen,
   [Screen.READING]: ReadingScreen,

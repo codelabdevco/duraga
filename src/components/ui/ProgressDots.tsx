@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Screen } from "@/types/tarot";
 
-const SCREENS = [Screen.WELCOME, Screen.SHUFFLE, Screen.MEDITATE, Screen.SELECT, Screen.REVEAL, Screen.READING];
+const SCREENS = [Screen.WELCOME, Screen.SHUFFLE, Screen.MEDITATE, Screen.SPREAD_PICK, Screen.SELECT, Screen.REVEAL, Screen.READING];
 
 export default function ProgressDots({ current }: { current: Screen }) {
   return (

@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import { useTarotStore } from "@/store/useTarotStore";
-import { Screen } from "@/types/tarot";
+import { Screen, SPREAD_CONFIG } from "@/types/tarot";
 import { useEffect, useRef } from "react";
 import MiniCardBack from "@/components/ui/MiniCardBack";
 
-const container = {
+const containerVariants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -14,22 +14,25 @@ const container = {
   },
 };
 
-const item = {
+const itemVariant = {
   hidden: { opacity: 0, scale: 0.85, y: 12 },
   show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring" as const, stiffness: 120, damping: 14 } },
 };
 
 export default function SelectScreen() {
-  const { selectedCardIndices, toggleCard, goToScreen, drawAndAssign } = useTarotStore();
+  const { selectedCardIndices, toggleCard, goToScreen, drawAndAssign, spreadType } = useTarotStore();
   const hasAdvanced = useRef(false);
+  const config = SPREAD_CONFIG[spreadType];
 
   useEffect(() => {
-    if (selectedCardIndices.length === 10 && !hasAdvanced.current) {
+    if (selectedCardIndices.length === config.count && !hasAdvanced.current) {
       hasAdvanced.current = true;
       drawAndAssign();
       setTimeout(() => goToScreen(Screen.REVEAL), 800);
     }
-  }, [selectedCardIndices.length, goToScreen, drawAndAssign]);
+  }, [selectedCardIndices.length, config.count, goToScreen, drawAndAssign]);
+
+  const cols = config.gridCards <= 5 ? 3 : config.gridCards <= 9 ? 3 : 5;
 
   return (
     <motion.div
@@ -38,7 +41,9 @@ export default function SelectScreen() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <p className="text-gold font-semibold text-base mb-1">เลือกการ์ด 10 ใบ</p>
+      <p className="text-gold font-semibold text-base mb-1">
+        เลือกการ์ด {config.count} ใบ
+      </p>
       <p className="text-white/30 text-xs mb-4">แตะไพ่ที่คุณรู้สึกดึงดูด</p>
 
       <motion.div
@@ -48,23 +53,28 @@ export default function SelectScreen() {
         animate={{ scale: [1, 1.08, 1] }}
         transition={{ duration: 0.35, ease: "easeOut" }}
       >
-        {selectedCardIndices.length} / 10
+        {selectedCardIndices.length} / {config.count}
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-5 gap-2 w-full max-w-[360px]"
-        variants={container}
+        className="w-full max-w-[360px]"
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${cols}, 1fr)`,
+          gap: "8px",
+        }}
+        variants={containerVariants}
         initial="hidden"
         animate="show"
       >
-        {Array.from({ length: 20 }, (_, i) => {
+        {Array.from({ length: config.gridCards }, (_, i) => {
           const isSelected = selectedCardIndices.includes(i);
-          const isDisabled = selectedCardIndices.length >= 10 && !isSelected;
+          const isDisabled = selectedCardIndices.length >= config.count && !isSelected;
 
           return (
             <motion.div
               key={i}
-              variants={item}
+              variants={itemVariant}
               className={`relative rounded-lg cursor-pointer overflow-hidden transition-all duration-300
                 ${isSelected ? "ring-1 ring-gold shadow-[0_0_16px_rgba(232,212,139,.2)]" : ""}
                 ${isDisabled ? "opacity-20 pointer-events-none" : ""}

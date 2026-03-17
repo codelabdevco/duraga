@@ -922,15 +922,21 @@ export const allTarotCards: TarotCard[] = [
 export const majorArcana = allTarotCards.filter(c => c.suit === "major");
 export const minorArcana = allTarotCards.filter(c => c.suit !== "major");
 
-export const positionNames = [
-  "ตัวคุณในปัจจุบัน",
-  "อุปสรรคที่เผชิญ",
-  "เป้าหมายสูงสุด",
-  "รากฐาน/อดีต",
-  "อดีตอันใกล้",
-  "อนาคตอันใกล้",
-  "ตัวตนภายใน",
-  "สิ่งแวดล้อม",
-  "ความหวัง/ความกลัว",
-  "ผลลัพธ์สุดท้าย",
-];
+import { SpreadType } from "@/types/tarot";
+
+export const positionNamesBySpread: Record<SpreadType, string[]> = {
+  single: ["คำตอบของคุณ"],
+  three: ["อดีต", "ปัจจุบัน", "อนาคต"],
+  celtic: [
+    "ตัวคุณในปัจจุบัน",
+    "อุปสรรคที่เผชิญ",
+    "เป้าหมายสูงสุด",
+    "รากฐาน/อดีต",
+    "อดีตอันใกล้",
+    "อนาคตอันใกล้",
+    "ตัวตนภายใน",
+    "สิ่งแวดล้อม",
+    "ความหวัง/ความกลัว",
+    "ผลลัพธ์สุดท้าย",
+  ],
+};

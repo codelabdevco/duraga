@@ -60,7 +60,7 @@ export default function MeditateScreen() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Button onClick={() => goToScreen(Screen.SELECT)}>พร้อมแล้ว</Button>
+        <Button onClick={() => goToScreen(Screen.SPREAD_PICK)}>พร้อมแล้ว</Button>
       </motion.div>
     </motion.div>
   );
