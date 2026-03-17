@@ -244,12 +244,13 @@ export default function TarotFlow() {
             </div>
 
             <div className="flex gap-3">
-              <Button onClick={handleShuffle}>SHUFFLE</Button>
-              <Button variant="outline"
-                className={!hasShuffled ? "opacity-30 pointer-events-none" : ""}
-                onClick={() => { if (hasShuffled) setPhase("fan"); }}>
-                DONE
-              </Button>
+              <Button onClick={handleShuffle}>สับไพ่</Button>
+              {hasShuffled && (
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, ease: EASE }}>
+                  <Button variant="outline" onClick={() => setPhase("fan")}>เลือกไพ่</Button>
+                </motion.div>
+              )}
             </div>
           </motion.div>
         )}
