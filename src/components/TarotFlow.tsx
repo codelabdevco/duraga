@@ -443,7 +443,23 @@ export default function TarotFlow() {
           <motion.div key="reading" className="flex flex-col items-center min-h-full px-4 pt-2 pb-16"
             initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: EASE }}>
-            <h2 className="text-xl text-gold text-center mb-5 tracking-[0.15em] font-semibold">คำทำนาย</h2>
+            <h2 className="text-xl text-gold text-center mb-3 tracking-[0.15em] font-semibold">คำทำนาย</h2>
+
+            {/* Context: topic + spread + question */}
+            <div className="w-full max-w-[420px] mb-5 text-center">
+              {selectedTopic && (
+                <p className="text-xs text-white/40">
+                  <span style={{ color: selectedTopic.color }}>{selectedTopic.icon}</span>
+                  {" "}{selectedTopic.nameTH}
+                  {selectedSpread && <span className="text-white/20"> · {selectedSpread.nameTH}</span>}
+                </p>
+              )}
+              {userQuestion && (
+                <p className="text-sm text-white/50 mt-2 italic leading-6">
+                  &ldquo;{userQuestion}&rdquo;
+                </p>
+              )}
+            </div>
 
             {/* Card summary row */}
             <div className="flex gap-1.5 flex-wrap justify-center mb-6 max-w-[420px]">
