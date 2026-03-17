@@ -255,30 +255,26 @@ export default function TarotFlow() {
           </motion.div>
         )}
 
-        {/* ===== STEP 6: PICK CARDS (fit-in-screen overlapping rows) ===== */}
+        {/* ===== STEP 6: PICK CARDS (5 curved rows) ===== */}
         {phase === "fan" && selectedSpread && (() => {
-          const COLS = 13;
-          const ROWS = Math.ceil(shuffledDeck.length / COLS);
-          // Card dimensions to fit screen: ~28px visible overlap + last card ~44px
-          const CARD_W = 44;
-          const CARD_H = 68;
-          const OVERLAP = 27; // visible edge per card
-          const ROW_GAP = 4;
-          const rowWidth = OVERLAP * (COLS - 1) + CARD_W; // ~356px
+          const ROWS = 5;
+          const perRow = Math.ceil(shuffledDeck.length / ROWS); // ~16 per row
+          const CARD_W = 42;
+          const CARD_H = 65;
           const remaining = selectedSpread.cardCount - pickedCards.length;
 
           return (
-            <motion.div key="fan" className="flex flex-col items-center justify-between min-h-full pt-1 pb-4 px-2"
+            <motion.div key="fan" className="flex flex-col items-center justify-between min-h-full pt-1 pb-3 px-1"
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: EASE }}>
 
               {/* Header */}
-              <div className="text-center mb-2">
+              <div className="text-center mb-1">
                 <motion.p className="text-gold font-semibold text-sm"
                   key={pickedCards.length}
                   animate={{ scale: [1, 1.08, 1] }} transition={{ duration: 0.3 }}>
                   {remaining > 0 ? `เลือกอีก ${remaining} ใบ` : "เลือกครบแล้ว!"}
                 </motion.p>
-                <div className="flex justify-center gap-[3px] mt-1.5">
+                <div className="flex justify-center gap-[3px] mt-1">
                   {Array.from({ length: selectedSpread.cardCount }, (_, i) => (
                     <motion.div key={i}
                       className={`w-[6px] h-[6px] rounded-full ${i < pickedCards.length ? "bg-gold" : "bg-white/15"}`}
@@ -289,63 +285,82 @@ export default function TarotFlow() {
                 </div>
               </div>
 
-              {/* Card rows — overlapping cards */}
-              <div className="flex flex-col items-center" style={{ gap: ROW_GAP }}>
-                {Array.from({ length: ROWS }, (_, row) => (
-                  <motion.div key={row} className="relative"
-                    style={{ width: rowWidth, height: CARD_H }}
-                    initial={{ opacity: 0, x: row % 2 === 0 ? -30 : 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.05 + row * 0.06, duration: 0.5, ease: EASE }}>
-                    {Array.from({ length: COLS }, (_, col) => {
-                      const idx = row * COLS + col;
-                      if (idx >= shuffledDeck.length) return null;
-                      const card = shuffledDeck[idx];
-                      const isPicked = pickedCards.some(p => p.id === card.id);
-                      const isFull = pickedCards.length >= selectedSpread.cardCount;
-                      const isDisabled = isFull && !isPicked;
+              {/* 5 curved rows */}
+              <div className="flex flex-col items-center gap-[3px]">
+                {Array.from({ length: ROWS }, (_, row) => {
+                  const startIdx = row * perRow;
+                  const rowCards = shuffledDeck.slice(startIdx, startIdx + perRow);
+                  const rowCount = rowCards.length;
+                  // Curve: middle cards higher, edges lower
+                  const arcHeight = 12;
+                  // Overlap amount
+                  const totalWidth = Math.min(380, window?.innerWidth ? window.innerWidth - 16 : 380);
+                  const overlap = rowCount > 1 ? (totalWidth - CARD_W) / (rowCount - 1) : 0;
 
-                      return (
-                        <motion.div
-                          key={card.id}
-                          className="absolute top-0 cursor-pointer"
-                          style={{
-                            left: col * OVERLAP,
-                            zIndex: isPicked ? 50 : col,
-                            width: CARD_W,
-                            height: CARD_H,
-                          }}
-                          animate={{
-                            opacity: isPicked ? 0.2 : isDisabled ? 0.25 : 1,
-                            y: isPicked ? -6 : 0,
-                            scale: isPicked ? 0.92 : 1,
-                          }}
-                          transition={{ duration: 0.25, ease: EASE }}
-                          whileTap={!isPicked && !isDisabled ? { scale: 0.88, y: -4 } : {}}
-                          onClick={() => { if (!isPicked && !isDisabled) pickCard(idx); }}
-                        >
-                          <MiniCardBack width={CARD_W} height={CARD_H} />
-                          {/* Pick number */}
-                          {isPicked && (
-                            <motion.div className="absolute inset-0 flex items-center justify-center"
-                              initial={{ scale: 0 }} animate={{ scale: 1 }}
-                              transition={{ type: "spring", stiffness: 300, damping: 15 }}>
-                              <div className="w-4 h-4 rounded-full bg-gold/40 flex items-center justify-center">
-                                <span className="text-[0.45rem] text-gold font-bold">
-                                  {pickedCards.findIndex(p => p.id === card.id) + 1}
-                                </span>
-                              </div>
-                            </motion.div>
-                          )}
-                        </motion.div>
-                      );
-                    })}
-                  </motion.div>
-                ))}
+                  return (
+                    <motion.div key={row} className="relative"
+                      style={{ width: totalWidth, height: CARD_H + arcHeight + 4 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 + row * 0.08, duration: 0.5, ease: EASE }}>
+                      {rowCards.map((card, col) => {
+                        const globalIdx = startIdx + col;
+                        const isPicked = pickedCards.some(p => p.id === card.id);
+                        const pickNum = pickedCards.findIndex(p => p.id === card.id) + 1;
+                        const isFull = pickedCards.length >= selectedSpread.cardCount;
+                        const isDisabled = isFull && !isPicked;
+
+                        // Arc curve: parabola centered in row
+                        const t = rowCount > 1 ? col / (rowCount - 1) : 0.5;
+                        const curveY = arcHeight * (4 * t * (1 - t) - 1) * -1; // inverted parabola
+
+                        return (
+                          <motion.div
+                            key={card.id}
+                            className="absolute cursor-pointer"
+                            style={{
+                              left: col * overlap,
+                              top: curveY + arcHeight,
+                              zIndex: isPicked ? 80 : col,
+                              width: CARD_W,
+                              height: CARD_H,
+                            }}
+                            animate={{
+                              opacity: isPicked ? 0.35 : isDisabled ? 0.2 : 1,
+                              y: isPicked ? -10 : 0,
+                              scale: isPicked ? 0.88 : 1,
+                            }}
+                            transition={{ duration: 0.25, ease: EASE }}
+                            whileTap={{ scale: 0.85, y: -6 }}
+                            onClick={() => {
+                              if (isPicked) {
+                                store.unpickCard(card.id);
+                              } else if (!isDisabled) {
+                                pickCard(globalIdx);
+                              }
+                            }}
+                          >
+                            <MiniCardBack width={CARD_W} height={CARD_H} />
+                            {/* Pick badge */}
+                            {isPicked && (
+                              <motion.div className="absolute inset-0 flex items-center justify-center"
+                                initial={{ scale: 0 }} animate={{ scale: 1 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 15 }}>
+                                <div className="w-5 h-5 rounded-full bg-gold/50 border border-gold/60 flex items-center justify-center shadow-[0_0_8px_rgba(232,212,139,.3)]">
+                                  <span className="text-[0.5rem] text-[#08090e] font-bold">{pickNum}</span>
+                                </div>
+                              </motion.div>
+                            )}
+                          </motion.div>
+                        );
+                      })}
+                    </motion.div>
+                  );
+                })}
               </div>
 
               {/* Hint */}
-              <p className="text-white/15 text-[0.6rem] mt-2">78 ใบ · แตะเพื่อเลือก</p>
+              <p className="text-white/20 text-[0.6rem] mt-1">78 ใบ · แตะเลือก · แตะอีกทีเพื่อยกเลิก</p>
             </motion.div>
           );
         })()}

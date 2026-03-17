@@ -21,6 +21,7 @@ interface TarotState {
   setQuestion: (q: string) => void;
   shuffleDeck: () => void;
   pickCard: (deckIndex: number) => void;
+  unpickCard: (cardId: number) => void;
   flipCard: (posIndex: number) => void;
   flipAll: () => void;
   setAiReading: (r: string) => void;
@@ -79,6 +80,15 @@ export const useTarotStore = create<TarotState>((set, get) => ({
     if (newPicked.length === spread.cardCount) {
       setTimeout(() => set({ phase: "layout" }), 600);
     }
+  },
+
+  unpickCard: (cardId) => {
+    set(state => {
+      const newPicked = state.pickedCards
+        .filter(p => p.id !== cardId)
+        .map((p, i) => ({ ...p, positionIndex: i })); // re-index
+      return { pickedCards: newPicked };
+    });
   },
 
   flipCard: (posIndex) => {
