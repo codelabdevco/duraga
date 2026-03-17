@@ -115,15 +115,11 @@ export default function TarotFlow() {
     goToScreen(Screen.MEDITATE);
   }
 
-  // Meditate → SpreadPick with card shrink animation
-  async function handleMeditateNext() {
+  // Meditate → SpreadPick
+  function handleMeditateNext() {
     setMeditateExiting(true);
-    // Animate the visible card to shrink
-    const card = scope.current?.querySelector(".s-card");
-    if (card) {
-      await animate(card as Element, { scale: 0.5, opacity: 0, y: -40 }, { duration: 0.5, ease: EASE });
-    }
-    goToScreen(Screen.SPREAD_PICK);
+    // Small delay for exit animation to start, then switch
+    setTimeout(() => goToScreen(Screen.SPREAD_PICK), 300);
   }
 
   function handleReset() {
