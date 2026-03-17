@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useTarotStore } from "@/store/useTarotStore";
 import { Screen } from "@/types/tarot";
 
@@ -13,23 +14,21 @@ export default function RevealScreen() {
   useEffect(() => {
     const timers: NodeJS.Timeout[] = [];
 
-    // Flip cards one by one after 1.5s
     drawnCards.forEach((_, i) => {
       timers.push(
         setTimeout(() => {
           setFlippedIndices((prev) => new Set(prev).add(i));
-        }, 1500 + i * 350)
+        }, 1500 + i * 400)
       );
     });
 
-    // Go to reading after all flipped
     timers.push(
       setTimeout(() => {
         if (!hasAdvanced.current) {
           hasAdvanced.current = true;
           goToScreen(Screen.READING);
         }
-      }, 1500 + drawnCards.length * 350 + 1200)
+      }, 1500 + drawnCards.length * 400 + 1500)
     );
 
     return () => timers.forEach(clearTimeout);
@@ -57,7 +56,7 @@ export default function RevealScreen() {
           return (
             <motion.div
               key={i}
-              className="w-[60px] h-[90px] [perspective:600px]"
+              className="w-[65px] h-[100px] [perspective:600px]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
@@ -72,9 +71,20 @@ export default function RevealScreen() {
                   <div className="mini-sun w-5 h-5" />
                 </div>
                 {/* Front */}
-                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-lg border-[1.5px] border-gold bg-gradient-to-br from-[#2a2435] to-[#1a1824] flex flex-col items-center justify-center p-1">
-                  <span className="text-2xl">{card.icon}</span>
-                  <span className="text-[0.45rem] text-gold text-center mt-1 leading-tight">{card.nameTh}</span>
+                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-lg border-[1.5px] border-gold overflow-hidden bg-[#1a1824]">
+                  {card.image && (
+                    <Image
+                      src={card.image}
+                      alt={card.nameEn}
+                      fill
+                      className="object-cover"
+                      sizes="65px"
+                      unoptimized
+                    />
+                  )}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-1">
+                    <p className="text-[0.4rem] text-gold text-center leading-tight truncate">{card.nameTh}</p>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>

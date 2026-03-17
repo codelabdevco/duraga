@@ -10,11 +10,13 @@ export enum Screen {
 export interface TarotCard {
   id: number;
   name: string;
+  nameEn: string;
   nameTh: string;
-  icon: string;
-  upright: string;
-  highlightText: string;
-  bodyText: string;
+  meaning: string;
+  analysis?: string;
+  goldenSentence: string;
+  image: string;
+  suit: "major" | "cups" | "swords" | "wands" | "pentacles";
 }
 
 export interface DrawnCard extends TarotCard {

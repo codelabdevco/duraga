@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { Screen, TarotCard, DrawnCard } from "@/types/tarot";
-import { majorArcana, positionNames } from "@/data/tarot";
-import { drawCards } from "@/lib/utils";
+import { allTarotCards, positionNames } from "@/data/tarot";
+import { shuffleArray } from "@/lib/utils";
 
 interface TarotState {
   currentScreen: Screen;
@@ -33,7 +33,7 @@ export const useTarotStore = create<TarotState>((set) => ({
 
   drawAndAssign: () =>
     set(() => {
-      const cards = drawCards(majorArcana, 10);
+      const cards = shuffleArray(allTarotCards).slice(0, 10);
       const drawn: DrawnCard[] = cards.map((card, i) => ({
         ...card,
         position: positionNames[i],
