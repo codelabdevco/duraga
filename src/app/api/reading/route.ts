@@ -3,6 +3,63 @@ import { NextRequest, NextResponse } from "next/server";
 
 const client = new Anthropic();
 
+interface ReadingResult {
+  trend: string;
+  trendText: string;
+  summary: string;
+  advice: string;
+  cardInsights: string[];
+}
+
+const FALLBACK: ReadingResult = {
+  trend: "neutral",
+  trendText: "",
+  summary: "",
+  advice: "",
+  cardInsights: [],
+};
+
+function extractJSON(raw: string): ReadingResult {
+  // Strategy 1: direct parse
+  try {
+    return validateReading(JSON.parse(raw));
+  } catch { /* continue */ }
+
+  // Strategy 2: strip ```json ... ``` (various formats)
+  try {
+    const stripped = raw
+      .replace(/^[\s\S]*?```(?:json)?[\s\n]*/i, "")
+      .replace(/[\s\n]*```[\s\S]*$/, "")
+      .trim();
+    return validateReading(JSON.parse(stripped));
+  } catch { /* continue */ }
+
+  // Strategy 3: extract first { ... } block
+  try {
+    const start = raw.indexOf("{");
+    const end = raw.lastIndexOf("}");
+    if (start !== -1 && end > start) {
+      return validateReading(JSON.parse(raw.slice(start, end + 1)));
+    }
+  } catch { /* continue */ }
+
+  // All strategies failed — return raw text as summary
+  console.error("JSON extraction failed, raw:", raw.slice(0, 200));
+  return { ...FALLBACK, summary: raw.replace(/```(?:json)?/gi, "").replace(/```/g, "").trim() };
+}
+
+function validateReading(obj: Record<string, unknown>): ReadingResult {
+  return {
+    trend: typeof obj.trend === "string" ? obj.trend : "neutral",
+    trendText: typeof obj.trendText === "string" ? obj.trendText : "",
+    summary: typeof obj.summary === "string" ? obj.summary : "",
+    advice: typeof obj.advice === "string" ? obj.advice : "",
+    cardInsights: Array.isArray(obj.cardInsights)
+      ? obj.cardInsights.map((s) => (typeof s === "string" ? s : ""))
+      : [],
+  };
+}
+
 interface CardInfo {
   nameTh: string;
   nameEn: string;
@@ -69,23 +126,9 @@ ${cardDetails}
     const text =
       message.content[0].type === "text" ? message.content[0].text : "";
 
-    try {
-      // Strip markdown code blocks if present
-      const cleaned = text.replace(/^```(?:json)?\s*\n?/i, "").replace(/\n?```\s*$/i, "").trim();
-      const parsed = JSON.parse(cleaned);
-      return NextResponse.json({ reading: parsed });
-    } catch {
-      // Fallback: return as plain text if JSON parse fails
-      return NextResponse.json({
-        reading: {
-          trend: "neutral",
-          trendText: "กำลังอ่านไพ่ให้คุณ",
-          summary: text,
-          advice: "",
-          cardInsights: [],
-        },
-      });
-    }
+    // Robust JSON extraction: try multiple strategies
+    const parsed = extractJSON(text);
+    return NextResponse.json({ reading: parsed });
   } catch (error) {
     console.error("Reading API error:", error);
     return NextResponse.json(
