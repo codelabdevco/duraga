@@ -1,38 +1,113 @@
-export const CELTIC_LAYOUT: Record<number, { x: string; y: string; rotate: number }> = {
-  1:  { x: "28%", y: "42%", rotate: 0 },
-  2:  { x: "28%", y: "42%", rotate: 90 },
-  3:  { x: "28%", y: "8%",  rotate: 0 },
-  4:  { x: "28%", y: "72%", rotate: 0 },
-  5:  { x: "10%", y: "42%", rotate: 0 },
-  6:  { x: "46%", y: "42%", rotate: 0 },
-  7:  { x: "72%", y: "74%", rotate: 0 },
-  8:  { x: "72%", y: "52%", rotate: 0 },
-  9:  { x: "72%", y: "30%", rotate: 0 },
-  10: { x: "72%", y: "8%",  rotate: 0 },
-};
+// ===== Spread Layout Definitions =====
+// Positions are center-points as % of container.
+// Container aspect ratio is tuned per spread so cards never clip.
 
-export const FIVE_LAYOUT: Record<number, { x: string; y: string }> = {
-  1: { x: "15%", y: "45%" },
-  2: { x: "42%", y: "45%" },
-  3: { x: "70%", y: "45%" },
-  4: { x: "42%", y: "75%" },
-  5: { x: "42%", y: "15%" },
-};
+export interface LayoutPosition {
+  x: string;
+  y: string;
+  rotate?: number;
+}
 
-export const HORSESHOE_LAYOUT: Record<number, { x: string; y: string }> = {
-  1: { x: "8%",  y: "75%" },
-  2: { x: "8%",  y: "45%" },
-  3: { x: "25%", y: "15%" },
-  4: { x: "50%", y: "8%"  },
-  5: { x: "75%", y: "15%" },
-  6: { x: "92%", y: "45%" },
-  7: { x: "92%", y: "75%" },
-};
+export interface SpreadLayout {
+  /** height / width ratio of the positioning container */
+  aspectRatio: number;
+  /** card pixel width */
+  cardW: number;
+  /** card pixel height */
+  cardH: number;
+  /** center-point positions for each card */
+  positions: LayoutPosition[];
+}
 
-export const FAN_ARCS = [
-  { from: 0,  to: 26, pivot: 230, bottom: 240, spread: 140, zBase: 0 },
-  { from: 26, to: 52, pivot: 155, bottom: 165, spread: 120, zBase: 30 },
-  { from: 52, to: 78, pivot: 85,  bottom: 95,  spread: 95,  zBase: 60 },
-] as const;
+export function getSpreadLayout(spreadId: string, cardCount: number): SpreadLayout {
+  switch (spreadId) {
+    // ── 1 Card ──
+    case "daily":
+    case "yesno":
+      return {
+        aspectRatio: 0.6,
+        cardW: 100,
+        cardH: 160,
+        positions: [
+          { x: "50%", y: "46%" },
+        ],
+      };
 
-export const FAN_CARD = { width: 40, height: 62 } as const;
+    // ── 3 Cards ──
+    case "three":
+      return {
+        aspectRatio: 0.58,
+        cardW: 72,
+        cardH: 115,
+        positions: [
+          { x: "20%", y: "46%" },
+          { x: "50%", y: "46%" },
+          { x: "80%", y: "46%" },
+        ],
+      };
+
+    // ── 5 Card Cross ──
+    case "five":
+      return {
+        aspectRatio: 1.0,
+        cardW: 60,
+        cardH: 96,
+        positions: [
+          { x: "18%", y: "48%" },   // 1: Left — Past
+          { x: "50%", y: "48%" },   // 2: Center — Present
+          { x: "82%", y: "48%" },   // 3: Right — Future
+          { x: "50%", y: "82%" },   // 4: Bottom — Root
+          { x: "50%", y: "15%" },   // 5: Top — Potential
+        ],
+      };
+
+    // ── 7 Card Horseshoe ──
+    case "horseshoe":
+      return {
+        aspectRatio: 0.85,
+        cardW: 48,
+        cardH: 77,
+        positions: [
+          { x: "13%", y: "82%" },   // 1: Bottom-left — Past
+          { x: "13%", y: "50%" },   // 2: Mid-left — Present
+          { x: "28%", y: "20%" },   // 3: Top-left — Hidden
+          { x: "50%", y: "12%" },   // 4: Top-center — Advice
+          { x: "72%", y: "20%" },   // 5: Top-right — People
+          { x: "87%", y: "50%" },   // 6: Mid-right — Obstacle
+          { x: "87%", y: "82%" },   // 7: Bottom-right — Outcome
+        ],
+      };
+
+    // ── 10 Card Celtic Cross ──
+    case "celtic":
+      return {
+        aspectRatio: 1.05,
+        cardW: 46,
+        cardH: 74,
+        positions: [
+          { x: "30%", y: "48%" },                // 1: Center — Present
+          { x: "30%", y: "48%", rotate: 90 },    // 2: Cross — Challenge
+          { x: "30%", y: "14%" },                 // 3: Above — Goal
+          { x: "30%", y: "82%" },                 // 4: Below — Foundation
+          { x: "12%", y: "48%" },                 // 5: Left — Past
+          { x: "48%", y: "48%" },                 // 6: Right — Future
+          { x: "78%", y: "84%" },                 // 7: Column bottom — Self
+          { x: "78%", y: "62%" },                 // 8: Column — Environment
+          { x: "78%", y: "38%" },                 // 9: Column — Hopes/Fears
+          { x: "78%", y: "14%" },                 // 10: Column top — Outcome
+        ],
+      };
+
+    // ── Fallback: even horizontal spread ──
+    default:
+      return {
+        aspectRatio: 0.55,
+        cardW: 70,
+        cardH: 112,
+        positions: Array.from({ length: cardCount }, (_, i) => ({
+          x: `${18 + (i * 64) / Math.max(cardCount - 1, 1)}%`,
+          y: "46%",
+        })),
+      };
+  }
+}
