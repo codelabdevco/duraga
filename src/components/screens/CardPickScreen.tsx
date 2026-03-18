@@ -4,10 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useTarotStore } from "@/store/useTarotStore";
 import { EASE } from "@/constants/animation";
-import { FAN_ARCS, FAN_CARD } from "@/constants/layouts";
 import MiniCardBack from "@/components/ui/MiniCardBack";
 
-const GATHERING_DURATION = 1400;
+const GATHERING_DURATION = 1200;
 
 export default function CardPickScreen() {
   const store = useTarotStore();
@@ -31,7 +30,6 @@ export default function CardPickScreen() {
     }
   }, [pickedCards.length, selectedSpread, setPhase]);
 
-  // Reset on unmount / phase change
   useEffect(() => {
     return () => {
       gatheringTriggered.current = false;
@@ -42,19 +40,18 @@ export default function CardPickScreen() {
 
   const remaining = selectedSpread.cardCount - pickedCards.length;
   const isFull = pickedCards.length >= selectedSpread.cardCount;
-  const { width: CW, height: CH } = FAN_CARD;
 
   return (
     <motion.div
       key="fan"
-      className="flex flex-col items-center min-h-full pt-1 pb-4 px-2"
+      className="flex flex-col items-center h-full px-3 pb-3"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, ease: EASE }}
     >
-      {/* Progress header */}
-      <div className="text-center mb-1">
+      {/* Header */}
+      <div className="text-center py-2 flex-shrink-0">
         <AnimatePresence mode="wait">
           {isGathering ? (
             <motion.p
@@ -81,7 +78,8 @@ export default function CardPickScreen() {
           )}
         </AnimatePresence>
 
-        <div className="flex justify-center gap-[3px] mt-1.5">
+        {/* Progress dots */}
+        <div className="flex justify-center gap-1 mt-1.5">
           {Array.from({ length: selectedSpread.cardCount }, (_, i) => (
             <motion.div
               key={i}
@@ -93,85 +91,83 @@ export default function CardPickScreen() {
         </div>
       </div>
 
-      {/* Concentric fan arcs */}
-      <div className="relative w-full max-w-[420px] mx-auto overflow-hidden" style={{ height: 440 }}>
-        {FAN_ARCS.flatMap((arc) =>
-          shuffledDeck.slice(arc.from, arc.to).map((card, j) => {
-            const deckIndex = arc.from + j;
-            const count = arc.to - arc.from;
-            const t = count > 1 ? j / (count - 1) : 0.5;
-            const angle = -arc.spread / 2 + t * arc.spread;
+      {/* Selected cards preview */}
+      {pickedCards.length > 0 && !isGathering && (
+        <motion.div
+          className="flex gap-1.5 justify-center flex-wrap mb-2 flex-shrink-0"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          transition={{ duration: 0.3 }}
+        >
+          {pickedCards.map((card, i) => (
+            <motion.button
+              key={card.id}
+              type="button"
+              className="relative flex-shrink-0"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+              onClick={() => store.unpickCard(card.id)}
+            >
+              <MiniCardBack width={28} height={42} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-4 h-4 rounded-full bg-gold/70 border border-gold flex items-center justify-center">
+                  <span className="text-[0.45rem] text-[#08090e] font-bold">{i + 1}</span>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+          <p className="w-full text-center text-white/20 text-[0.5rem] mt-0.5">แตะเพื่อยกเลิก</p>
+        </motion.div>
+      )}
 
+      {/* Card grid */}
+      <div className="flex-1 min-h-0 w-full max-w-[420px] overflow-y-auto overflow-x-hidden rounded-xl">
+        <div className="grid grid-cols-9 gap-[5px] p-1.5">
+          {shuffledDeck.map((card, deckIndex) => {
             const isPicked = pickedCards.some((p) => p.id === card.id);
-            const pickNum = pickedCards.findIndex((p) => p.id === card.id) + 1;
             const isDisabled = isFull && !isPicked;
 
             return (
               <motion.button
                 key={card.id}
                 type="button"
-                className="absolute p-0 border-0 bg-transparent"
-                style={{
-                  left: "50%",
-                  bottom: arc.bottom,
-                  width: CW,
-                  height: CH,
-                  marginLeft: -CW / 2,
-                  transformOrigin: `50% ${CH + arc.pivot}px`,
-                  zIndex: isPicked ? 100 + pickNum : arc.zBase + j,
-                }}
-                initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+                className={`relative aspect-[5/8] rounded-md overflow-hidden transition-all ${
+                  isPicked
+                    ? "ring-1 ring-gold shadow-[0_0_8px_rgba(232,212,139,0.3)] scale-90 opacity-40"
+                    : isDisabled
+                    ? "opacity-15"
+                    : "active:scale-90"
+                }`}
+                disabled={isGathering}
+                initial={{ opacity: 0, scale: 0.6 }}
                 animate={{
-                  opacity: isGathering ? (isPicked ? 1 : 0) : isDisabled ? 0.2 : 1,
-                  scale: isGathering ? (isPicked ? 1.4 : 0.3) : isPicked ? 1.12 : 1,
-                  rotate: angle,
-                  y: isPicked && !isGathering ? -18 : 0,
+                  opacity: isGathering ? (isPicked ? 0 : 0.3) : isDisabled ? 0.15 : 1,
+                  scale: isGathering && isPicked ? 0 : 1,
                 }}
                 transition={{
-                  delay: isGathering ? 0 : deckIndex * 0.005,
-                  duration: 0.5,
+                  delay: deckIndex * 0.003,
+                  duration: 0.4,
                   ease: EASE,
                 }}
-                whileTap={!isGathering ? { scale: 0.88 } : {}}
                 onClick={() => {
                   if (isGathering) return;
                   if (isPicked) store.unpickCard(card.id);
                   else if (!isDisabled) pickCard(deckIndex);
                 }}
               >
-                <MiniCardBack width={CW} height={CH} />
-
-                {/* Pick number badge */}
-                {isPicked && !isGathering && (
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                  >
-                    <div className="w-5 h-5 rounded-full bg-gold/60 border border-gold flex items-center justify-center shadow-[0_0_10px_rgba(232,212,139,.4)]">
-                      <span className="text-[0.5rem] text-[#08090e] font-bold">{pickNum}</span>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Gathering glow */}
-                {isGathering && isPicked && (
-                  <motion.div
-                    className="absolute -inset-1 rounded-lg"
-                    animate={{ opacity: [0, 0.5, 0.3] }}
-                    transition={{ duration: 0.8 }}
-                    style={{ background: "radial-gradient(circle, rgba(232,212,139,0.3) 0%, transparent 70%)" }}
-                  />
-                )}
+                <MiniCardBack width={38} height={60} className="w-full h-full" />
               </motion.button>
             );
-          })
-        )}
+          })}
+        </div>
       </div>
 
-      {!isGathering && (
-        <p className="text-white/20 text-[0.55rem] mt-2">แตะเลือก · แตะอีกทีเพื่อยกเลิก</p>
+      {/* Hint */}
+      {!isGathering && pickedCards.length === 0 && (
+        <p className="text-white/25 text-[0.6rem] mt-2 flex-shrink-0">
+          แตะไพ่ที่คุณรู้สึกสัมผัสได้
+        </p>
       )}
     </motion.div>
   );
