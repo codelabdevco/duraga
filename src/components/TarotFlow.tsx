@@ -7,7 +7,6 @@ import SpreadScreen from "@/components/screens/SpreadScreen";
 import QuestionScreen from "@/components/screens/QuestionScreen";
 import ShuffleScreen from "@/components/screens/ShuffleScreen";
 import CardPickScreen from "@/components/screens/CardPickScreen";
-import LayoutScreen from "@/components/screens/LayoutScreen";
 import ReadingScreen from "@/components/screens/ReadingScreen";
 
 export default function TarotFlow() {
@@ -21,7 +20,6 @@ export default function TarotFlow() {
         {phase === "question" && <QuestionScreen />}
         {phase === "shuffle" && <ShuffleScreen />}
         {phase === "fan" && <CardPickScreen />}
-        {phase === "layout" && <LayoutScreen />}
         {phase === "reading" && <ReadingScreen />}
       </AnimatePresence>
     </div>
