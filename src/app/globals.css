@@ -69,6 +69,41 @@ body {
   scroll-behavior: smooth;
 }
 
+/* ===== CANDLE ANIMATIONS ===== */
+@keyframes candle-f1 {
+  0%   { transform: translateX(-50%) scaleX(1) scaleY(1) rotate(-1.5deg) }
+  33%  { transform: translateX(-50%) scaleX(0.9) scaleY(1.06) rotate(1.2deg) }
+  66%  { transform: translateX(-50%) scaleX(1.06) scaleY(0.94) rotate(-0.8deg) }
+  100% { transform: translateX(-50%) scaleX(0.94) scaleY(1.03) rotate(1.5deg) }
+}
+@keyframes candle-f2 {
+  0%   { transform: translateX(-50%) scaleX(1) scaleY(1) rotate(1deg) }
+  50%  { transform: translateX(-50%) scaleX(0.88) scaleY(1.1) rotate(-1.5deg) }
+  100% { transform: translateX(-50%) scaleX(1.06) scaleY(0.93) rotate(0.8deg) }
+}
+@keyframes candle-f3 {
+  0%   { transform: translateX(-50%) scaleX(1) scaleY(1) rotate(0.5deg) }
+  50%  { transform: translateX(-50%) scaleX(0.85) scaleY(1.12) rotate(-1deg) }
+  100% { transform: translateX(-50%) scaleX(1.08) scaleY(0.92) rotate(0.8deg) }
+}
+@keyframes candle-glow {
+  0%   { opacity: 0.5; transform: translateX(-50%) scale(1) }
+  100% { opacity: 0.85; transform: translateX(-50%) scale(1.15) }
+}
+@keyframes candle-smoke {
+  0%   { opacity: 0; transform: translateY(0) translateX(0) scale(0.3) }
+  10%  { opacity: 0.15 }
+  100% { opacity: 0; transform: translateY(-80px) translateX(12px) scale(4) }
+}
+@keyframes candle-cone {
+  0%   { opacity: 0.3 }
+  100% { opacity: 0.6 }
+}
+@keyframes candle-pool {
+  0%   { opacity: 0.3; transform: scaleX(1) }
+  100% { opacity: 0.6; transform: scaleX(1.2) }
+}
+
 /* ===== GPU ACCELERATION FOR ANIMATIONS ===== */
 .will-change-transform {
   will-change: transform;

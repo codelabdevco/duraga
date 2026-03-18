@@ -1,42 +1,144 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useTarotStore } from "@/store/useTarotStore";
 import { AIReading } from "@/store/useTarotStore";
 import { EASE } from "@/constants/animation";
 import Button from "@/components/ui/Button";
 
-// ── Loading messages ──
+import Candle from "@/components/ui/Candle";
+import dynamic from "next/dynamic";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+
+// ── Loading messages (mystical quotes) ──
 const LOADING_MSGS = [
-  "กำลังอ่านไพ่ให้คุณ...",
-  "สัมผัสพลังงานจากไพ่...",
-  "เชื่อมต่อกับจักรวาล...",
-  "ถอดรหัสสัญลักษณ์...",
-  "รวบรวมคำทำนาย...",
+  "เปลวเทียนกำลังส่องทางให้คุณ...",
+  "ดวงดาวกำลังเรียงตัว...",
+  "พลังงานจากไพ่กำลังรวมตัว...",
+  "จักรวาลกำลังเปิดเผยคำตอบ...",
+  "สัมผัสแห่งแสงเทียนนำทาง...",
+  "ความลับกำลังถูกถอดรหัส...",
+  "ลมหายใจแห่งจักรวาล...",
 ];
 
-function LoadingMessages() {
-  const [idx, setIdx] = useState(0);
+const WISDOM_MSGS = [
+  "ทุกใบไพ่มีเรื่องราวที่ซ่อนอยู่ รอให้แสงเทียนส่องเห็น",
+  "คำตอบอยู่ในตัวคุณเสมอ ไพ่เพียงช่วยให้คุณมองเห็นชัดขึ้น",
+  "บางครั้งสิ่งที่ซ่อนอยู่ สำคัญกว่าสิ่งที่เห็น",
+  "จงเชื่อมั่นในเส้นทางของคุณ แม้มันจะคดเคี้ยว",
+  "ความกล้าไม่ใช่การไม่กลัว แต่คือการก้าวไปข้างหน้าทั้งที่กลัว",
+];
+
+function LoadingCandles() {
+  const [msgIdx, setMsgIdx] = useState(0);
+  const [wisdomIdx, setWisdomIdx] = useState(0);
+  const [lottieData, setLottieData] = useState<object | null>(null);
+
+  const particleConfigs = useRef(
+    Array.from({ length: 8 }, (_, i) => ({
+      left: `${30 + Math.random() * 40}%`,
+      top: `${20 + Math.random() * 60}%`,
+      yRange: -20 - Math.random() * 30,
+      xRange: (Math.random() - 0.5) * 15,
+      duration: 3 + Math.random() * 2,
+      hue: 30 + i * 5,
+    }))
+  ).current;
+
   useEffect(() => {
-    const timer = setInterval(() => setIdx((i) => (i + 1) % LOADING_MSGS.length), 2800);
-    return () => clearInterval(timer);
+    fetch("/galdrastafur.json").then(r => r.json()).then(setLottieData);
+  }, []);
+
+  useEffect(() => {
+    const t1 = setInterval(() => setMsgIdx((i) => (i + 1) % LOADING_MSGS.length), 3000);
+    const t2 = setInterval(() => setWisdomIdx((i) => (i + 1) % WISDOM_MSGS.length), 5000);
+    return () => { clearInterval(t1); clearInterval(t2); };
   }, []);
 
   return (
-    <div className="h-5 relative w-full text-center">
-      <AnimatePresence mode="wait">
-        <motion.p
-          key={idx}
-          className="text-sm text-white/45 absolute inset-x-0"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.4 }}
+    <div className="flex flex-col items-center py-4 gap-6">
+      {/* Candles */}
+      <div className="flex items-end gap-16 relative">
+        {/* Floating particles between candles */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          {particleConfigs.map((p, i) => (
+            <motion.div key={i}
+              className="absolute w-1 h-1 rounded-full"
+              style={{
+                background: `hsla(${p.hue}, 80%, 75%, 0.4)`,
+                left: p.left,
+                top: p.top,
+              }}
+              animate={{
+                y: [0, p.yRange, 0],
+                x: [0, p.xRange, 0],
+                opacity: [0, 0.5, 0],
+                scale: [0.3, 1, 0.3],
+              }}
+              transition={{
+                duration: p.duration,
+                repeat: Infinity,
+                delay: i * 0.5,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+
+        <Candle scale={0.8} />
+
+        {/* Galdrastafur rune symbol between candles */}
+        <motion.div
+          className="relative z-10"
+          style={{ width: 80, height: 80, marginBottom: 20 }}
+          animate={{ opacity: [0.3, 0.7, 0.3], scale: [0.95, 1.05, 0.95] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         >
-          {LOADING_MSGS[idx]}
-        </motion.p>
-      </AnimatePresence>
+          {lottieData && <Lottie
+            animationData={lottieData}
+            loop
+            autoplay
+            style={{ width: "100%", height: "100%", filter: "sepia(1) hue-rotate(10deg) brightness(1.5) opacity(0.6)" }}
+          />}
+          {/* Glow behind rune */}
+          <div className="absolute inset-0 -z-10 rounded-full"
+            style={{ background: "radial-gradient(circle, rgba(232,212,139,0.08) 0%, transparent 70%)", transform: "scale(2)" }}
+          />
+        </motion.div>
+
+        <Candle scale={0.8} />
+      </div>
+
+      {/* Status message */}
+      <div className="h-5 relative w-full text-center">
+        <AnimatePresence mode="wait">
+          <motion.p key={msgIdx}
+            className="text-xs text-gold/60 absolute inset-x-0"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.4 }}
+          >
+            {LOADING_MSGS[msgIdx]}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+
+      {/* Wisdom quote */}
+      <div className="h-10 relative w-full text-center px-4">
+        <AnimatePresence mode="wait">
+          <motion.p key={wisdomIdx}
+            className="text-[0.7rem] text-white/25 absolute inset-x-0 px-4 leading-5 italic"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            &ldquo;{WISDOM_MSGS[wisdomIdx]}&rdquo;
+          </motion.p>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -158,7 +260,19 @@ export default function ReadingScreen() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6, ease: EASE }}
     >
-      <h2 className="text-xl text-gold text-center mb-3 tracking-[0.15em] font-semibold">คำทำนาย</h2>
+      <AnimatePresence mode="wait">
+        {!aiReading ? (
+          <motion.h2 key="loading-title" className="text-xl text-gold/70 text-center mb-3 tracking-[0.15em] font-semibold"
+            initial={{ opacity: 0 }} animate={{ opacity: [0.5, 1, 0.5] }} exit={{ opacity: 0, transition: { duration: 0.2 } }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >กำลังทำนาย...</motion.h2>
+        ) : (
+          <motion.h2 key="result-title" className="text-xl text-gold text-center mb-3 tracking-[0.15em] font-semibold"
+            initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >คำทำนาย</motion.h2>
+        )}
+      </AnimatePresence>
 
       {/* Context */}
       <div className="w-full max-w-[420px] mb-4 text-center">
@@ -179,16 +293,11 @@ export default function ReadingScreen() {
       {/* Card thumbnail row */}
       <div className="flex gap-1.5 flex-wrap justify-center mb-5 max-w-[420px]">
         {pickedCards.map((card, i) => (
-          <motion.div
-            key={i}
-            className={`w-[46px] h-[69px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e] ${card.isReversed ? "rotate-180" : ""}`}
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
+          <motion.div key={i} className={`w-[46px] h-[69px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e] ${card.isReversed ? "rotate-180" : ""}`}
+            initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.05, duration: 0.5, ease: EASE }}
           >
-            {card.image && (
-              <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />
-            )}
+            {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />}
           </motion.div>
         ))}
       </div>
@@ -202,44 +311,7 @@ export default function ReadingScreen() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6, ease: EASE }}
           >
-            <div className="flex flex-col items-center py-6 gap-5">
-              <div className="relative w-16 h-16">
-                <motion.div
-                  className="absolute inset-0 rounded-full border border-gold/30"
-                  animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                  className="absolute inset-2 rounded-full border border-gold/40"
-                  animate={{ scale: [1.1, 0.9, 1.1], opacity: [0.4, 0.7, 0.4] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                />
-                <motion.div
-                  className="absolute inset-4 rounded-full bg-gradient-to-br from-gold/20 to-gold/5"
-                  animate={{ scale: [0.9, 1.15, 0.9], opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                />
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center text-xl"
-                  animate={{ rotateY: [0, 360] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                >
-                  <span className="text-gold/80">&#10022;</span>
-                </motion.div>
-              </div>
-              <LoadingMessages />
-              <div className="w-full space-y-2.5 mt-1">
-                {[0.85, 1, 0.7, 0.9, 0.6].map((w, i) => (
-                  <motion.div
-                    key={i}
-                    className="h-3 rounded-full bg-gradient-to-r from-gold/[0.06] via-gold/[0.12] to-gold/[0.06]"
-                    style={{ width: `${w * 100}%` }}
-                    animate={{ opacity: [0.3, 0.7, 0.3] }}
-                    transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-                  />
-                ))}
-              </div>
-            </div>
+            <LoadingCandles />
           </motion.div>
         )}
 
@@ -300,12 +372,8 @@ export default function ReadingScreen() {
                   transition={{ delay: 0.65 + i * 0.08, duration: 0.5, ease: EASE }}
                 >
                   <div className="flex gap-3.5 p-4 items-start">
-                    <div
-                      className={`w-[65px] h-[100px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e] ${card.isReversed ? "rotate-180" : ""}`}
-                    >
-                      {card.image && (
-                        <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />
-                      )}
+                    <div className={`w-[65px] h-[100px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e] ${card.isReversed ? "rotate-180" : ""}`}>
+                      {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">

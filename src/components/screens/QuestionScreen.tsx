@@ -17,7 +17,7 @@ export default function QuestionScreen() {
       className="flex flex-col items-center justify-center min-h-full px-5"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
       transition={{ duration: 0.5, ease: EASE }}
     >
       <p className="text-lg text-gold font-semibold mb-1 tracking-wide">ตั้งคำถาม</p>
@@ -45,8 +45,8 @@ export default function QuestionScreen() {
       )}
 
       <div className="flex gap-3 mt-8">
-        <Button variant="outline" onClick={() => setPhase("shuffle")}>ข้าม</Button>
-        <Button onClick={() => setPhase("shuffle")}>ต่อไป</Button>
+        <Button variant="outline" onClick={() => setPhase("fan")}>ข้าม</Button>
+        <Button onClick={() => setPhase("fan")}>ต่อไป</Button>
       </div>
     </motion.div>
   );
