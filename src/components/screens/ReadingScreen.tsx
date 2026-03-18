@@ -1,10 +1,45 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useTarotStore } from "@/store/useTarotStore";
 import { EASE } from "@/constants/animation";
 import Button from "@/components/ui/Button";
+
+const LOADING_MSGS = [
+  "กำลังอ่านไพ่ให้คุณ...",
+  "สัมผัสพลังงานจากไพ่...",
+  "เชื่อมต่อกับจักรวาล...",
+  "ถอดรหัสสัญลักษณ์...",
+  "รวบรวมคำทำนาย...",
+];
+
+function LoadingMessages() {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIdx((i) => (i + 1) % LOADING_MSGS.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="h-5 relative w-full text-center">
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={idx}
+          className="text-sm text-white/45 absolute inset-x-0"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.4 }}
+        >
+          {LOADING_MSGS[idx]}
+        </motion.p>
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function ReadingScreen() {
   const selectedTopic = useTarotStore((s) => s.selectedTopic);
@@ -105,13 +140,48 @@ export default function ReadingScreen() {
         <div className="bg-gradient-to-br from-gold/[0.06] to-transparent border border-gold/20 rounded-2xl p-5">
           <p className="text-xs text-gold/60 font-semibold mb-3 tracking-wide">สรุปคำทำนาย</p>
           {isLoadingAI ? (
-            <div className="flex items-center gap-2">
-              <motion.span
-                className="inline-block w-1.5 h-1.5 rounded-full bg-gold/50"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
-              />
-              <span className="text-sm text-white/40">กำลังอ่านไพ่ให้คุณ...</span>
+            <div className="flex flex-col items-center py-6 gap-5">
+              {/* Mystical orb animation */}
+              <div className="relative w-16 h-16">
+                <motion.div
+                  className="absolute inset-0 rounded-full border border-gold/30"
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="absolute inset-2 rounded-full border border-gold/40"
+                  animate={{ scale: [1.1, 0.9, 1.1], opacity: [0.4, 0.7, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                />
+                <motion.div
+                  className="absolute inset-4 rounded-full bg-gradient-to-br from-gold/20 to-gold/5"
+                  animate={{ scale: [0.9, 1.15, 0.9], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                />
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center text-xl"
+                  animate={{ rotateY: [0, 360] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                >
+                  <span className="text-gold/80">&#10022;</span>
+                </motion.div>
+              </div>
+
+              {/* Cycling messages */}
+              <LoadingMessages />
+
+              {/* Shimmer lines */}
+              <div className="w-full space-y-2.5 mt-1">
+                {[0.85, 1, 0.7, 0.9, 0.6].map((w, i) => (
+                  <motion.div
+                    key={i}
+                    className="h-3 rounded-full bg-gradient-to-r from-gold/[0.06] via-gold/[0.12] to-gold/[0.06]"
+                    style={{ width: `${w * 100}%` }}
+                    animate={{ opacity: [0.3, 0.7, 0.3] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+                  />
+                ))}
+              </div>
             </div>
           ) : aiReading ? (
             <div className="text-sm leading-7 text-white/80 space-y-3">
