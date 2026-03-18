@@ -8,7 +8,7 @@ import DustParticles from "@/components/effects/DustParticles";
 import WelcomeScreen from "@/components/screens/WelcomeScreen";
 import TarotFlow from "@/components/TarotFlow";
 
-const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+import { EASE } from "@/constants/animation";
 
 export default function TarotApp() {
   const phase = useTarotStore((s) => s.phase);

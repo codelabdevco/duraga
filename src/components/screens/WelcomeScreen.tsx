@@ -5,7 +5,7 @@ import CardBack from "@/components/ui/CardBack";
 import Button from "@/components/ui/Button";
 import { useTarotStore } from "@/store/useTarotStore";
 
-const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+import { EASE } from "@/constants/animation";
 
 const cardVariants = [
   { rotate: -12, x: -20, delay: 0 },
