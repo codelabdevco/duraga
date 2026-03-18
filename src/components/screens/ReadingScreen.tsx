@@ -144,13 +144,26 @@ function LoadingCandles() {
 }
 
 // ── Trend config ──
-const TREND_CONFIG: Record<string, { icon: string; label: string; color: string; bg: string }> = {
-  very_positive: { icon: "✦", label: "ดีมาก", color: "#e8d48b", bg: "rgba(232,212,139,0.12)" },
-  positive:      { icon: "✦", label: "ดี",     color: "#a8d48b", bg: "rgba(168,212,139,0.10)" },
-  neutral:       { icon: "☯", label: "กลางๆ",  color: "#8bb8d4", bg: "rgba(139,184,212,0.10)" },
-  caution:       { icon: "⚡", label: "ระวัง",  color: "#d4a84b", bg: "rgba(212,168,75,0.10)" },
-  challenging:   { icon: "☁", label: "ท้าทาย", color: "#b48bd4", bg: "rgba(180,139,212,0.10)" },
+const TREND_CONFIG: Record<string, { icon: string; label: string; color: string; bg: string; gradient: string }> = {
+  very_positive: { icon: "✦", label: "ดีมาก", color: "#e8d48b", bg: "rgba(232,212,139,0.08)", gradient: "from-[#e8d48b]/20 via-[#e8d48b]/5 to-transparent" },
+  positive:      { icon: "✦", label: "ดี",     color: "#a8d48b", bg: "rgba(168,212,139,0.06)", gradient: "from-[#a8d48b]/15 via-[#a8d48b]/5 to-transparent" },
+  neutral:       { icon: "☯", label: "กลางๆ",  color: "#8bb8d4", bg: "rgba(139,184,212,0.06)", gradient: "from-[#8bb8d4]/15 via-[#8bb8d4]/5 to-transparent" },
+  caution:       { icon: "⚡", label: "ระวัง",  color: "#d4a84b", bg: "rgba(212,168,75,0.06)", gradient: "from-[#d4a84b]/15 via-[#d4a84b]/5 to-transparent" },
+  challenging:   { icon: "☁", label: "ท้าทาย", color: "#b48bd4", bg: "rgba(180,139,212,0.06)", gradient: "from-[#b48bd4]/15 via-[#b48bd4]/5 to-transparent" },
 };
+
+// ── Decorative divider ──
+function GoldDivider({ delay = 0 }: { delay?: number }) {
+  return (
+    <motion.div className="flex items-center gap-3 my-4 px-4"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay, duration: 0.5 }}
+    >
+      <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-gold/15" />
+      <span className="text-gold/20 text-[0.5rem]">✦</span>
+      <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-gold/15" />
+    </motion.div>
+  );
+}
 
 // ── Trend meter ──
 function TrendMeter({ trend, trendText }: { trend: string; trendText: string }) {
@@ -160,43 +173,61 @@ function TrendMeter({ trend, trendText }: { trend: string; trendText: string }) 
 
   return (
     <motion.div
-      className="rounded-2xl p-4 border"
-      style={{ background: config.bg, borderColor: `${config.color}30` }}
+      className="relative rounded-2xl p-5 border overflow-hidden"
+      style={{ borderColor: `${config.color}20` }}
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
     >
-      <div className="flex items-center gap-3 mb-3">
-        <div
-          className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
-          style={{ background: `${config.color}20`, border: `1px solid ${config.color}40` }}
+      {/* Background gradient */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${config.gradient} pointer-events-none`} />
+
+      {/* Subtle glow */}
+      <motion.div className="absolute -top-10 -right-10 w-32 h-32 rounded-full pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${config.color}10, transparent 70%)` }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="relative flex items-center gap-4 mb-4">
+        <motion.div
+          className="w-12 h-12 rounded-full flex items-center justify-center text-xl"
+          style={{ background: `${config.color}15`, border: `1.5px solid ${config.color}30`, boxShadow: `0 0 15px ${config.color}15` }}
+          animate={{ boxShadow: [`0 0 10px ${config.color}10`, `0 0 20px ${config.color}20`, `0 0 10px ${config.color}10`] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
           <span style={{ color: config.color }}>{config.icon}</span>
-        </div>
+        </motion.div>
         <div>
-          <p className="text-xs text-white/40">แนวโน้มโดยรวม</p>
-          <p className="text-sm font-semibold" style={{ color: config.color }}>{config.label}</p>
+          <p className="text-[0.65rem] text-white/35 tracking-wider uppercase">แนวโน้มโดยรวม</p>
+          <p className="text-base font-semibold mt-0.5" style={{ color: config.color }}>{config.label}</p>
         </div>
       </div>
 
-      {/* 5-step meter */}
-      <div className="flex gap-1.5 mb-3">
+      {/* 5-step meter with glow */}
+      <div className="relative flex gap-1.5 mb-4">
         {levels.map((lv, i) => (
           <motion.div
             key={lv}
-            className="flex-1 h-1.5 rounded-full"
-            style={{
-              background: i <= activeIdx ? config.color : "rgba(255,255,255,0.08)",
-              opacity: i <= activeIdx ? 0.8 : 0.3,
-            }}
+            className="flex-1 h-2 rounded-full relative overflow-hidden"
+            style={{ background: "rgba(255,255,255,0.06)" }}
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.4 + i * 0.08, duration: 0.3 }}
-          />
+          >
+            {i <= activeIdx && (
+              <motion.div className="absolute inset-0 rounded-full"
+                style={{ background: config.color, boxShadow: `0 0 8px ${config.color}40` }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}
+              />
+            )}
+          </motion.div>
         ))}
       </div>
 
-      <p className="text-xs text-white/50 leading-5">{trendText}</p>
+      <p className="relative text-xs text-white/55 leading-6">{trendText}</p>
     </motion.div>
   );
 }
@@ -321,42 +352,66 @@ export default function ReadingScreen() {
             {/* Trend meter */}
             <TrendMeter trend={aiReading.trend} trendText={aiReading.trendText} />
 
+            <GoldDivider delay={0.35} />
+
             {/* Summary */}
             <motion.div
-              className="bg-gradient-to-br from-gold/[0.06] to-transparent border border-gold/20 rounded-2xl p-5"
+              className="relative rounded-2xl p-5 overflow-hidden"
+              style={{ background: "linear-gradient(135deg, rgba(232,212,139,0.06) 0%, rgba(232,212,139,0.02) 50%, transparent 100%)", border: "1px solid rgba(232,212,139,0.12)" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5, ease: EASE }}
             >
-              <p className="text-xs text-gold/60 font-semibold mb-2.5 tracking-wide">สรุปภาพรวม</p>
-              <p className="text-sm leading-7 text-white/80">{aiReading.summary}</p>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center">
+                  <span className="text-gold/60 text-[0.6rem]">✦</span>
+                </div>
+                <p className="text-xs text-gold/50 font-semibold tracking-wider uppercase">สรุปภาพรวม</p>
+              </div>
+              <p className="text-sm leading-8 text-white/80 pl-8">{aiReading.summary}</p>
             </motion.div>
 
             {/* Advice */}
             {aiReading.advice && (
               <motion.div
-                className="bg-gradient-to-r from-gold/[0.08] to-gold/[0.03] border border-gold/25 rounded-2xl p-4 flex gap-3 items-start"
+                className="relative rounded-2xl p-5 overflow-hidden"
+                style={{ background: "linear-gradient(135deg, rgba(232,212,139,0.08) 0%, rgba(232,212,139,0.03) 100%)", border: "1px solid rgba(232,212,139,0.18)" }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.5, ease: EASE }}
               >
-                <div className="w-8 h-8 rounded-full bg-gold/15 border border-gold/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-gold text-xs">&#10023;</span>
-                </div>
-                <div>
-                  <p className="text-xs text-gold/60 font-semibold mb-1">คำแนะนำ</p>
-                  <p className="text-sm leading-7 text-white/75">{aiReading.advice}</p>
+                {/* Subtle glow */}
+                <div className="absolute -top-6 -left-6 w-20 h-20 rounded-full pointer-events-none"
+                  style={{ background: "radial-gradient(circle, rgba(232,212,139,0.1), transparent 70%)" }} />
+
+                <div className="flex gap-3.5 items-start relative">
+                  <motion.div
+                    className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/25 flex items-center justify-center flex-shrink-0"
+                    style={{ boxShadow: "0 0 12px rgba(232,212,139,0.08)" }}
+                    animate={{ boxShadow: ["0 0 8px rgba(232,212,139,0.05)", "0 0 16px rgba(232,212,139,0.12)", "0 0 8px rgba(232,212,139,0.05)"] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <span className="text-gold text-sm">☆</span>
+                  </motion.div>
+                  <div>
+                    <p className="text-xs text-gold/50 font-semibold mb-1.5 tracking-wider uppercase">คำแนะนำ</p>
+                    <p className="text-sm leading-7 text-white/80">{aiReading.advice}</p>
+                  </div>
                 </div>
               </motion.div>
             )}
 
-            {/* Per-card insights */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
+            <GoldDivider delay={0.55} />
+
+            {/* Per-card insights header */}
+            <motion.div className="flex items-center gap-2 mt-1"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.5 }}
             >
-              <p className="text-xs text-gold/50 font-semibold mb-3 tracking-wide mt-2">รายละเอียดแต่ละใบ</p>
+              <div className="w-5 h-5 rounded-full bg-gold/10 flex items-center justify-center">
+                <span className="text-gold/50 text-[0.5rem]">✦</span>
+              </div>
+              <p className="text-xs text-gold/45 font-semibold tracking-wider uppercase">รายละเอียดแต่ละใบ</p>
+              <div className="flex-1 h-[1px] bg-gradient-to-r from-gold/10 to-transparent" />
             </motion.div>
 
             {pickedCards.map((card, i) => {
@@ -366,31 +421,36 @@ export default function ReadingScreen() {
               return (
                 <motion.div
                   key={i}
-                  className="bg-gradient-to-br from-[#10111a]/90 to-[#08090e]/95 border border-gold/10 rounded-2xl overflow-hidden"
+                  className="relative rounded-2xl overflow-hidden"
+                  style={{ background: "linear-gradient(135deg, rgba(16,17,26,0.95), rgba(8,9,14,0.98))", border: "1px solid rgba(232,212,139,0.08)" }}
                   initial={{ opacity: 0, y: 25 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.65 + i * 0.08, duration: 0.5, ease: EASE }}
                 >
-                  <div className="flex gap-3.5 p-4 items-start">
-                    <div className={`w-[65px] h-[100px] rounded-lg border border-gold/20 overflow-hidden relative flex-shrink-0 bg-[#08090e] ${card.isReversed ? "rotate-180" : ""}`}>
+                  {/* Card number badge */}
+                  <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-gold/8 border border-gold/15 flex items-center justify-center">
+                    <span className="text-[0.5rem] text-gold/40 font-bold">{i + 1}</span>
+                  </div>
+
+                  <div className="flex gap-4 p-4 items-start">
+                    <div className={`relative rounded-lg overflow-hidden flex-shrink-0 ${card.isReversed ? "rotate-180" : ""}`}
+                      style={{ width: 65, height: 100, border: "1px solid rgba(232,212,139,0.15)", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }}
+                    >
                       {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />}
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 pr-6">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-sm text-gold-light font-semibold">
-                          {card.nameTh}
-                        </h3>
+                        <h3 className="text-sm text-gold-light font-semibold">{card.nameTh}</h3>
                         {card.isReversed && (
-                          <span className="text-[0.6rem] text-red-400/60 border border-red-400/20 rounded-full px-1.5 py-0.5">กลับหัว</span>
+                          <span className="text-[0.55rem] text-red-400/60 bg-red-400/8 border border-red-400/15 rounded-full px-1.5 py-0.5">กลับหัว</span>
                         )}
                       </div>
-                      <p className="text-[0.65rem] text-gold/35 mb-2">{pos?.nameTH}</p>
+                      <p className="text-[0.6rem] text-gold/30 mb-2 tracking-wide">{pos?.nameTH}</p>
 
-                      {/* AI insight for this card */}
                       {insight ? (
-                        <p className="text-[0.8rem] text-white/65 leading-6">{insight}</p>
+                        <p className="text-[0.8rem] text-white/65 leading-7">{insight}</p>
                       ) : (
-                        <p className="text-xs text-white/50 leading-6">{card.meaningTh || card.meaning}</p>
+                        <p className="text-xs text-white/45 leading-6">{card.meaningTh || card.meaning}</p>
                       )}
                     </div>
                   </div>

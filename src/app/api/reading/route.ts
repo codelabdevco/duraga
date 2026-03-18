@@ -43,6 +43,21 @@ function extractJSON(raw: string): ReadingResult {
     }
   } catch { /* continue */ }
 
+  // Strategy 4: fix truncated JSON (max_tokens cut it)
+  try {
+    const start = raw.indexOf("{");
+    if (start !== -1) {
+      let truncated = raw.slice(start);
+      const openQuotes = (truncated.match(/"/g) || []).length;
+      if (openQuotes % 2 !== 0) truncated += '"';
+      const openBrackets = (truncated.match(/\[/g) || []).length - (truncated.match(/\]/g) || []).length;
+      for (let i = 0; i < openBrackets; i++) truncated += "]";
+      const openBraces = (truncated.match(/\{/g) || []).length - (truncated.match(/\}/g) || []).length;
+      for (let i = 0; i < openBraces; i++) truncated += "}";
+      return validateReading(JSON.parse(truncated));
+    }
+  } catch { /* continue */ }
+
   // All strategies failed — return raw text as summary
   console.error("JSON extraction failed, raw:", raw.slice(0, 200));
   return { ...FALLBACK, summary: raw.replace(/```(?:json)?/gi, "").replace(/```/g, "").trim() };
@@ -119,7 +134,7 @@ ${cardDetails}
 
     const message = await client.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 1200,
+      max_tokens: 2000,
       messages: [{ role: "user", content: prompt }],
     });
 
