@@ -93,6 +93,10 @@ export default function ShuffleScreen() {
         scale: [0.7, 1.4, 1.6],
       }, { duration: 0.9, ease: "easeOut" });
     }
+
+    // Auto-advance to card pick
+    await wait(300);
+    setPhase("fan");
   }
 
   return (
@@ -125,18 +129,9 @@ export default function ShuffleScreen() {
         ))}
       </div>
 
-      <div className="flex gap-3">
+      {!hasShuffled && (
         <Button onClick={handleShuffle}>สับไพ่</Button>
-        {hasShuffled && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, ease: EASE }}
-          >
-            <Button variant="outline" onClick={() => setPhase("fan")}>เลือกไพ่</Button>
-          </motion.div>
-        )}
-      </div>
+      )}
     </motion.div>
   );
 }
