@@ -1,5 +1,13 @@
 import { create } from "zustand";
 import { Phase, Topic, Spread, TarotCard, PickedCard, SPREADS, TOPIC_DEFAULT_SPREAD } from "@/types/tarot";
+
+export interface AIReading {
+  trend: "very_positive" | "positive" | "neutral" | "caution" | "challenging";
+  trendText: string;
+  summary: string;
+  advice: string;
+  cardInsights: string[];
+}
 import { allTarotCards } from "@/data/tarot";
 import { shuffleArray } from "@/lib/utils";
 
@@ -11,7 +19,7 @@ interface TarotState {
   shuffledDeck: TarotCard[];
   pickedCards: PickedCard[];
   flippedCardIds: Set<number>;
-  aiReading: string | null;
+  aiReading: AIReading | null;
   isLoadingAI: boolean;
   hasShuffled: boolean;
 
@@ -24,7 +32,7 @@ interface TarotState {
   unpickCard: (cardId: number) => void;
   flipCard: (posIndex: number) => void;
   flipAll: () => void;
-  setAiReading: (r: string) => void;
+  setAiReading: (r: AIReading) => void;
   setLoadingAI: (l: boolean) => void;
   reset: () => void;
 }
