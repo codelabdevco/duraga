@@ -110,13 +110,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const freeMode = process.env.FREE_MODE === "true";
     const user = getUserFromRequest(req);
 
-    // Skip credit/limit checks in free mode
-    if (!freeMode) {
-      // Daily usage limit + credit check
-      if (user) {
+    // Daily usage limit + credit check
+    if (user) {
         const usageCheck = incrementUserReading(user.userId);
         if (!usageCheck.allowed) {
           return NextResponse.json(
@@ -132,7 +129,6 @@ export async function POST(req: NextRequest) {
             { status: 429 }
           );
         }
-      }
     }
 
     const { topic, topicIcon, spread, question, cards } = (await req.json()) as ReadingRequest;

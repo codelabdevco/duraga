@@ -18,12 +18,10 @@ export default function CreditBadge() {
   const [showTopUp, setShowTopUp] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState<number>(0);
   const [paymentRef, setPaymentRef] = useState("");
-  const [freeMode, setFreeMode] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    fetch("/api/config").then(r => r.json()).then(c => { if (c.freeMode) setFreeMode(true); }).catch(() => {});
     fetchBalance();
   }, []);
 
@@ -49,7 +47,7 @@ export default function CreditBadge() {
     setSubmitting(false);
   }
 
-  if (freeMode || !info?.loggedIn) return null;
+  if (!info?.loggedIn) return null;
 
   return (
     <>

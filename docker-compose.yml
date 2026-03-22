@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-  # Paid version — credit system enabled
   duraga:
     build: .
     container_name: duraga
@@ -15,25 +14,6 @@ services:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
       - JWT_SECRET=${JWT_SECRET:-duraga-jwt-secret-2024}
       - DATA_DIR=/app/data
-      - FREE_MODE=false
-
-  # Free version — unlimited free readings
-  duraga-free:
-    build: .
-    container_name: duraga-free
-    restart: unless-stopped
-    ports:
-      - "3503:3000"
-    volumes:
-      - duraga-free-data:/app/data
-    environment:
-      - NODE_ENV=production
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
-      - JWT_SECRET=${JWT_SECRET:-duraga-jwt-secret-free}
-      - DATA_DIR=/app/data
-      - FREE_MODE=true
 
 volumes:
   duraga-data:
-  duraga-free-data:
