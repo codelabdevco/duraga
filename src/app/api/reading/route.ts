@@ -1,6 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { getSettings, saveReading, checkGuestLimit, incrementUserReading } from "@/lib/db";
+import { getUserFromRequest } from "@/lib/admin-auth";
 
 const client = new Anthropic();
 
@@ -21,12 +23,10 @@ const FALLBACK: ReadingResult = {
 };
 
 function extractJSON(raw: string): ReadingResult {
-  // Strategy 1: direct parse
   try {
     return validateReading(JSON.parse(raw));
   } catch { /* continue */ }
 
-  // Strategy 2: strip ```json ... ``` (various formats)
   try {
     const stripped = raw
       .replace(/^[\s\S]*?```(?:json)?[\s\n]*/i, "")
@@ -35,7 +35,6 @@ function extractJSON(raw: string): ReadingResult {
     return validateReading(JSON.parse(stripped));
   } catch { /* continue */ }
 
-  // Strategy 3: extract first { ... } block
   try {
     const start = raw.indexOf("{");
     const end = raw.lastIndexOf("}");
@@ -44,7 +43,6 @@ function extractJSON(raw: string): ReadingResult {
     }
   } catch { /* continue */ }
 
-  // Strategy 4: fix truncated JSON (max_tokens cut it)
   try {
     const start = raw.indexOf("{");
     if (start !== -1) {
@@ -59,7 +57,6 @@ function extractJSON(raw: string): ReadingResult {
     }
   } catch { /* continue */ }
 
-  // All strategies failed — return raw text as summary
   console.error("JSON extraction failed, raw:", raw.slice(0, 200));
   return { ...FALLBACK, summary: raw.replace(/```(?:json)?/gi, "").replace(/```/g, "").trim() };
 }
@@ -87,6 +84,7 @@ interface CardInfo {
 
 interface ReadingRequest {
   topic: string;
+  topicIcon?: string;
   spread: string;
   question: string;
   cards: CardInfo[];
@@ -94,16 +92,45 @@ interface ReadingRequest {
 
 export async function POST(req: NextRequest) {
   try {
+    const settings = getSettings();
+
+    // Maintenance mode
+    if (settings.maintenanceMode) {
+      return NextResponse.json({ error: "ระบบกำลังปรับปรุง กรุณากลับมาใหม่ภายหลัง" }, { status: 503 });
+    }
+
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-    const { allowed, remaining } = checkRateLimit(ip);
-    if (!allowed) {
+
+    // Rate limit (per minute)
+    const rateCheck = checkRateLimit(ip, settings.rateLimitPerMinute);
+    if (!rateCheck.allowed) {
       return NextResponse.json(
         { error: "คุณส่งคำขอบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่" },
-        { status: 429, headers: { "X-RateLimit-Remaining": String(remaining) } }
+        { status: 429 }
       );
     }
 
-    const { topic, spread, question, cards } = (await req.json()) as ReadingRequest;
+    // Daily usage limit
+    const user = getUserFromRequest(req);
+    if (user) {
+      const usageCheck = incrementUserReading(user.userId);
+      if (!usageCheck.allowed) {
+        return NextResponse.json(
+          { error: `คุณใช้ครบ ${settings.dailyFreeLimit} ครั้งต่อวันแล้ว กรุณากลับมาใหม่พรุ่งนี้`, remaining: 0 },
+          { status: 429 }
+        );
+      }
+    } else {
+      const guestCheck = checkGuestLimit(ip);
+      if (!guestCheck.allowed) {
+        return NextResponse.json(
+          { error: `ใช้ครบ ${settings.dailyFreeLimit} ครั้งต่อวันแล้ว สมัครสมาชิกเพื่อใช้ต่อ`, remaining: 0 },
+          { status: 429 }
+        );
+      }
+    }
+
+    const { topic, topicIcon, spread, question, cards } = (await req.json()) as ReadingRequest;
 
     const cardDetails = cards
       .map(
@@ -112,47 +139,50 @@ export async function POST(req: NextRequest) {
       )
       .join("\n");
 
-    const prompt = `คุณคือนักอ่านไพ่ทาโร่ผู้เชี่ยวชาญ อ่านไพ่ให้ผู้ใช้ที่เป็นคนทั่วไป (ไม่ใช่ผู้เชี่ยวชาญ) ให้เข้าใจง่าย
-
-หมวด: "${topic}"
-คำถาม: "${question}"
-รูปแบบการวาง: "${spread}"
-
-ไพ่ที่จั่วได้:
-${cardDetails}
-
-ตอบเป็น JSON เท่านั้น ตามโครงสร้างนี้:
-{
-  "trend": "very_positive" | "positive" | "neutral" | "caution" | "challenging",
-  "trendText": "คำอธิบายแนวโน้มสั้นๆ 1 ประโยค เช่น พลังงานโดยรวมเป็นไปในทางที่ดี",
-  "summary": "สรุปคำทำนายภาพรวม 3-4 ประโยค ภาษาง่ายๆ อบอุ่น เหมือนพี่สาวคุยให้ฟัง ไม่ใช้ศัพท์ทางเทคนิค ไม่ต้องมี ** หรือ markdown",
-  "advice": "คำแนะนำปฏิบัติได้จริง 1-2 ประโยค ชัดเจน เช่น ลองพูดคุยกับคนที่คุณไว้ใจ",
-  "cardInsights": [
-    "วิเคราะห์ไพ่ใบที่ 1 ตามตำแหน่ง 2-3 ประโยค ภาษาง่าย",
-    "วิเคราะห์ไพ่ใบที่ 2 ..."
-  ]
-}
-
-กฎ:
-- trend ให้ประเมินจากภาพรวมไพ่ทุกใบรวมกัน
-- trendText ต้องสั้น กระชับ เข้าใจง่าย
-- summary เขียนเหมือนเล่าเรื่อง ไม่ใช่ list
-- cardInsights ต้องมีจำนวนเท่ากับไพ่ที่จั่ว (${cards.length} ใบ) เชื่อมโยงกับตำแหน่งและคำถาม
-- ไพ่กลับหัวให้ตีความว่าเป็นสิ่งที่ต้องระวังหรือพัฒนา ไม่ใช่เรื่องร้าย
-- ทุกอย่างเป็นภาษาไทย ห้ามมี markdown หรือ formatting
-- ตอบ JSON เท่านั้น ไม่มีข้อความอื่นก่อนหรือหลัง`;
+    // Build prompt from settings template
+    const prompt = settings.promptTemplate
+      .replace("{{topic}}", topic)
+      .replace("{{question}}", question)
+      .replace("{{spread}}", spread)
+      .replace("{{cardDetails}}", cardDetails)
+      .replace("{{cardCount}}", String(cards.length));
 
     const message = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 2000,
+      model: settings.model,
+      max_tokens: settings.maxTokens,
       messages: [{ role: "user", content: prompt }],
     });
 
-    const text =
-      message.content[0].type === "text" ? message.content[0].text : "";
+    const text = message.content[0].type === "text" ? message.content[0].text : "";
+    const tokensUsed = (message.usage?.input_tokens || 0) + (message.usage?.output_tokens || 0);
 
-    // Robust JSON extraction: try multiple strategies
     const parsed = extractJSON(text);
+
+    // Save to DB
+    saveReading({
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
+      userId: user?.userId || null,
+      ip,
+      topic,
+      topicIcon: topicIcon || "",
+      spread,
+      question,
+      cards: cards.map((c) => ({
+        nameTh: c.nameTh,
+        nameEn: c.nameEn,
+        isReversed: c.isReversed,
+        positionName: c.positionName,
+      })),
+      trend: parsed.trend,
+      trendText: parsed.trendText,
+      summary: parsed.summary,
+      advice: parsed.advice,
+      cardInsights: parsed.cardInsights,
+      modelUsed: settings.model,
+      tokensUsed,
+    });
+
     return NextResponse.json({ reading: parsed });
   } catch (error) {
     console.error("Reading API error:", error);

@@ -6,6 +6,14 @@ services:
     restart: unless-stopped
     ports:
       - "3500:3000"
+    volumes:
+      - duraga-data:/app/data
     environment:
       - NODE_ENV=production
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - JWT_SECRET=${JWT_SECRET:-duraga-jwt-secret-2024}
+      - DATA_DIR=/app/data
+
+volumes:
+  duraga-data:

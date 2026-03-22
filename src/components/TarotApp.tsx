@@ -7,6 +7,7 @@ import GoldenMist from "@/components/effects/GoldenMist";
 import DustParticles from "@/components/effects/DustParticles";
 import WelcomeScreen from "@/components/screens/WelcomeScreen";
 import TarotFlow from "@/components/TarotFlow";
+import UserAuth from "@/components/ui/UserAuth";
 
 import { EASE } from "@/constants/animation";
 import { THEME } from "@/constants/theme";
@@ -34,9 +35,7 @@ export default function TarotApp() {
           สัมผัส ดีวาย
         </span>
         <div className="flex gap-3 items-center">
-          <div className="w-6 h-6 rounded-full border border-gold/25 flex items-center justify-center text-[0.5rem] text-gold/50">
-            ☽
-          </div>
+          <UserAuth />
         </div>
       </header>
 
