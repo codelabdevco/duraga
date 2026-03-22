@@ -110,23 +110,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Daily usage limit + credit check
+    const freeMode = process.env.FREE_MODE === "true";
     const user = getUserFromRequest(req);
-    if (user) {
-      const usageCheck = incrementUserReading(user.userId);
-      if (!usageCheck.allowed) {
-        return NextResponse.json(
-          { error: "เครดิตหมดแล้ว กรุณาเติมเครดิตเพื่อใช้งานต่อ", needCredits: true, remaining: 0 },
-          { status: 429 }
-        );
-      }
-    } else {
-      const guestCheck = checkGuestLimit(ip);
-      if (!guestCheck.allowed) {
-        return NextResponse.json(
-          { error: `ใช้ครบ ${settings.dailyFreeLimit} ครั้งต่อวันแล้ว สมัครสมาชิกเพื่อเติมเครดิตใช้ต่อ`, needCredits: true, remaining: 0 },
-          { status: 429 }
-        );
+
+    // Skip credit/limit checks in free mode
+    if (!freeMode) {
+      // Daily usage limit + credit check
+      if (user) {
+        const usageCheck = incrementUserReading(user.userId);
+        if (!usageCheck.allowed) {
+          return NextResponse.json(
+            { error: "เครดิตหมดแล้ว กรุณาเติมเครดิตเพื่อใช้งานต่อ", needCredits: true, remaining: 0 },
+            { status: 429 }
+          );
+        }
+      } else {
+        const guestCheck = checkGuestLimit(ip);
+        if (!guestCheck.allowed) {
+          return NextResponse.json(
+            { error: `ใช้ครบ ${settings.dailyFreeLimit} ครั้งต่อวันแล้ว สมัครสมาชิกเพื่อเติมเครดิตใช้ต่อ`, needCredits: true, remaining: 0 },
+            { status: 429 }
+          );
+        }
       }
     }
 
