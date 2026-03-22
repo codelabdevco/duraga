@@ -7,11 +7,11 @@ import AdminNav from "@/components/admin/AdminNav";
 interface Stats {
   totalReadings: number;
   todayReadings: number;
-  totalUsers: number;
+  userCount: number;
   estimatedCost: number;
-  last7Days: { date: string; count: number }[];
-  topTopics: { name: string; count: number }[];
-  topSpreads: { name: string; count: number }[];
+  last7: { date: string; count: number; tokens: number }[];
+  topTopics: [string, number][];
+  topSpreads: [string, number][];
 }
 
 export default function AdminDashboardPage() {
@@ -35,7 +35,7 @@ export default function AdminDashboardPage() {
       .finally(() => setLoading(false));
   }, [router]);
 
-  const maxDayCount = stats ? Math.max(...stats.last7Days.map((d) => d.count), 1) : 1;
+  const maxDayCount = stats?.last7 ? Math.max(...stats.last7.map((d) => d.count), 1) : 1;
 
   return (
     <div className="flex">
@@ -56,8 +56,8 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <StatCard label="คำทำนายทั้งหมด" value={stats.totalReadings.toLocaleString()} />
               <StatCard label="วันนี้" value={stats.todayReadings.toLocaleString()} />
-              <StatCard label="ผู้ใช้ทั้งหมด" value={stats.totalUsers.toLocaleString()} />
-              <StatCard label="ค่าใช้จ่ายโดยประมาณ" value={`$${stats.estimatedCost.toFixed(2)}`} />
+              <StatCard label="ผู้ใช้ทั้งหมด" value={(stats.userCount || 0).toLocaleString()} />
+              <StatCard label="ค่าใช้จ่ายโดยประมาณ" value={`$${(stats.estimatedCost || 0).toFixed(2)}`} />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -65,7 +65,7 @@ export default function AdminDashboardPage() {
               <div className="lg:col-span-2 bg-[#0c0d14] border border-white/[0.06] rounded-xl p-5">
                 <h3 className="text-sm text-white/50 mb-5">7 วันล่าสุด</h3>
                 <div className="flex items-end gap-3 h-40">
-                  {stats.last7Days.map((day) => (
+                  {(stats.last7 || []).map((day) => (
                     <div key={day.date} className="flex-1 flex flex-col items-center gap-2">
                       <span className="text-xs text-white/40">{day.count}</span>
                       <div
@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
                         }}
                       />
                       <span className="text-[10px] text-white/30">
-                        {new Date(day.date).toLocaleDateString("th-TH", { day: "numeric", month: "short" })}
+                        {new Date(day.date + "T00:00:00").toLocaleDateString("th-TH", { day: "numeric", month: "short" })}
                       </span>
                     </div>
                   ))}
@@ -88,28 +88,28 @@ export default function AdminDashboardPage() {
                 <div className="bg-[#0c0d14] border border-white/[0.06] rounded-xl p-5">
                   <h3 className="text-sm text-white/50 mb-4">หัวข้อยอดนิยม</h3>
                   <div className="space-y-3">
-                    {stats.topTopics.length === 0 && (
+                    {(!stats.topTopics || stats.topTopics.length === 0) && (
                       <p className="text-white/20 text-sm">ยังไม่มีข้อมูล</p>
                     )}
-                    {stats.topTopics.map((t, i) => (
+                    {(stats.topTopics || []).map(([name, count], i) => (
                       <div key={i} className="flex items-center justify-between text-sm">
-                        <span className="text-white/70 truncate mr-3">{t.name}</span>
-                        <span className="text-gold text-xs font-mono">{t.count}</span>
+                        <span className="text-white/70 truncate mr-3">{name}</span>
+                        <span className="text-gold text-xs font-mono">{count}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 <div className="bg-[#0c0d14] border border-white/[0.06] rounded-xl p-5">
-                  <h3 className="text-sm text-white/50 mb-4">การ์ดยอดนิยม</h3>
+                  <h3 className="text-sm text-white/50 mb-4">Spread ยอดนิยม</h3>
                   <div className="space-y-3">
-                    {stats.topSpreads.length === 0 && (
+                    {(!stats.topSpreads || stats.topSpreads.length === 0) && (
                       <p className="text-white/20 text-sm">ยังไม่มีข้อมูล</p>
                     )}
-                    {stats.topSpreads.map((s, i) => (
+                    {(stats.topSpreads || []).map(([name, count], i) => (
                       <div key={i} className="flex items-center justify-between text-sm">
-                        <span className="text-white/70 truncate mr-3">{s.name}</span>
-                        <span className="text-gold text-xs font-mono">{s.count}</span>
+                        <span className="text-white/70 truncate mr-3">{name}</span>
+                        <span className="text-gold text-xs font-mono">{count}</span>
                       </div>
                     ))}
                   </div>
