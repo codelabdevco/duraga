@@ -31,7 +31,7 @@ export default function TarotApp() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-5 py-3 bg-gradient-to-b from-[#08090e] via-[#08090e]/90 to-transparent" style={{ paddingTop: "max(12px, env(safe-area-inset-top))" }}>
         <span className="text-sm text-gold/70 tracking-[0.2em] font-medium">
-          Mystic Tarot
+          สัมผัส ดีวาย
         </span>
         <div className="flex gap-3 items-center">
           <div className="w-6 h-6 rounded-full border border-gold/25 flex items-center justify-center text-[0.5rem] text-gold/50">
