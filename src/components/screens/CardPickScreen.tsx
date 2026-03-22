@@ -9,6 +9,7 @@ import MiniCardBack from "@/components/ui/MiniCardBack";
 import CardBack from "@/components/ui/CardBack";
 import Button from "@/components/ui/Button";
 import Candle from "@/components/ui/Candle";
+import { haptic, playPickSound, playShuffleSound, playFlipSound } from "@/lib/feedback";
 import dynamic from "next/dynamic";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
@@ -106,7 +107,7 @@ export default function CardPickScreen() {
 
     // PHASE 2: Move deck to top
     await Promise.all(arr.map((c, i) =>
-      animateShuffle(c, { x: 0, y: -130 - i * 1.5, scale: 0.35, rotate: (i - mid) * 0.3 }, { duration: 0.5, ease: EASE_MOVE as unknown as [number, number, number, number] })
+      animateShuffle(c, { x: 0, y: -130 - i * 1.5, scale: 0.35, rotate: (i - mid) * 0.3 }, { duration: 0.5, ease: EASE_MOVE })
     ));
 
     // PHASE 3: Deal cards from deck to grid
@@ -170,7 +171,7 @@ export default function CardPickScreen() {
       }
 
       // Card flies from deck position to grid position (fire & forget, don't await)
-      animateGrid(card, { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }, { duration: 0.25, ease: EASE_DEAL as unknown as [number, number, number, number] });
+      animateGrid(card, { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }, { duration: 0.25, ease: EASE_DEAL });
 
       await wait(12);
     }
@@ -188,6 +189,8 @@ export default function CardPickScreen() {
   const handleTapDeck = useCallback(() => {
     if (stage !== "meditate") return;
     setStage("shuffle");
+    playShuffleSound();
+    haptic("medium");
     shuffleTimeout.current = setTimeout(runSequence, 100);
   }, [stage, runSequence]);
 
@@ -293,7 +296,7 @@ export default function CardPickScreen() {
       // Fly to position
       animateLayout(arr[i], {
         x: 0, y: 0, scale: 1, rotate: 0,
-      }, { duration: 0.35, ease: EASE_FLY as unknown as [number, number, number, number] });
+      }, { duration: 0.35, ease: EASE_FLY });
 
       // Rotate crossed cards
       if (rotate) {
@@ -426,7 +429,7 @@ export default function CardPickScreen() {
             style={{ pointerEvents: stage === "meditate" ? "auto" : "none" }}
           >
             {/* Deck + Rune (centered) */}
-            <div className="relative" style={{ width: 280, height: 340 }}>
+            <div className="relative" style={{ maxWidth: 280, width: "75vw", height: 340 }}>
 
               {/* Rune circle — BEHIND everything, centered on deck */}
               <motion.div
@@ -505,7 +508,7 @@ export default function CardPickScreen() {
                   <div key={i} className="shuf-card absolute left-1/2 top-1/2 will-change-transform"
                     style={{ marginLeft: -80, marginTop: -128, zIndex: 7 - i + 5, filter: `brightness(${1 - i * 0.03})` }}
                   >
-                    <CardBack width={160} height={256} />
+                    <CardBack width={140} height={224} />
                   </div>
                 ))}
               </motion.div>
@@ -513,7 +516,7 @@ export default function CardPickScreen() {
 
             {/* Candles — below deck, large, 2 sides */}
             <motion.div
-              className="flex items-end gap-32 mt-3 pointer-events-none"
+              className="flex items-end gap-16 sm:gap-32 mt-3 pointer-events-none"
               animate={stage === "meditate" ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.4 }}
             >
@@ -524,12 +527,12 @@ export default function CardPickScreen() {
 
           {/* Layer 1: Card grid */}
           <motion.div
-            className="absolute inset-0 max-w-[420px] mx-auto overflow-y-auto overflow-x-hidden rounded-xl z-10"
+            className="absolute inset-0 max-w-full mx-auto overflow-y-auto overflow-x-hidden rounded-xl z-10"
             animate={{ opacity: showGrid ? 1 : 0 }}
             transition={{ duration: showGrid ? 0.05 : 0.4 }}
             style={{ pointerEvents: isPickable ? "auto" : "none" }}
           >
-            <div ref={gridScope} className="grid grid-cols-9 gap-[5px] p-1.5">
+            <div ref={gridScope} className="grid grid-cols-6 sm:grid-cols-9 gap-[5px] p-1.5">
               {shuffledDeck.map((card, deckIndex) => {
                 const isPicked = pickedSet.has(card.id);
                 const isDisabled = isFull && !isPicked;
@@ -543,8 +546,8 @@ export default function CardPickScreen() {
                     whileTap={isPickable && !isPicked && !isDisabled ? { scale: 0.9 } : {}}
                     onClick={() => {
                       if (stage !== "pick") return;
-                      if (isPicked) unpickCard(card.id);
-                      else if (!isDisabled) pickCard(deckIndex);
+                      if (isPicked) { unpickCard(card.id); haptic("light"); }
+                      else if (!isDisabled) { pickCard(deckIndex); haptic("medium"); playPickSound(); }
                     }}
                   >
                     {isPicked ? (
@@ -585,11 +588,11 @@ export default function CardPickScreen() {
                       marginLeft: -cardW / 2, marginTop: -cardH / 2,
                       zIndex: 10 + i,
                     }}
-                    onClick={stage === "layout" ? () => flipCard(i) : undefined}
+                    onClick={stage === "layout" ? () => { flipCard(i); playFlipSound(); haptic("light"); } : undefined}
                   >
                     <motion.div className="flip-inner w-full h-full relative [transform-style:preserve-3d]"
                       animate={{ rotateY: isFlipped ? 180 : 0 }}
-                      transition={{ duration: 0.75, ease: EASE_FLIP as unknown as [number, number, number, number] }}
+                      transition={{ duration: 0.75, ease: EASE_FLIP }}
                     >
                       <div className="absolute inset-0 [backface-visibility:hidden] rounded-lg overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
                         <MiniCardBack width={cardW} height={cardH} />
@@ -597,8 +600,8 @@ export default function CardPickScreen() {
                       <div className={`absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-lg border border-gold/30 overflow-hidden bg-[#08090e] shadow-[0_2px_12px_rgba(0,0,0,0.4)] ${card.isReversed ? "rotate-180" : ""}`}>
                         {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />}
                         <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-1">
-                          <p className="text-[0.4rem] text-gold text-center truncate">{card.nameTh}</p>
-                          {card.isReversed && <p className="text-[0.35rem] text-red-400/70 text-center">กลับหัว</p>}
+                          <p className="text-[0.5rem] text-gold text-center truncate">{card.nameTh}</p>
+                          {card.isReversed && <p className="text-[0.45rem] text-red-400/70 text-center">กลับหัว</p>}
                         </div>
                       </div>
                     </motion.div>

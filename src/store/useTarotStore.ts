@@ -21,8 +21,6 @@ interface TarotState {
   flippedCardIds: Set<number>;
   aiReading: AIReading | null;
   isLoadingAI: boolean;
-  hasShuffled: boolean;
-
   setPhase: (p: Phase) => void;
   selectTopic: (t: Topic) => void;
   selectSpread: (s: Spread) => void;
@@ -47,8 +45,6 @@ export const useTarotStore = create<TarotState>((set, get) => ({
   flippedCardIds: new Set(),
   aiReading: null,
   isLoadingAI: false,
-  hasShuffled: false,
-
   setPhase: (p) => set({ phase: p }),
 
   selectTopic: (t) => {
@@ -62,7 +58,7 @@ export const useTarotStore = create<TarotState>((set, get) => ({
   setQuestion: (q) => set({ userQuestion: q }),
 
   shuffleDeck: () => {
-    set({ shuffledDeck: shuffleArray(allTarotCards), hasShuffled: true });
+    set({ shuffledDeck: shuffleArray(allTarotCards) });
   },
 
   pickCard: (deckIndex) => {
@@ -123,6 +119,5 @@ export const useTarotStore = create<TarotState>((set, get) => ({
     flippedCardIds: new Set(),
     aiReading: null,
     isLoadingAI: false,
-    hasShuffled: false,
   }),
 }));

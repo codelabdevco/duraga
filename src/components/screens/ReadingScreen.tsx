@@ -1,11 +1,12 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useTarotStore } from "@/store/useTarotStore";
 import { AIReading } from "@/store/useTarotStore";
 import { EASE } from "@/constants/animation";
 import Button from "@/components/ui/Button";
+import { saveReading } from "@/lib/history";
 
 import Candle from "@/components/ui/Candle";
 import dynamic from "next/dynamic";
@@ -232,6 +233,56 @@ function TrendMeter({ trend, trendText }: { trend: string; trendText: string }) 
   );
 }
 
+// ── Card Lightbox ──
+function CardLightbox({ card, position, onClose }: { card: { id: number; nameTh: string; nameEn: string; image: string; meaningTh?: string; meaning: string; isReversed: boolean }; position?: string; onClose: () => void }) {
+  return (
+    <motion.div
+      className="fixed inset-0 z-[200] flex items-center justify-center px-6"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+
+      {/* Card */}
+      <motion.div
+        className="relative flex flex-col items-center gap-4 max-w-[85vw]"
+        initial={{ scale: 0.7, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.8, y: 20 }}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Card image */}
+        <div className={`relative rounded-xl overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.6)] ${card.isReversed ? "rotate-180" : ""}`}
+          style={{ width: 200, height: 320, border: "2px solid rgba(232,212,139,0.2)" }}
+        >
+          {card.image ? (
+            <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full bg-[#0c0d14] flex items-center justify-center">
+              <span className="text-gold/30 text-4xl">✦</span>
+            </div>
+          )}
+        </div>
+
+        {/* Card info */}
+        <div className="text-center relative">
+          <h3 className="text-lg text-gold font-semibold">{card.nameTh}</h3>
+          <p className="text-xs text-white/30 mt-0.5">{card.nameEn}</p>
+          {card.isReversed && (
+            <span className="inline-block mt-1.5 text-[0.65rem] text-red-400/70 bg-red-400/10 border border-red-400/20 rounded-full px-2 py-0.5">กลับหัว</span>
+          )}
+          {position && <p className="text-[0.65rem] text-gold/30 mt-2">{position}</p>}
+          <p className="text-xs text-white/50 mt-2 leading-6 max-w-[260px]">{card.meaningTh || card.meaning}</p>
+        </div>
+
+        {/* Close hint */}
+        <p className="text-[0.6rem] text-white/20 mt-2">แตะด้านนอกเพื่อปิด</p>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 // ── Main ──
 export default function ReadingScreen() {
   const selectedTopic = useTarotStore((s) => s.selectedTopic);
@@ -242,45 +293,66 @@ export default function ReadingScreen() {
   const isLoadingAI = useTarotStore((s) => s.isLoadingAI);
   const setAiReading = useTarotStore((s) => s.setAiReading);
   const setLoadingAI = useTarotStore((s) => s.setLoadingAI);
+  const [viewCard, setViewCard] = useState<number | null>(null);
+  const [hasError, setHasError] = useState(false);
   const reset = useTarotStore((s) => s.reset);
 
   // Fetch AI reading
-  useEffect(() => {
-    if (aiReading || isLoadingAI || !selectedTopic || !selectedSpread) return;
-
-    async function fetchReading() {
-      setLoadingAI(true);
-      try {
-        const res = await fetch("/api/reading", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topic: selectedTopic!.nameTH,
-            spread: selectedSpread!.nameTH,
-            question: userQuestion || "ดูดวงทั่วไป",
-            cards: pickedCards.map((c, i) => ({
-              nameTh: c.nameTh,
-              nameEn: c.nameEn,
-              meaningTh: c.meaningTh,
-              meaning: c.meaning,
-              isReversed: c.isReversed,
-              positionName: selectedSpread!.positions[i]?.nameTH || `ใบที่ ${i + 1}`,
-            })),
-          }),
-        });
-        const data = await res.json();
-        if (data.error) {
-          setAiReading({ trend: "neutral", trendText: "", summary: data.error, advice: "", cardInsights: [] });
-        } else {
-          setAiReading(data.reading as AIReading);
-        }
-      } catch {
-        setAiReading({ trend: "neutral", trendText: "", summary: "ไม่สามารถเชื่อมต่อเพื่อสร้างคำทำนายได้", advice: "", cardInsights: [] });
+  const fetchReading = useCallback(async () => {
+    if (!selectedTopic || !selectedSpread) return;
+    setLoadingAI(true);
+    setHasError(false);
+    try {
+      const res = await fetch("/api/reading", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: selectedTopic.nameTH,
+          spread: selectedSpread.nameTH,
+          question: userQuestion || "ดูดวงทั่วไป",
+          cards: pickedCards.map((c, i) => ({
+            nameTh: c.nameTh,
+            nameEn: c.nameEn,
+            meaningTh: c.meaningTh,
+            meaning: c.meaning,
+            isReversed: c.isReversed,
+            positionName: selectedSpread.positions[i]?.nameTH || `ใบที่ ${i + 1}`,
+          })),
+        }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        setHasError(true);
+        setLoadingAI(false);
+      } else {
+        setAiReading(data.reading as AIReading);
       }
+    } catch {
+      setHasError(true);
+      setLoadingAI(false);
     }
+  }, [selectedTopic, selectedSpread, userQuestion, pickedCards, setAiReading, setLoadingAI]);
 
+  useEffect(() => {
+    if (aiReading || isLoadingAI || hasError) return;
     fetchReading();
-  }, [aiReading, isLoadingAI, selectedTopic, selectedSpread, userQuestion, pickedCards, setAiReading, setLoadingAI]);
+  }, [aiReading, isLoadingAI, hasError, fetchReading]);
+
+  // Auto-save reading to history
+  const savedRef = useRef(false);
+  useEffect(() => {
+    if (!aiReading || savedRef.current || !selectedTopic || !selectedSpread) return;
+    savedRef.current = true;
+    saveReading({
+      topic: selectedTopic.nameTH,
+      topicIcon: selectedTopic.icon,
+      topicColor: selectedTopic.color,
+      spread: selectedSpread.nameTH,
+      question: userQuestion || "ดูดวงทั่วไป",
+      cards: pickedCards.map((c) => ({ nameTh: c.nameTh, nameEn: c.nameEn, isReversed: c.isReversed })),
+      reading: aiReading,
+    });
+  }, [aiReading, selectedTopic, selectedSpread, userQuestion, pickedCards]);
 
   return (
     <motion.div
@@ -306,7 +378,7 @@ export default function ReadingScreen() {
       </AnimatePresence>
 
       {/* Context */}
-      <div className="w-full max-w-[420px] mb-4 text-center">
+      <div className="w-full max-w-full mb-4 text-center">
         {selectedTopic && (
           <p className="text-xs text-white/40">
             <span style={{ color: selectedTopic.color }}>{selectedTopic.icon}</span>
@@ -321,19 +393,22 @@ export default function ReadingScreen() {
         )}
       </div>
 
-      {/* Card thumbnail row */}
-      <div className="flex gap-1.5 flex-wrap justify-center mb-5 max-w-[420px]">
+      {/* Card thumbnail row — tap to enlarge */}
+      <div className="flex gap-1.5 flex-wrap justify-center mb-5 max-w-full">
         {pickedCards.map((card, i) => (
-          <motion.div key={i} className={`w-[46px] h-[69px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e] ${card.isReversed ? "rotate-180" : ""}`}
+          <motion.button key={i}
+            className={`w-[46px] h-[69px] rounded-md border border-gold/20 overflow-hidden relative bg-[#08090e] ${card.isReversed ? "rotate-180" : ""}`}
             initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.05, duration: 0.5, ease: EASE }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setViewCard(i)}
           >
             {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />}
-          </motion.div>
+          </motion.button>
         ))}
       </div>
 
-      <div className="w-full max-w-[420px] space-y-4">
+      <div className="w-full max-w-full space-y-4">
         {/* ── Loading ── */}
         {isLoadingAI && (
           <motion.div
@@ -343,6 +418,19 @@ export default function ReadingScreen() {
             transition={{ delay: 0.3, duration: 0.6, ease: EASE }}
           >
             <LoadingCandles />
+          </motion.div>
+        )}
+
+        {/* ── Error with retry ── */}
+        {hasError && !isLoadingAI && !aiReading && (
+          <motion.div
+            className="bg-gradient-to-br from-red-500/[0.06] to-transparent border border-red-500/20 rounded-2xl p-6 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: EASE }}
+          >
+            <p className="text-white/60 text-sm mb-4">ไม่สามารถสร้างคำทำนายได้ กรุณาลองอีกครั้ง</p>
+            <Button variant="outline" onClick={fetchReading}>ลองใหม่</Button>
           </motion.div>
         )}
 
@@ -433,11 +521,13 @@ export default function ReadingScreen() {
                   </div>
 
                   <div className="flex gap-4 p-4 items-start">
-                    <div className={`relative rounded-lg overflow-hidden flex-shrink-0 ${card.isReversed ? "rotate-180" : ""}`}
+                    <button
+                      className={`relative rounded-lg overflow-hidden flex-shrink-0 ${card.isReversed ? "rotate-180" : ""} active:scale-95 transition-transform`}
                       style={{ width: 65, height: 100, border: "1px solid rgba(232,212,139,0.15)", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }}
+                      onClick={() => setViewCard(i)}
                     >
                       {card.image && <img src={card.image} alt={card.nameEn} className="absolute inset-0 w-full h-full object-cover" />}
-                    </div>
+                    </button>
                     <div className="flex-1 min-w-0 pr-6">
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-sm text-gold-light font-semibold">{card.nameTh}</h3>
@@ -461,8 +551,19 @@ export default function ReadingScreen() {
         )}
       </div>
 
+      {/* Card Lightbox */}
+      <AnimatePresence>
+        {viewCard !== null && pickedCards[viewCard] && (
+          <CardLightbox
+            card={pickedCards[viewCard]}
+            position={selectedSpread?.positions[viewCard]?.nameTH}
+            onClose={() => setViewCard(null)}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Actions */}
-      {(aiReading || !isLoadingAI) && (
+      {aiReading && (
         <motion.div
           className="flex gap-3 mt-8"
           initial={{ opacity: 0 }}
@@ -470,6 +571,15 @@ export default function ReadingScreen() {
           transition={{ delay: 1, duration: 0.5 }}
         >
           <Button variant="outline" onClick={reset}>จั่วไพ่ใหม่</Button>
+          <Button variant="outline" onClick={async () => {
+            const text = `สัมผัส ดีวาย — ${selectedTopic?.nameTH || "ดูดวง"}\n\n"${userQuestion || "ดูดวงทั่วไป"}"\n\nแนวโน้ม: ${TREND_CONFIG[aiReading.trend]?.label || "กลางๆ"}\n${aiReading.summary}\n\nคำแนะนำ: ${aiReading.advice}`;
+            if (navigator.share) {
+              try { await navigator.share({ title: "สัมผัส ดีวาย — ผลดูดวง", text }); } catch {}
+            } else {
+              await navigator.clipboard.writeText(text);
+              alert("คัดลอกผลดูดวงแล้ว!");
+            }
+          }}>แชร์ผล</Button>
         </motion.div>
       )}
     </motion.div>

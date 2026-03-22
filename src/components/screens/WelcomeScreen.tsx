@@ -1,9 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import CardBack from "@/components/ui/CardBack";
 import Button from "@/components/ui/Button";
 import { useTarotStore } from "@/store/useTarotStore";
+import dynamic from "next/dynamic";
+
+const HistoryScreen = dynamic(() => import("@/components/screens/HistoryScreen"), { ssr: false });
 
 import { EASE } from "@/constants/animation";
 
@@ -15,6 +19,7 @@ const cardVariants = [
 
 export default function WelcomeScreen() {
   const setPhase = useTarotStore(s => s.setPhase);
+  const [showHistory, setShowHistory] = useState(false);
 
   return (
     <motion.div
@@ -45,7 +50,7 @@ export default function WelcomeScreen() {
         transition={{ delay: 0.6, duration: 0.8, ease: EASE }}
         style={{ textShadow: "0 0 40px rgba(232,212,139,.2)" }}
       >
-        Mystic Tarot
+        สัมผัส ดีวาย
       </motion.h1>
 
       <motion.p
@@ -66,6 +71,20 @@ export default function WelcomeScreen() {
       >
         <Button onClick={() => setPhase("topic")}>เริ่มดูดวง</Button>
       </motion.div>
+
+      <motion.button
+        className="mt-4 text-xs text-white/25 hover:text-white/50 transition-colors tracking-wide"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8, ease: EASE }}
+        onClick={() => setShowHistory(true)}
+      >
+        ดูประวัติ
+      </motion.button>
+
+      <AnimatePresence>
+        {showHistory && <HistoryScreen onClose={() => setShowHistory(false)} />}
+      </AnimatePresence>
     </motion.div>
   );
 }

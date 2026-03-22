@@ -26,7 +26,7 @@ export default function SpreadScreen() {
         แนะนำ: <span className="text-gold/60">{selectedSpread?.nameTH}</span> สำหรับ {selectedTopic?.nameTH}
       </p>
 
-      <div className="w-full max-w-[380px] space-y-2.5">
+      <div className="w-full max-w-full space-y-2.5">
         {SPREADS.map((s, idx) => {
           const isDefault = s.id === selectedSpread?.id;
           return (

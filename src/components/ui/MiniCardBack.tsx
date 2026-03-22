@@ -1,5 +1,7 @@
 "use client";
 
+import { THEME } from "@/constants/theme";
+
 interface MiniCardBackProps {
   width?: number;
   height?: number;
@@ -7,6 +9,21 @@ interface MiniCardBackProps {
 }
 
 export default function MiniCardBack({ width = 60, height = 96, className = "" }: MiniCardBackProps) {
+  // Use custom image if configured
+  if (THEME.cardBackImage) {
+    return (
+      <div className={`relative overflow-hidden rounded ${className}`} style={{ width, height }}>
+        <img
+          src={THEME.cardBackImage}
+          alt="Card back"
+          className="absolute inset-0 w-full h-full object-cover"
+          draggable={false}
+        />
+      </div>
+    );
+  }
+
+  // Default SVG design
   return (
     <svg
       width={width}

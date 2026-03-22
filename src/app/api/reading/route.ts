@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const client = new Anthropic();
 
@@ -93,6 +94,15 @@ interface ReadingRequest {
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    const { allowed, remaining } = checkRateLimit(ip);
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "คุณส่งคำขอบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่" },
+        { status: 429, headers: { "X-RateLimit-Remaining": String(remaining) } }
+      );
+    }
+
     const { topic, spread, question, cards } = (await req.json()) as ReadingRequest;
 
     const cardDetails = cards

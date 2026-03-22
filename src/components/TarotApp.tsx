@@ -9,18 +9,27 @@ import WelcomeScreen from "@/components/screens/WelcomeScreen";
 import TarotFlow from "@/components/TarotFlow";
 
 import { EASE } from "@/constants/animation";
+import { THEME } from "@/constants/theme";
 
 export default function TarotApp() {
   const phase = useTarotStore((s) => s.phase);
 
   return (
     <>
+      {/* Custom background image (if configured) */}
+      {THEME.backgroundImage && (
+        <div className="fixed inset-0 z-0">
+          <img src={THEME.backgroundImage} alt="" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+      )}
+
       <Starfield />
       <GoldenMist />
       <DustParticles />
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-5 py-3 bg-gradient-to-b from-[#08090e] via-[#08090e]/90 to-transparent">
+      <header className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-5 py-3 bg-gradient-to-b from-[#08090e] via-[#08090e]/90 to-transparent" style={{ paddingTop: "max(12px, env(safe-area-inset-top))" }}>
         <span className="text-sm text-gold/70 tracking-[0.2em] font-medium">
           Mystic Tarot
         </span>

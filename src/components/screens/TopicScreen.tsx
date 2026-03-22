@@ -40,7 +40,7 @@ export default function TopicScreen() {
       </motion.div>
 
       {/* Topic grid */}
-      <div className="grid grid-cols-2 gap-2.5 w-full max-w-[380px]">
+      <div className="grid grid-cols-2 gap-2.5 w-full max-w-full">
         {TOPICS.map((t, idx) => (
           <motion.button
             key={t.id}

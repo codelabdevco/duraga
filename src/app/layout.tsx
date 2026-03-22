@@ -11,7 +11,24 @@ const notoSansThai = Noto_Sans_Thai({
 
 export const metadata: Metadata = {
   title: "สัมผัส ดีวาย — ดูดวงไพ่ทาโร่",
-  description: "เปิดไพ่ทาโร่เพื่อค้นหาคำตอบที่จักรวาลมีให้คุณ",
+  description: "เปิดไพ่ทาโร่เพื่อค้นหาคำตอบที่จักรวาลมีให้คุณ ดูดวงความรัก การงาน การเงิน สุขภาพ ด้วย AI",
+  keywords: ["ดูดวง", "ไพ่ทาโร่", "tarot", "ดวง", "ทำนาย", "สัมผัส ดีวาย", "duraga"],
+  authors: [{ name: "Duraga" }],
+  manifest: "/manifest.json",
+  icons: [{ url: "/icons/icon-192.svg", sizes: "192x192" }, { url: "/icons/icon-512.svg", sizes: "512x512" }],
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "สัมผัส ดีวาย" },
+  openGraph: {
+    title: "สัมผัส ดีวาย — ดูดวงไพ่ทาโร่",
+    description: "เปิดไพ่ทาโร่เพื่อค้นหาคำตอบที่จักรวาลมีให้คุณ",
+    type: "website",
+    locale: "th_TH",
+    siteName: "สัมผัส ดีวาย",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "สัมผัส ดีวาย — ดูดวงไพ่ทาโร่",
+    description: "เปิดไพ่ทาโร่เพื่อค้นหาคำตอบที่จักรวาลมีให้คุณ",
+  },
 };
 
 export const viewport: Viewport = {
@@ -19,6 +36,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: "#08090e",
 };
 
 export default function RootLayout({
