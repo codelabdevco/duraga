@@ -8,6 +8,7 @@ import DustParticles from "@/components/effects/DustParticles";
 import WelcomeScreen from "@/components/screens/WelcomeScreen";
 import TarotFlow from "@/components/TarotFlow";
 import UserAuth from "@/components/ui/UserAuth";
+import CreditBadge from "@/components/ui/CreditBadge";
 
 import { EASE } from "@/constants/animation";
 import { THEME } from "@/constants/theme";
@@ -35,6 +36,7 @@ export default function TarotApp() {
           สัมผัส ดีวาย
         </span>
         <div className="flex gap-3 items-center">
+          <CreditBadge />
           <UserAuth />
         </div>
       </header>

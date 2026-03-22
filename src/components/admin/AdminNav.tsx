@@ -6,6 +6,7 @@ const NAV = [
   { href: "/admin", label: "แดชบอร์ด", icon: "◉" },
   { href: "/admin/readings", label: "คำทำนาย", icon: "♠" },
   { href: "/admin/users", label: "ผู้ใช้", icon: "♦" },
+  { href: "/admin/credits", label: "เครดิต", icon: "★" },
   { href: "/admin/settings", label: "ตั้งค่า", icon: "⚙" },
 ];
 

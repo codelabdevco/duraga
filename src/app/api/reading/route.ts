@@ -110,13 +110,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Daily usage limit
+    // Daily usage limit + credit check
     const user = getUserFromRequest(req);
     if (user) {
       const usageCheck = incrementUserReading(user.userId);
       if (!usageCheck.allowed) {
         return NextResponse.json(
-          { error: `คุณใช้ครบ ${settings.dailyFreeLimit} ครั้งต่อวันแล้ว กรุณากลับมาใหม่พรุ่งนี้`, remaining: 0 },
+          { error: "เครดิตหมดแล้ว กรุณาเติมเครดิตเพื่อใช้งานต่อ", needCredits: true, remaining: 0 },
           { status: 429 }
         );
       }
@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
       const guestCheck = checkGuestLimit(ip);
       if (!guestCheck.allowed) {
         return NextResponse.json(
-          { error: `ใช้ครบ ${settings.dailyFreeLimit} ครั้งต่อวันแล้ว สมัครสมาชิกเพื่อใช้ต่อ`, remaining: 0 },
+          { error: `ใช้ครบ ${settings.dailyFreeLimit} ครั้งต่อวันแล้ว สมัครสมาชิกเพื่อเติมเครดิตใช้ต่อ`, needCredits: true, remaining: 0 },
           { status: 429 }
         );
       }

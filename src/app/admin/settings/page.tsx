@@ -11,6 +11,9 @@ interface Settings {
   dailyFreeLimit: number;
   rateLimitPerMinute: number;
   maintenanceMode: boolean;
+  creditCostPerReading: number;
+  promptPayNumber: string;
+  promptPayName: string;
 }
 
 export default function AdminSettingsPage() {
@@ -149,6 +152,46 @@ export default function AdminSettingsPage() {
                   className="w-full bg-[#08090e] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-gold/30 outline-none transition-colors"
                 />
                 <p className="text-white/20 text-xs mt-1.5">จำกัดต่อนาที</p>
+              </div>
+            </div>
+
+            {/* Credit & Payment */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-[#0c0d14] border border-white/[0.06] rounded-xl p-5">
+                <label className="block text-white/50 text-xs mb-2 uppercase tracking-wider">
+                  เครดิต/ครั้ง
+                </label>
+                <input
+                  type="number"
+                  value={settings.creditCostPerReading}
+                  onChange={(e) => update("creditCostPerReading", Number(e.target.value))}
+                  className="w-full bg-[#08090e] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-gold/30 outline-none transition-colors"
+                />
+                <p className="text-white/20 text-xs mt-1.5">จำนวนเครดิตที่หักต่อการดูดวง</p>
+              </div>
+              <div className="bg-[#0c0d14] border border-white/[0.06] rounded-xl p-5">
+                <label className="block text-white/50 text-xs mb-2 uppercase tracking-wider">
+                  PromptPay เบอร์
+                </label>
+                <input
+                  type="text"
+                  value={settings.promptPayNumber}
+                  onChange={(e) => update("promptPayNumber", e.target.value)}
+                  className="w-full bg-[#08090e] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-gold/30 outline-none transition-colors"
+                  placeholder="0812345678"
+                />
+              </div>
+              <div className="bg-[#0c0d14] border border-white/[0.06] rounded-xl p-5">
+                <label className="block text-white/50 text-xs mb-2 uppercase tracking-wider">
+                  PromptPay ชื่อ
+                </label>
+                <input
+                  type="text"
+                  value={settings.promptPayName}
+                  onChange={(e) => update("promptPayName", e.target.value)}
+                  className="w-full bg-[#08090e] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-gold/30 outline-none transition-colors"
+                  placeholder="ชื่อบัญชี"
+                />
               </div>
             </div>
 

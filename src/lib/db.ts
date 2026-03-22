@@ -158,6 +158,7 @@ export interface User {
   createdAt: number;
   readingsToday: number;
   lastReadingDate: string;
+  credits: number;
 }
 
 function getUsers(): User[] {
@@ -185,17 +186,18 @@ export function createUser(username: string, passwordHash: string): User {
     createdAt: Date.now(),
     readingsToday: 0,
     lastReadingDate: "",
+    credits: 0,
   };
   users.push(user);
   saveUsers(users);
   return user;
 }
 
-export function incrementUserReading(userId: string): { allowed: boolean; remaining: number } {
+export function incrementUserReading(userId: string): { allowed: boolean; remaining: number; useCredit: boolean } {
   const users = getUsers();
   const settings = getSettings();
   const user = users.find((u) => u.id === userId);
-  if (!user) return { allowed: false, remaining: 0 };
+  if (!user) return { allowed: false, remaining: 0, useCredit: false };
 
   const today = new Date().toISOString().slice(0, 10);
   if (user.lastReadingDate !== today) {
@@ -203,13 +205,103 @@ export function incrementUserReading(userId: string): { allowed: boolean; remain
     user.lastReadingDate = today;
   }
 
-  if (user.readingsToday >= settings.dailyFreeLimit) {
-    return { allowed: false, remaining: 0 };
+  // Free daily readings first
+  if (user.readingsToday < settings.dailyFreeLimit) {
+    user.readingsToday++;
+    saveUsers(users);
+    return { allowed: true, remaining: settings.dailyFreeLimit - user.readingsToday, useCredit: false };
   }
 
-  user.readingsToday++;
+  // Then use credits
+  const cost = settings.creditCostPerReading;
+  if (user.credits >= cost) {
+    user.credits -= cost;
+    user.readingsToday++;
+    saveUsers(users);
+    return { allowed: true, remaining: user.credits, useCredit: true };
+  }
+
+  return { allowed: false, remaining: 0, useCredit: false };
+}
+
+export function getUserCredits(userId: string): number {
+  const user = findUserById(userId);
+  return user?.credits ?? 0;
+}
+
+export function addCredits(userId: string, amount: number): { success: boolean; newBalance: number } {
+  const users = getUsers();
+  const user = users.find((u) => u.id === userId);
+  if (!user) return { success: false, newBalance: 0 };
+  user.credits = (user.credits || 0) + amount;
   saveUsers(users);
-  return { allowed: true, remaining: settings.dailyFreeLimit - user.readingsToday };
+  return { success: true, newBalance: user.credits };
+}
+
+// ── TOP-UP REQUESTS ──
+export interface TopUpRequest {
+  id: string;
+  userId: string;
+  username: string;
+  credits: number;
+  price: number;
+  paymentRef: string;
+  status: "pending" | "approved" | "rejected";
+  createdAt: number;
+  processedAt?: number;
+  processedBy?: string;
+}
+
+function getTopUpRequests(): TopUpRequest[] {
+  return readJSON("topup-requests.json", []);
+}
+
+function saveTopUpRequests(requests: TopUpRequest[]): void {
+  writeJSON("topup-requests.json", requests);
+}
+
+export function createTopUpRequest(userId: string, username: string, credits: number, price: number, paymentRef: string): TopUpRequest {
+  const requests = getTopUpRequests();
+  const req: TopUpRequest = {
+    id: crypto.randomUUID(),
+    userId,
+    username,
+    credits,
+    price,
+    paymentRef,
+    status: "pending",
+    createdAt: Date.now(),
+  };
+  requests.push(req);
+  saveTopUpRequests(requests);
+  return req;
+}
+
+export function getTopUpRequestsList(status?: string, limit = 50, offset = 0): { requests: TopUpRequest[]; total: number } {
+  let requests = getTopUpRequests().sort((a, b) => b.createdAt - a.createdAt);
+  if (status) requests = requests.filter((r) => r.status === status);
+  const total = requests.length;
+  return { requests: requests.slice(offset, offset + limit), total };
+}
+
+export function getUserTopUpRequests(userId: string): TopUpRequest[] {
+  return getTopUpRequests().filter((r) => r.userId === userId).sort((a, b) => b.createdAt - a.createdAt);
+}
+
+export function processTopUpRequest(requestId: string, action: "approved" | "rejected"): { success: boolean; request?: TopUpRequest } {
+  const requests = getTopUpRequests();
+  const req = requests.find((r) => r.id === requestId);
+  if (!req || req.status !== "pending") return { success: false };
+
+  req.status = action;
+  req.processedAt = Date.now();
+
+  if (action === "approved") {
+    addCredits(req.userId, req.credits);
+  }
+
+  saveTopUpRequests(requests);
+  return { success: true, request: req };
 }
 
 export function getUserCount(): number {
@@ -231,6 +323,10 @@ export interface AppSettings {
   dailyFreeLimit: number;
   rateLimitPerMinute: number;
   maintenanceMode: boolean;
+  creditCostPerReading: number;
+  creditPackages: { credits: number; price: number; label: string }[];
+  promptPayNumber: string;
+  promptPayName: string;
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -264,6 +360,14 @@ const DEFAULT_SETTINGS: AppSettings = {
   dailyFreeLimit: 5,
   rateLimitPerMinute: 10,
   maintenanceMode: false,
+  creditCostPerReading: 1,
+  creditPackages: [
+    { credits: 10, price: 29, label: "10 เครดิต" },
+    { credits: 30, price: 79, label: "30 เครดิต" },
+    { credits: 100, price: 199, label: "100 เครดิต" },
+  ],
+  promptPayNumber: "",
+  promptPayName: "",
 };
 
 export function getSettings(): AppSettings {
